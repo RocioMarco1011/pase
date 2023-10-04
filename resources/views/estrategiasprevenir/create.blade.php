@@ -34,7 +34,7 @@
                                     Ministerio de Educación
                                 </td>
                                 <td class="py-2 px-4 text-lg border-b border-r text-center">
-                                    <a href="{{ route('estrategiasprevenir.create', 1) }}" class="inline-flex items-center justify-center w-full h-full px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                    <a href="{{ route('estrategiasprevenir.index', 1) }}" class="inline-flex items-center justify-center w-full h-full px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                         Ver
                                     </a>
                                 </td>
