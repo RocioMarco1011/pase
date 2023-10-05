@@ -34,4 +34,3 @@ Route::resource('users', \App\Http\Controllers\UsersController::class);
 Route::group(['middleware' => 'auth'], function () {
 Route::resource('estrategiasprevenir', \App\Http\Controllers\EstrategiasPrevenirController::class);
 });
-
