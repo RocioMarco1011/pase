@@ -57,7 +57,7 @@ class AccionPrevenirController extends Controller
         // Validación de datos
         $request->validate([
             'accion' => 'required|max:255',
-            'tipo' => 'required|in:general,especifica', // Ajusta las reglas de validación según tus necesidades
+            'tipo' => 'required|in:General,Especifica', // Ajusta las reglas de validación según tus necesidades
             'dependencias_responsables' => 'nullable|max:255',
             'dependencias_coordinadoras' => 'nullable|max:255',
         ]);

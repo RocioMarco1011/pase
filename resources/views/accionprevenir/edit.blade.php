@@ -20,8 +20,8 @@
                         <div class="mb-4">
                             <label for="tipo" class="block text-lg font-medium text-gray-700">Tipo de Acción:</label>
                             <select name="tipo" id="tipo" class="form-select w-full">
-                                <option value="general" {{ $accionPrevenir->tipo == 'general' ? 'selected' : '' }}>General</option>
-                                <option value="especifica" {{ $accionPrevenir->tipo == 'especifica' ? 'selected' : '' }}>Específica</option>
+                                <option value="General" {{ $accionPrevenir->tipo == 'General' ? 'selected' : '' }}>General</option>
+                                <option value="Especifica" {{ $accionPrevenir->tipo == 'Especifica' ? 'selected' : '' }}>Específica</option>
                             </select>
                         </div>
                         <div class="mb-4">

@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('accion_prevenir', function (Blueprint $table) {
         $table->id();
         $table->string('accion');
-        $table->enum('tipo', ['general', 'especifica']);
+        $table->enum('tipo', ['General', 'Especifica']);
         $table->string('dependencias_responsables');
         $table->string('dependencias_coordinadoras');
         $table->timestamps();

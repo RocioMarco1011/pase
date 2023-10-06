@@ -18,8 +18,8 @@
                         <div class="mb-4">
                             <label for="tipo" class="block text-lg font-medium text-gray-700">Tipo de Acción:</label>
                             <select name="tipo" id="tipo" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                <option value="general">General</option>
-                                <option value="especifica">Específica</option>
+                                <option value="General">General</option>
+                                <option value="Especifica">Específica</option>
                             </select>
                         </div>
                         <div class="mb-4">

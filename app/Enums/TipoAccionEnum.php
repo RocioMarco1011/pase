@@ -13,8 +13,8 @@ class TipoAccionEnum extends Enum
     protected static function values(): array
     {
         return [
-            'general' => 'general',
-            'especifica' => 'especifica',
+            'General' => 'General',
+            'Especifica' => 'Especifica',
         ];
     }
 }

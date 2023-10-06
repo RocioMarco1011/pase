@@ -28,11 +28,11 @@
                             </tr>
                             <tr>
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Dependencias Responsables:</th>
-                                <td class="py-2 px-4 text-lg">{{ $accionPrevenir->dependencias_responsables ?? 'No especificado' }}</td>
+                                <td class="py-2 px-4 text-lg">{{ $accionPrevenir->dependencias_responsables }}</td>
                             </tr>
                             <tr>
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Dependencias Coordinadoras:</th>
-                                <td class="py-2 px-4 text-lg">{{ $accionPrevenir->dependencias_coordinadoras ?? 'No especificado' }}</td>
+                                <td class="py-2 px-4 text-lg">{{ $accionPrevenir->dependencias_coordinadoras}}</td>
                             </tr>
                         </tbody>
                     </table>
