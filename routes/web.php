@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrevenirController;
 use App\Http\Controllers\EstrategiasPrevenirController;
+use App\Http\Controllers\AccionPrevenirController;
 
 
 /*
@@ -34,3 +35,7 @@ Route::resource('users', \App\Http\Controllers\UsersController::class);
 Route::group(['middleware' => 'auth'], function () {
 Route::resource('estrategiasprevenir', \App\Http\Controllers\EstrategiasPrevenirController::class);
 });
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('accionprevenir', \App\Http\Controllers\AccionPrevenirController::class);
+    });
