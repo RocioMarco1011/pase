@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AccionPrevenir;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Http\UsersController;
 
 class AccionPrevenirController extends Controller
 {
@@ -15,8 +17,10 @@ class AccionPrevenirController extends Controller
 
     public function create()
     {
-        return view('accionprevenir.create');
+        $users = User::all();
+        return view('accionprevenir.create', compact('users'));
     }
+
 
     public function store(Request $request)
     {
@@ -26,7 +30,20 @@ class AccionPrevenirController extends Controller
         $accionPrevenir->tipo = $request->input('tipo');
         $accionPrevenir->dependencias_responsables = $request->input('dependencias_responsables');
         $accionPrevenir->dependencias_coordinadoras = $request->input('dependencias_coordinadoras');
+
+        // Obtener las dependencias seleccionadas desde el formulario
+        $dependenciasResponsablesIds = $request->input('dependencias_responsables', []);
+        $dependenciasCoordinadorasIds = $request->input('dependencias_coordinadoras', []);
+
+        // Obtener los nombres de las dependencias seleccionadas
+        $dependenciasResponsables = User::whereIn('id', $dependenciasResponsablesIds)->pluck('name')->implode(', ');
+        $dependenciasCoordinadoras = User::whereIn('id', $dependenciasCoordinadorasIds)->pluck('name')->implode(', ');
+
+        // Guardar los nombres en el modelo AccionPrevenir
+        $accionPrevenir->dependencias_responsables = $dependenciasResponsables;
+        $accionPrevenir->dependencias_coordinadoras = $dependenciasCoordinadoras;
         $accionPrevenir->save();
+
 
         // Redirige a la página de la lista de acciones para prevenir
         return redirect()->route('accionprevenir.index');

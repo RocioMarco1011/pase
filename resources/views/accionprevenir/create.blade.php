@@ -23,12 +23,25 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencias Responsables:</label>
-                            <input type="text" name="dependencias_responsables" id="dependencias_responsables" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            @livewire('select2')
                         </div>
+                    
                         <div class="mb-4">
-                            <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencias Coordinadoras:</label>
-                            <input type="text" name="dependencias_coordinadoras" id="dependencias_coordinadoras" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
+                            <select name="dependencias_responsables[]" id="dependencias_responsables" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    
+                        <div class="mb-4">
+                            <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
+                            <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
