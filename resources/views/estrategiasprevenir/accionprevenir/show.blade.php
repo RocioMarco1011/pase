@@ -9,9 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <a href="{{ route('accionprevenir.index') }}" class="inline-flex items-center px-4 py-2 mb-4 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                        Regresar a Acciones de Prevención
-                    </a>
+                    
                     <table class="min-w-full">
                         <tbody>
                             <tr>
@@ -36,20 +34,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    
-                    <!-- Botones de Editar y Eliminar horizontalmente con separación -->
                     <div class="mt-4 text-center">
                         <div class="flex justify-center space-x-8">
-                            <a href="{{ route('accionprevenir.edit', ['accionprevenir' => $accionPrevenir->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                            <a href="{{ route('estrategiasprevenir.accionprevenir.edit', ['id' => $accionPrevenir->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                 Editar Acción
-                            </a>
-                            <form method="POST" action="{{ route('accionprevenir.destroy', ['accionprevenir' => $accionPrevenir->id]) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                                    Eliminar Acción
-                                </button>
-                            </form>
+                            </a>                             
                         </div>
                     </div>
                 </div>

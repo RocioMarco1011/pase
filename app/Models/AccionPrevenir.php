@@ -18,6 +18,7 @@ class AccionPrevenir extends Model
         'tipo',
         'dependencias_responsables',
         'dependencias_coordinadoras',
+        'estrategia_id',
     ];
 
     // Define el tipo de datos para el campo 'tipo' como un enum

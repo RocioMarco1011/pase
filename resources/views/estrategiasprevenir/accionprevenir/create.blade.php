@@ -8,9 +8,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('accionprevenir.store') }}">
+                    <form method="POST" action="{{ route('estrategiasprevenir.accionprevenir.store', ['estrategia' => $estrategia->id]) }}">
                         @csrf
 
+                        <input type="hidden" name="estrategia_id" value="{{ $estrategia->id }}">
                         <div class="mb-4">
                             <label for="accion" class="block text-lg font-medium text-gray-700">Acción:</label>
                             <input type="text" name="accion" id="accion" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">

@@ -6,112 +6,91 @@ use App\Models\AccionPrevenir;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\UsersController;
+use App\Models\EstrategiasPrevenir;
 
 class AccionPrevenirController extends Controller
 {
-    public function index()
+    public function index(Request $request, $estrategiaId)
     {
-        $accionesPrevenir = AccionPrevenir::all();
-        return view('accionprevenir.index', compact('accionesPrevenir'));
+        $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->get();
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
+        return view('estrategiasprevenir.accionprevenir.index', compact('accionesPrevenir', 'estrategia'));
     }
 
-    public function create()
+    public function create($estrategiaId)
     {
         $users = User::all();
-        return view('accionprevenir.create', compact('users'));
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
+        return view('estrategiasprevenir.accionprevenir.create', compact('users', 'estrategia'));
     }
-
 
     public function store(Request $request)
     {
-        // Valida y guarda la acción para prevenir en la base de datos
         $accionPrevenir = new AccionPrevenir();
         $accionPrevenir->accion = $request->input('accion');
         $accionPrevenir->tipo = $request->input('tipo');
         $accionPrevenir->dependencias_responsables = $request->input('dependencias_responsables');
         $accionPrevenir->dependencias_coordinadoras = $request->input('dependencias_coordinadoras');
+        $accionPrevenir->estrategia_id = $request->input('estrategia_id'); 
 
-        // Obtener las dependencias seleccionadas desde el formulario
         $dependenciasResponsablesIds = $request->input('dependencias_responsables', []);
         $dependenciasCoordinadorasIds = $request->input('dependencias_coordinadoras', []);
 
-        // Obtener los nombres de las dependencias seleccionadas
         $dependenciasResponsables = User::whereIn('id', $dependenciasResponsablesIds)->pluck('name')->implode(', ');
         $dependenciasCoordinadoras = User::whereIn('id', $dependenciasCoordinadorasIds)->pluck('name')->implode(', ');
 
-        // Guardar los nombres en el modelo AccionPrevenir
         $accionPrevenir->dependencias_responsables = $dependenciasResponsables;
         $accionPrevenir->dependencias_coordinadoras = $dependenciasCoordinadoras;
+
+        $estrategiaId = $request->input('estrategia_id');
+
         $accionPrevenir->save();
 
-
-        // Redirige a la página de la lista de acciones para prevenir
-        return redirect()->route('accionprevenir.index');
+        return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $estrategiaId]);
     }
 
-    public function show($id)
+    public function show($estrategia, $accion)
     {
-        $accionPrevenir = AccionPrevenir::find($id);
-        return view('accionprevenir.show', ['accionPrevenir' => $accionPrevenir]);
+        $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategia)->find($accion);
+        
+        return view('estrategiasprevenir.accionprevenir.show', ['accionPrevenir' => $accionPrevenir]);
     }
 
     public function edit($id)
     {
-        // Obtener la acción para prevenir que se va a editar usando el $id
         $accionPrevenir = AccionPrevenir::find($id);
 
-        // Verificar si la acción para prevenir existe antes de continuar
-        if (!$accionPrevenir) {
-            return abort(404); // Puedes personalizar el manejo de acciones para prevenir no encontradas
-        }
-
-        // Pasar la acción para prevenir a la vista de edición
-        return view('accionprevenir.edit', ['accionPrevenir' => $accionPrevenir]);
+        return view('estrategiasprevenir.accionprevenir.edit', ['accionPrevenir' => $accionPrevenir]);
     }
 
     public function update(Request $request, $id)
     {
-        // Validación de datos
         $request->validate([
             'accion' => 'required|max:255',
-            'tipo' => 'required|in:General,Especifica', // Ajusta las reglas de validación según tus necesidades
+            'tipo' => 'required|in:General,Especifica',
             'dependencias_responsables' => 'nullable|max:255',
             'dependencias_coordinadoras' => 'nullable|max:255',
         ]);
 
-        // Obtener la acción para prevenir a actualizar
         $accionPrevenir = AccionPrevenir::find($id);
 
-        // Verificar si la acción para prevenir existe
-        if (!$accionPrevenir) {
-            return abort(404); // O manejo personalizado para acciones para prevenir no encontradas
-        }
-
-        // Actualizar los datos de la acción para prevenir
         $accionPrevenir->accion = $request->accion;
         $accionPrevenir->tipo = $request->tipo;
         $accionPrevenir->dependencias_responsables = $request->dependencias_responsables;
         $accionPrevenir->dependencias_coordinadoras = $request->dependencias_coordinadoras;
         $accionPrevenir->save();
 
-        // Redirigir a la página de detalles o a donde sea necesario
-        return redirect()->route('accionprevenir.show', ['accionprevenir' => $accionPrevenir->id]);
+        return redirect()->route('estrategiasprevenir.accionprevenir.show', ['id' => $accionPrevenir->id]);
     }
 
     public function destroy($id)
-    {
-        // Buscar la acción para prevenir por ID
-        $accionPrevenir = AccionPrevenir::find($id);
+{
+    $accionPrevenir = AccionPrevenir::find($id);
+    $accionPrevenir->delete();
 
-        // Verificar si la acción para prevenir existe
-        if (!$accionPrevenir) {
-            return abort(404); // O manejo personalizado para acciones para prevenir no encontradas
-        }
+    return redirect()->route('estrategiasprevenir.accionprevenir.show', ['id' => $accionPrevenir->id]);
+}
 
-        // Eliminar la acción para prevenir
-        $accionPrevenir->delete();
 
-        // Redirigir a la página de índice o a donde sea necesario
-        return redirect()->route('accionprevenir.index');
-    }
+
 }

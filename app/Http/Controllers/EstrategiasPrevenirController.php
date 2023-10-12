@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\EstrategiasPrevenir;
+use App\Models\AccionPrevenir;
 use Illuminate\Http\Request;
-
 
 class EstrategiasPrevenirController extends Controller
 {
@@ -34,7 +34,8 @@ class EstrategiasPrevenirController extends Controller
     public function show($id)
     {
         $estrategia = EstrategiasPrevenir::find($id);
-        return view('estrategiasprevenir.show', ['estrategia' => $estrategia]);
+        $accionPrevenir = $estrategia->accionPrevenir;
+        return view('estrategiasprevenir.show', compact('estrategia', 'accionPrevenir'));
     }
 
 
@@ -71,7 +72,7 @@ class EstrategiasPrevenirController extends Controller
         $estrategia->save();
 
         // Redirigir a la página de detalles o a donde sea necesario
-        return redirect()->route('estrategiasprevenir.show', ['estrategiasprevenir' => $estrategia->id]);
+        return redirect()->route('estrategiasprevenir.show', ['estrategia' => $estrategia->id]);
     }
 
     public function destroy($id)

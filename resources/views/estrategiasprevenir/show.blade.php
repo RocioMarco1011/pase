@@ -29,10 +29,10 @@
                     <!-- Botones de Editar y Eliminar horizontalmente con separación -->
                     <div class="mt-4 text-center">
                         <div class="flex justify-center space-x-8">
-                            <a href="{{ route('estrategiasprevenir.edit', ['estrategiasprevenir' => $estrategia->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                            <a href="{{ route('estrategiasprevenir.edit', ['id' => $estrategia->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                 Editar Estrategia
-                            </a>
-                            <form method="POST" action="{{ route('estrategiasprevenir.destroy', ['estrategiasprevenir' => $estrategia->id]) }}">
+                            </a>                            
+                            <form method="POST" action="{{ route('estrategiasprevenir.destroy', ['id' => $estrategia->id]) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
