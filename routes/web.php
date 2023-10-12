@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PrevenirController;
 use App\Http\Controllers\EstrategiasPrevenirController;
 use App\Http\Controllers\AccionPrevenirController;
+use App\Http\Controllers\EvidenciaPrevenirController;
 
 
 /*
@@ -54,6 +55,12 @@ Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::put('/{accion}', [AccionPrevenirController::class, 'update'])->name('estrategiasprevenir.accionprevenir.update');
     Route::delete('/{id}', [AccionPrevenirController::class, 'destroy'])->name('estrategiasprevenir.accionprevenir.destroy');
 });
+
+Route::get('/evidenciaprevenir', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
+Route::post('/estrategiasprevenir/accionprevenir/{accionPrevenir}/evidenciaprevenir', [EvidenciaPrevenirController::class, 'store'])->name('estrategiasprevenir.accionprevenir.evidenciaprevenir.store');
+Route::get('/estrategiasprevenir/accionprevenir/{accionPrevenirId}/evidenciaprevenir', [EvidenciaPrevenirController::class, 'index'])
+    ->name('estrategiasprevenir.accionprevenir.evidenciaprevenir.index');
+
 
 
 
