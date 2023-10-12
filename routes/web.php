@@ -54,8 +54,7 @@ Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::put('/{accion}', [AccionPrevenirController::class, 'update'])->name('estrategiasprevenir.accionprevenir.update');
     Route::delete('/{id}', [AccionPrevenirController::class, 'destroy'])->name('estrategiasprevenir.accionprevenir.destroy');
 });
-// Ruta para editar una acción de prevención
-Route::get('estrategiasprevenir/accionprevenir/{id}/edit', [AccionPrevenirController::class, 'edit'])->name('estrategiasprevenir.accionprevenir.edit');
+
 
 
 
