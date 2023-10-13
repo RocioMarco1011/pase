@@ -12,11 +12,7 @@ class EvidenciaPrevenir extends Model
     protected $table = 'evidencias_prevenir';
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'nombre',
-        'mensaje',
-        'accion_prevenir_id',
-    ];
+    protected $fillable = ['nombre', 'mensaje', 'archivo', 'accion_prevenir_id'];
 
     public function accionPrevenir()
     {

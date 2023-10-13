@@ -5,31 +5,92 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EvidenciaPrevenir;
+use App\Models\AccionPrevenir;
+use App\Models\EstrategiasPrevenir;
+use Illuminate\Support\Facades\Storage;
 
 class EvidenciaPrevenirController extends Controller
 {
-    public function index()
+    public function index($estrategiaId, $accionPrevenirId)
     {
-        $evidencias = EvidenciaPrevenir::all();
-        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.index', compact('evidencias'));
+        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
+        $evidencias = EvidenciaPrevenir::where('accion_prevenir_id', $accionPrevenirId)->get();
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
+
+        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.index', compact('evidencias', 'accionPrevenir', 'estrategia'));
     }
 
-    public function store(Request $request)
+    public function create($estrategiaId, $accionPrevenirId)
     {
-        $request->validate([
-            'evidencia' => 'required|mimes:jpeg,png,pdf', // Ajusta las validaciones según tus necesidades
-            'mensaje' => 'nullable|string',
-        ]);
+        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
+        $evidencias = EvidenciaPrevenir::where('accion_prevenir_id', $accionPrevenirId)->get();
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
 
-        $evidencia = $request->file('evidencia');
-        $nombreEvidencia = $evidencia->store('evidencias', 'public');
+        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.create', compact('evidencias', 'accionPrevenir', 'estrategia'));
+    }
 
-        EvidenciaPrevenir::create([
-            'nombre' => $nombreEvidencia,
-            'mensaje' => $request->input('mensaje'),
-            'accion_prevenir_id' => $request->input('accion_prevenir_id'), // Asegúrate de enviar el ID de la acción de prevención
-        ]);
 
-        return redirect()->route('evidenciaprevenir.index');
+    public function store(Request $request, $estrategiaId, $accionPrevenirId)
+{
+    $evidencia = new EvidenciaPrevenir();
+    $evidencia->nombre = $request->input('nombre');
+    $evidencia->mensaje = $request->input('mensaje');
+
+    // Verificar si se ha cargado un archivo
+    if ($request->hasFile('archivo')) {
+        $archivo = $request->file('archivo'); // Define la variable $archivo
+        $nombreArchivo = $archivo->getClientOriginalName();
+
+        try {
+            $archivo->storeAs('', $nombreArchivo, 'evidencias');
+            $evidencia->archivo = $nombreArchivo;
+        } catch (\Exception $e) {
+            // Manejar cualquier error relacionado con el almacenamiento del archivo
+            return back()->with('error', 'Error al guardar el archivo');
+        }
+    } else {
+        $evidencia->archivo = null; // No se adjuntó ningún archivo
+    }
+
+    $evidencia->accion_prevenir_id = $accionPrevenirId;
+
+    try {
+        $evidencia->save();
+        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
+            ->with('success', 'Evidencia guardada exitosamente');
+    } catch (\Exception $e) {
+        // Manejar cualquier error relacionado con la base de datos
+        return back()->with('error', 'Error al guardar la evidencia en la base de datos');
+    }
+}
+
+    
+    public function edit($estrategiaId, $accionPrevenirId, $evidenciaId)
+{
+    $estrategia = EstrategiasPrevenir::find($estrategiaId);
+    $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
+    $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
+
+    return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.edit', compact('estrategia', 'accionPrevenir', 'evidencia'));
+}
+
+
+    public function update(Request $request, $estrategiaId, $accionPrevenirId, $evidenciaId)
+    {
+        $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
+        $evidencia->nombre = $request->input('nombre');
+        $evidencia->mensaje = $request->input('mensaje');
+    
+        $evidencia->save();
+        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
+    }
+
+    public function destroy($estrategiaId, $accionPrevenirId, $evidenciaId)
+    {
+
+        $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
+        $evidencia->delete();
+
+        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
     }
 }

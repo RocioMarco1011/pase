@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->text('mensaje')->nullable();
+            $table->string('archivo')->nullable(); 
             $table->unsignedBigInteger('accion_prevenir_id');
             $table->foreign('accion_prevenir_id')->references('id')->on('accion_prevenir');
             $table->timestamps();

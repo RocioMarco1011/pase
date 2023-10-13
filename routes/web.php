@@ -6,6 +6,8 @@ use App\Http\Controllers\PrevenirController;
 use App\Http\Controllers\EstrategiasPrevenirController;
 use App\Http\Controllers\AccionPrevenirController;
 use App\Http\Controllers\EvidenciaPrevenirController;
+use App\Http\Controllers\ArchivoController;
+use Illuminate\Support\Facades\Storage;
 
 
 /*
@@ -56,10 +58,35 @@ Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::delete('/{id}', [AccionPrevenirController::class, 'destroy'])->name('estrategiasprevenir.accionprevenir.destroy');
 });
 
-Route::get('/evidenciaprevenir', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
-Route::post('/estrategiasprevenir/accionprevenir/{accionPrevenir}/evidenciaprevenir', [EvidenciaPrevenirController::class, 'store'])->name('estrategiasprevenir.accionprevenir.evidenciaprevenir.store');
-Route::get('/estrategiasprevenir/accionprevenir/{accionPrevenirId}/evidenciaprevenir', [EvidenciaPrevenirController::class, 'index'])
-    ->name('estrategiasprevenir.accionprevenir.evidenciaprevenir.index');
+//Rutas para evidencias de prevencion bajo una accion especifica dentro de una estrategia especifica
+Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(function () {
+    Route::get('/evidencias', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
+    Route::get('/evidencias/create', [EvidenciaPrevenirController::class, 'create'])->name('evidenciaprevenir.create');
+    Route::post('/evidencias', [EvidenciaPrevenirController::class, 'store'])->name('evidenciaprevenir.store');
+    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaPrevenirController::class, 'edit'])->name('evidenciaprevenir.edit');
+    Route::put('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'update'])->name('evidenciaprevenir.update');
+    Route::delete('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
+});
+
+Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
