@@ -23,11 +23,9 @@
                             <textarea name="mensaje" id="mensaje" class="form-textarea mt-1 block w-full rounded-md shadow-sm" rows="4">{{ $evidencia->mensaje }}</textarea>
                         </div>
 
-                        <!-- Agrega más campos si es necesario -->
-
                         <div class="flex items-center justify-end">
-                            <button type="submit" class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-700">
-                                Guardar Cambios
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                Guardar
                             </button>
                         </div>
                     </form>

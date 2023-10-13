@@ -70,6 +70,16 @@ Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(
 
 Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
 
+// Ruta para mostrar el formulario de edición
+Route::get('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}/edit', [AccionPrevenirController::class, 'edit'])->name('estrategiasprevenir.accionprevenir.edit');
+
+// Ruta para procesar la actualización
+Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}', [AccionPrevenirController::class, 'update'])->name('estrategiasprevenir.accionprevenir.update');
+
+Route::get('/{estrategia}/accionprevenir/{accion}', [AccionPrevenirController::class, 'show'])
+    ->name('estrategiasprevenir.accionprevenir.show');
+
+
 
 
 

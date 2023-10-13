@@ -32,7 +32,9 @@
                                     <td class="py-2 px-4 text-lg border-b border-r">{{ $evidencia->nombre }}</td>
                                     <td class="py-2 px-4 text-lg border-b border-r">{{ $evidencia->mensaje }}</td>
                                     <td class="py-2 px-4 text-lg border-b border-r">
-                                        <a href="{{ route('file.download', ['filename' => $evidencia->archivo]) }}" class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-700">Descargar Archivo</a>
+                                        <a href="{{ route('file.download', ['filename' => $evidencia->archivo]) }}" class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-700">
+                                            Descargar Archivo
+                                        </a>
                                     </td>
                                     
                                     <td class="py-2 px-4 text-lg border-b border-r">

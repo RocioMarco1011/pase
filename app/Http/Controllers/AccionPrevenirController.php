@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\UsersController;
 use App\Models\EstrategiasPrevenir;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 
 class AccionPrevenirController extends Controller
 {
@@ -49,48 +54,67 @@ class AccionPrevenirController extends Controller
         return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $estrategiaId]);
     }
 
-    public function show($estrategia, $accion)
+    public function show($estrategiaId, $accion)
     {
-        $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategia)->find($accion);
+        $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->find($accion);
         
-        return view('estrategiasprevenir.accionprevenir.show', ['accionPrevenir' => $accionPrevenir]);
+        return view('estrategiasprevenir.accionprevenir.show', ['accionPrevenir' => $accionPrevenir, 'estrategiaId' => $estrategiaId]);
     }
 
-    public function edit($id)
+    public function edit($estrategiaId, $accionPrevenirId)
     {
-        $accionPrevenir = AccionPrevenir::find($id);
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
+        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
+        $users = User::all(); // Esto es un ejemplo, ajusta la obtención de usuarios según tu lógica
 
-        return view('estrategiasprevenir.accionprevenir.edit', ['accionPrevenir' => $accionPrevenir]);
+        // Asegúrate de que los datos de responsables y coordinadores estén disponibles en $accionPrevenir
+        $responsables = json_decode($accionPrevenir->dependencias_responsables, true);
+        $coordinadores = json_decode($accionPrevenir->dependencias_coordinadoras, true);
+
+        return view('estrategiasprevenir.accionprevenir.edit', compact('estrategia', 'accionPrevenir', 'users', 'responsables', 'coordinadores'));
     }
 
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $estrategiaId, $accionPrevenirId)
     {
         $request->validate([
             'accion' => 'required|max:255',
             'tipo' => 'required|in:General,Especifica',
-            'dependencias_responsables' => 'nullable|max:255',
-            'dependencias_coordinadoras' => 'nullable|max:255',
+            'dependencias_responsables' => 'nullable|array', // Asegura que sea un arreglo
+            'dependencias_coordinadoras' => 'nullable|array', // Asegura que sea un arreglo
         ]);
 
-        $accionPrevenir = AccionPrevenir::find($id);
+        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
 
-        $accionPrevenir->accion = $request->accion;
-        $accionPrevenir->tipo = $request->tipo;
-        $accionPrevenir->dependencias_responsables = $request->dependencias_responsables;
-        $accionPrevenir->dependencias_coordinadoras = $request->dependencias_coordinadoras;
+        if (!$accionPrevenir) {
+            return back()->with('error', 'La acción de prevención no se pudo encontrar.');
+        }
+
+        // Actualizar los campos de la acción de prevención
+        $accionPrevenir->accion = $request->input('accion');
+        $accionPrevenir->tipo = $request->input('tipo');
+        $accionPrevenir->dependencias_responsables = $request->input('dependencias_responsables');
+        $accionPrevenir->dependencias_coordinadoras = $request->input('dependencias_coordinadoras');
+
         $accionPrevenir->save();
 
-        return redirect()->route('estrategiasprevenir.accionprevenir.show', ['id' => $accionPrevenir->id]);
+        return redirect()->route('estrategiasprevenir.accionprevenir.show', ['estrategia' => $estrategiaId, 'accion' => $accionPrevenir->id]);
+
     }
 
-    public function destroy($id)
-{
-    $accionPrevenir = AccionPrevenir::find($id);
-    $accionPrevenir->delete();
-
-    return redirect()->route('estrategiasprevenir.accionprevenir.show', ['id' => $accionPrevenir->id]);
-}
-
-
-
+    public function destroy($estrategiaId, $accionPrevenirId)
+    {
+        $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->findOrFail($accionPrevenirId);
+    
+        try {
+            $accionPrevenir->delete();
+            return redirect()->route('estrategiasprevenir.index')->with('success', 'Acción de prevenir eliminada exitosamente');
+        } catch (QueryException $e) {
+            if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
+                return back()->with('error', 'No se puede eliminar la acción de prevenir porque está relacionada con otros elementos.');
+            } else {
+                return back()->with('error', 'Error al eliminar la acción de prevenir');
+            }
+        }
+    }    
 }
