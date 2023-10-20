@@ -27,35 +27,50 @@
                         </div>
 
                         <div class="mb-4">
-                            @livewire('select2')
-                        </div>
-                       
-                        <div class="mb-4">
                             <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
-                            <select name="dependencias_responsables[]" id="dependencias_responsables" class="mt-1 p-2 block w-full border-gray-300 focus-border-indigo-300 focus-ring focus-ring-indigo-200 focus-ring-opacity-50 rounded-md shadow-sm select2" multiple>
+                            <select name="dependencias_responsables[]" id="dependencias_responsables" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ is_array($responsables) && in_array($user->id, $responsables) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                    @php
+                                        $selected = (is_array($dependencias_responsables) && in_array($user->id, $dependencias_responsables)) ? 'selected' : '';
+                                    @endphp
+                                    <option value="{{ $user->id }}" {{ $selected }}>{{ $user->name }}</option>
                                 @endforeach
-                            </select>
+                            </select> 
                         </div>
-
+                        
                         <div class="mb-4">
                             <label for ="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
-                            <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="mt-1 p-2 block w-full border-gray-300 focus-border-indigo-300 focus-ring focus-ring-indigo-200 focus-ring-opacity-50 rounded-md shadow-sm select2" multiple>
+                            <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ is_array($coordinadores) && in_array($user->id, $coordinadores) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                    @php
+                                        $selected = (is_array($dependencias_coordinadoras) && in_array($user->id, $dependencias_coordinadoras)) ? 'selected' : '';
+                                    @endphp
+                                    <option value="{{ $user->id }}" {{ $selected }}>{{ $user->name }}</option>
                                 @endforeach
-                            </select>
+                            </select> 
                         </div>
-
+                        
                         <div class="flex items-center justify-end mt-4">
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                 Guardar
                             </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    @push('scripts')
+     <script>
+         document.addEventListener('livewire:load', function () {
+             $('.select2').select2();
+         });
+     </script>
+ @endpush
+ <script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
 </x-app-layout>

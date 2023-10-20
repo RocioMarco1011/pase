@@ -10,12 +10,13 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form method="POST" action="{{ route('estrategiasprevenir.accionprevenir.store', ['estrategia' => $estrategia->id]) }}">
                         @csrf
-
                         <input type="hidden" name="estrategia_id" value="{{ $estrategia->id }}">
+                        
                         <div class="mb-4">
                             <label for="accion" class="block text-lg font-medium text-gray-700">Acción:</label>
                             <input type="text" name="accion" id="accion" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         </div>
+
                         <div class="mb-4">
                             <label for="tipo" class="block text-lg font-medium text-gray-700">Tipo de Acción:</label>
                             <select name="tipo" id="tipo" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -23,10 +24,7 @@
                                 <option value="Especifica">Específica</option>
                             </select>
                         </div>
-                        <div class="mb-4">
-                            @livewire('select2')
-                        </div>
-                    
+
                         <div class="mb-4">
                             <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
                             <select name="dependencias_responsables[]" id="dependencias_responsables" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
@@ -35,7 +33,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    
+                        
                         <div class="mb-4">
                             <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
                             <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm select2" multiple>
@@ -50,9 +48,22 @@
                                 Crear Acción
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        document.addEventListener('livewire:load', function () {
+            $('.select2').select2();
+        });
+    </script>
+ @endpush
+ <script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
 </x-app-layout>

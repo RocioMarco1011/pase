@@ -62,18 +62,16 @@ class AccionPrevenirController extends Controller
     }
 
     public function edit($estrategiaId, $accionPrevenirId)
-    {
-        $estrategia = EstrategiasPrevenir::find($estrategiaId);
-        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
-        $users = User::all(); // Esto es un ejemplo, ajusta la obtención de usuarios según tu lógica
+{
+    $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->findOrFail($accionPrevenirId);
+    $estrategia = EstrategiasPrevenir::findOrFail($estrategiaId); // Obtén la estrategia correspondiente
 
-        // Asegúrate de que los datos de responsables y coordinadores estén disponibles en $accionPrevenir
-        $responsables = json_decode($accionPrevenir->dependencias_responsables, true);
-        $coordinadores = json_decode($accionPrevenir->dependencias_coordinadoras, true);
+    $users = User::all();
+    $dependencias_responsables = json_decode($accionPrevenir->dependencia_responsable, true);
+    $dependencias_coordinadoras = json_decode($accionPrevenir->dependencia_coordinadora, true);
 
-        return view('estrategiasprevenir.accionprevenir.edit', compact('estrategia', 'accionPrevenir', 'users', 'responsables', 'coordinadores'));
-    }
-
+    return view('estrategiasprevenir.accionprevenir.edit', compact('accionPrevenir', 'users', 'dependencias_responsables', 'dependencias_coordinadoras', 'estrategia'));
+}
 
     public function update(Request $request, $estrategiaId, $accionPrevenirId)
     {
@@ -108,7 +106,7 @@ class AccionPrevenirController extends Controller
     
         try {
             $accionPrevenir->delete();
-            return redirect()->route('estrategiasprevenir.index')->with('success', 'Acción de prevenir eliminada exitosamente');
+            return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $accionPrevenir->estrategia_id])->with('success', 'Acción de prevenir eliminada exitosamente');
         } catch (QueryException $e) {
             if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
                 return back()->with('error', 'No se puede eliminar la acción de prevenir porque está relacionada con otros elementos.');
