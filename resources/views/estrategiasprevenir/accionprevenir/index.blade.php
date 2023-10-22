@@ -35,7 +35,7 @@
                             <tr>
                                 <td class="py-2 px-4 text-lg border-b border-r">{{ $accion->id }}</td>
                                 <td class="py-2 px-4 text-lg border-b border-r">{{ $accion->accion }}</td>
-                                <td class="py-2 px-4 text-lg border-b border-r">{{ $accion->tipo }}</td>
+                                <td class="py-2 px-4 text-lg border-b border-r">{{ ucfirst(strtolower($accion->tipo)) }}</td>
                                 <td class="py-2 px-4 text-lg border-b border-r">{{ $accion->dependencias_responsables }}</td>
                                 <td class="py-2 px-4 text-lg border-b border-r">{{ $accion->dependencias_coordinadoras }}</td>
                                 @can('VerAccionesPrevenir')

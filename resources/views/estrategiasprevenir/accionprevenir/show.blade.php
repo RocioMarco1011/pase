@@ -24,7 +24,7 @@
                             </tr>
                             <tr>
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Tipo de Acción:</th>
-                                <td class="py-2 px-4 text-lg">{{ $accionPrevenir->tipo }}</td>
+                                <td class="py-2 px-4 text-lg">{{ ucfirst(strtolower($accionPrevenir->tipo)) }}</td>
                             </tr>
                             <tr>
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Dependencias Responsables:</th>
