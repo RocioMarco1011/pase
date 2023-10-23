@@ -31,48 +31,46 @@ class EvidenciaPrevenirController extends Controller
 
 
     public function store(Request $request, $estrategiaId, $accionPrevenirId)
-{
-    $evidencia = new EvidenciaPrevenir();
-    $evidencia->nombre = $request->input('nombre');
-    $evidencia->mensaje = $request->input('mensaje');
+    {
+        $evidencia = new EvidenciaPrevenir();
+        $nombreArchivo = str_replace(' ', '_', $request->input('nombre'));
+        $evidencia->nombre = $nombreArchivo;
+        $evidencia->mensaje = $request->input('mensaje');
 
-    // Verificar si se ha cargado un archivo
-    if ($request->hasFile('archivo')) {
-        $archivo = $request->file('archivo'); // Define la variable $archivo
-        $nombreArchivo = $archivo->getClientOriginalName();
+        if ($request->hasFile('archivo')) {
+            $archivo = $request->file('archivo');
+            $nombreArchivo = $nombreArchivo . '.' . $archivo->getClientOriginalExtension();
 
         try {
             $archivo->storeAs('', $nombreArchivo, 'evidencias');
             $evidencia->archivo = $nombreArchivo;
         } catch (\Exception $e) {
-            // Manejar cualquier error relacionado con el almacenamiento del archivo
             return back()->with('error', 'Error al guardar el archivo');
         }
-    } else {
-        $evidencia->archivo = null; // No se adjuntó ningún archivo
-    }
+        } else {
+            $evidencia->archivo = null;
+        }
 
-    $evidencia->accion_prevenir_id = $accionPrevenirId;
+        $evidencia->accion_prevenir_id = $accionPrevenirId;
 
-    try {
-        $evidencia->save();
-        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
-            ->with('success', 'Evidencia guardada exitosamente');
-    } catch (\Exception $e) {
-        // Manejar cualquier error relacionado con la base de datos
-        return back()->with('error', 'Error al guardar la evidencia en la base de datos');
+        try {
+            $evidencia->save();
+            return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
+                ->with('success', 'Evidencia guardada exitosamente');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al guardar la evidencia en la base de datos');
+        }
     }
-}
 
     
     public function edit($estrategiaId, $accionPrevenirId, $evidenciaId)
-{
-    $estrategia = EstrategiasPrevenir::find($estrategiaId);
-    $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
-    $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
+    {
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
+        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
+        $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
 
-    return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.edit', compact('estrategia', 'accionPrevenir', 'evidencia'));
-}
+        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.edit', compact('estrategia', 'accionPrevenir', 'evidencia'));
+    }
 
 
     public function update(Request $request, $estrategiaId, $accionPrevenirId, $evidenciaId)
@@ -93,4 +91,14 @@ class EvidenciaPrevenirController extends Controller
 
         return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
     }
+
+    public function downloadFile($filename, $nombreArchivo)
+{
+    $archivo = public_path('path_to_evidencias_folder/' . $filename);
+    $headers = array(
+        'Content-Type: application/pdf',
+    );
+    return Response::download($archivo, $nombreArchivo, $headers);
+}
+
 }
