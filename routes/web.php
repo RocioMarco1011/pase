@@ -9,7 +9,6 @@ use App\Http\Controllers\EvidenciaPrevenirController;
 use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Storage;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
