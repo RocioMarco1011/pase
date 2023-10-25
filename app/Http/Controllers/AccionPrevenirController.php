@@ -73,32 +73,35 @@ class AccionPrevenirController extends Controller
     return view('estrategiasprevenir.accionprevenir.edit', compact('accionPrevenir', 'users', 'dependencias_responsables', 'dependencias_coordinadoras', 'estrategia'));
 }
 
-    public function update(Request $request, $estrategiaId, $accionPrevenirId)
-    {
-        $request->validate([
-            'accion' => 'required|max:255',
-            'tipo' => 'required|in:General,Especifica',
-            'dependencias_responsables' => 'nullable|array', // Asegura que sea un arreglo
-            'dependencias_coordinadoras' => 'nullable|array', // Asegura que sea un arreglo
-        ]);
+public function update(Request $request, $estrategiaId, $accionPrevenirId)
+{
+    $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
 
-        $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
-
-        if (!$accionPrevenir) {
-            return back()->with('error', 'La acción de prevención no se pudo encontrar.');
-        }
-
-        // Actualizar los campos de la acción de prevención
-        $accionPrevenir->accion = $request->input('accion');
-        $accionPrevenir->tipo = $request->input('tipo');
-        $accionPrevenir->dependencias_responsables = $request->input('dependencias_responsables');
-        $accionPrevenir->dependencias_coordinadoras = $request->input('dependencias_coordinadoras');
-
-        $accionPrevenir->save();
-
-        return redirect()->route('estrategiasprevenir.accionprevenir.show', ['estrategia' => $estrategiaId, 'accion' => $accionPrevenir->id]);
-
+    if (!$accionPrevenir) {
+        return back()->with('error', 'La acción de prevención no se pudo encontrar.');
     }
+
+    // Actualizar los campos de la acción de prevención
+    $accionPrevenir->accion = $request->input('accion');
+    $accionPrevenir->tipo = $request->input('tipo');
+    
+    $dependenciasResponsablesIds = $request->input('dependencias_responsables', []);
+    $dependenciasCoordinadorasIds = $request->input('dependencias_coordinadoras', []);
+
+    $dependenciasResponsables = User::whereIn('id', $dependenciasResponsablesIds)->pluck('name')->implode(', ');
+    $dependenciasCoordinadoras = User::whereIn('id', $dependenciasCoordinadorasIds)->pluck('name')->implode(', ');
+
+    $accionPrevenir->dependencias_responsables = $dependenciasResponsables;
+    $accionPrevenir->dependencias_coordinadoras = $dependenciasCoordinadoras;
+
+    // Guardar los cambios en la base de datos
+    $accionPrevenir->save();
+
+    // Redirigir a la vista de detalle de la estrategia con la acción actualizada
+    return redirect()->route('estrategiasprevenir.accionprevenir.show', ['estrategia' => $estrategiaId, 'accion' => $accionPrevenir->id])
+        ->with('success', 'Acción de prevención actualizada exitosamente.');
+}
+
 
     public function destroy($estrategiaId, $accionPrevenirId)
     {
