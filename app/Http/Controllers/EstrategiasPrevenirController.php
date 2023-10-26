@@ -7,13 +7,27 @@ use App\Models\AccionPrevenir;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
+use Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class EstrategiasPrevenirController extends Controller
 {
     public function index()
     {
-        $estrategias = EstrategiasPrevenir::all();
+        $user = auth()->user();
+
+        if ($user->hasRole('Administrador')) {
+            $estrategias = DB::select("SELECT * FROM estrategias_prevenirs;");
+        } else {
+            $user = auth()->user();
+            $user_name = $user->name;
+
+            $estrategias = DB::select("SELECT * FROM estrategias_prevenirs 
+                INNER JOIN accion_prevenir ON estrategias_prevenirs.id = accion_prevenir.estrategia_id 
+                WHERE accion_prevenir.dependencias_responsables = '$user_name' 
+                OR accion_prevenir.dependencias_coordinadoras = '$user_name';");
+        }
         return view('estrategiasprevenir.index', compact('estrategias'));
     }
 

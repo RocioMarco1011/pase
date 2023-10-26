@@ -12,4 +12,9 @@ class EstrategiasPrevenir extends Model
     protected $fillable = ['nombre'];
     protected $table = 'estrategias_prevenirs';
 
+    public function accionPrevenir()
+    {
+        return $this->hasMany(AccionPrevenir::class, 'estrategia_id');
+    }
+
 }
