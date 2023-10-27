@@ -14,22 +14,21 @@ use Illuminate\Support\Facades\DB;
 class EstrategiasPrevenirController extends Controller
 {
     public function index()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
+    $user_name = $user->name;
 
-        if ($user->hasRole('Administrador')) {
-            $estrategias = DB::select("SELECT * FROM estrategias_prevenirs;");
-        } else {
-            $user = auth()->user();
-            $user_name = $user->name;
-
-            $estrategias = DB::select("SELECT * FROM estrategias_prevenirs 
-                INNER JOIN accion_prevenir ON estrategias_prevenirs.id = accion_prevenir.estrategia_id 
-                WHERE accion_prevenir.dependencias_responsables = '$user_name' 
-                OR accion_prevenir.dependencias_coordinadoras = '$user_name';");
-        }
-        return view('estrategiasprevenir.index', compact('estrategias'));
+    if ($user->hasRole('Administrador')) {
+        $estrategias = EstrategiasPrevenir::with('accionPrevenir')->get();
+    } else {
+        $estrategias = EstrategiasPrevenir::whereHas('accionPrevenir', function ($query) use ($user_name) {
+            $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(accion_prevenir.dependencias_responsables, ', ', ',')) > 0")
+                  ->orWhereRaw("FIND_IN_SET('{$user_name}', REPLACE(accion_prevenir.dependencias_coordinadoras, ', ', ',')) > 0");
+        })->get();
     }
+    
+    return view('estrategiasprevenir.index', compact('estrategias'));
+}
 
     public function create()
     {
