@@ -17,21 +17,21 @@ use Illuminate\Support\Facades\DB;
 class AccionPrevenirController extends Controller
 {
     public function index(Request $request, $estrategiaId)
-{
-    $user = auth()->user();
-    $user_name = $user->name;
+    {
+        $user = auth()->user();
+        $user_name = $user->name;
 
-    $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)
-        ->where(function ($query) use ($user_name) {
-            $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_responsables, ', ', ',')) > 0")
-                ->orWhereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_coordinadoras, ', ', ',')) > 0");
-        })
-        ->get();
+        $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)
+            ->where(function ($query) use ($user_name) {
+                $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_responsables, ', ', ',')) > 0")
+                    ->orWhereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_coordinadoras, ', ', ',')) > 0");
+            })
+            ->get();
 
-    $estrategia = EstrategiasPrevenir::find($estrategiaId);
+        $estrategia = EstrategiasPrevenir::find($estrategiaId);
     
-    return view('estrategiasprevenir.accionprevenir.index', compact('accionesPrevenir', 'estrategia'));
-}
+        return view('estrategiasprevenir.accionprevenir.index', compact('accionesPrevenir', 'estrategia'));
+    }
 
     public function create($estrategiaId)
     {
