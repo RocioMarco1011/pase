@@ -21,15 +21,19 @@ class AccionPrevenirController extends Controller
         $user = auth()->user();
         $user_name = $user->name;
 
-        $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)
-            ->where(function ($query) use ($user_name) {
-                $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_responsables, ', ', ',')) > 0")
-                    ->orWhereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_coordinadoras, ', ', ',')) > 0");
-            })
-            ->get();
+        if ($user->hasRole('Administrador')) {
+            $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->get();
+        } else {
+            $accionesPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)
+                ->where(function ($query) use ($user_name) {
+                    $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_responsables, ', ', ',')) > 0")
+                        ->orWhereRaw("FIND_IN_SET('{$user_name}', REPLACE(dependencias_coordinadoras, ', ', ',')) > 0");
+                })
+                ->get();
+            }
 
         $estrategia = EstrategiasPrevenir::find($estrategiaId);
-    
+
         return view('estrategiasprevenir.accionprevenir.index', compact('accionesPrevenir', 'estrategia'));
     }
 
