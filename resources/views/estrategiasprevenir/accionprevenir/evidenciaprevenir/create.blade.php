@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Crear Nueva Evidencia
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
+           CREAR NUEVA EVIDENCIA DE PREVENCIÓN
         </h2>
     </x-slot>
-
-    <div class="py-6">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -13,18 +12,18 @@
                         @csrf
 
                         <div class="mb-4">
-                            <label for="nombre" class="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
-                            <input type="text" name="nombre" id="nombre" class="form-input">
+                            <label for="nombre" class="block text-lg font-medium text-gray-700">Nombre:</label>
+                            <input type="text" name="nombre" id="nombre" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         </div>
 
                         <div class="mb-4">
-                            <label for="mensaje" class="block text-gray-700 text-sm font-bold mb-2">Mensaje:</label>
-                            <textarea name="mensaje" id="mensaje" class="form-textarea"></textarea>
+                            <label for="mensaje" class="block text-lg font-medium text-gray-700">Mensaje:</label>
+                            <textarea name="mensaje" id="mensaje" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                         </div>
 
                         <div class="mb-4">
-                            <label for="archivo" class="block text-gray-700 text-sm font-bold mb-2">Archivo:</label>
-                            <input type="file" name="archivo" id="archivo" class="form-input">
+                            <label for="archivo" class="block text-lg font-medium text-gray-700">Archivo:</label>
+                            <input type="file" name="archivo" id="archivo" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         </div>
 
                         <div class="mb-4">

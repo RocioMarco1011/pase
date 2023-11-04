@@ -17,7 +17,7 @@
                     <table class="min-w-full border-collapse border-2 border-gray-300">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 text-lg border-b border-r">ID</th>
+                                <th class="py-2 px-4 text-lg border-b border-r">No.</th>
                                 <th class="py-2 px-4 text-lg border-b border-r">Nombre</th>
                                 <th class="py-2 px-4 text-lg border-b border-r">Mensaje</th>
                                 <th class="py-2 px-4 text-lg border-b border-r">Archivo</th>
