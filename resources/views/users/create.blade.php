@@ -21,7 +21,7 @@
                         </div>
 
                         <div class="px-4 py-5 bg-white sm:p-6">
-                            <label for="email" class="block font-medium text-sm text-gray-700">Email</label>
+                            <label for="email" class="block font-medium text-sm text-gray-700">Correo Electrónico</label>
                             <input type="email" name="email" id="email" class="form-input rounded-md shadow-sm mt-1 block w-full"
                                    value="{{ old('email', '') }}" />
                             @error('email')

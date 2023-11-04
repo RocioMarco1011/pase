@@ -26,10 +26,7 @@
                                     Nombre
                                 </th>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email
-                                </th>
-                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email Verificado
+                                    Correo Electrónico
                                 </th>
                                 <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Rol
@@ -51,10 +48,6 @@
 
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ $user->email }}
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $user->email_verified_at }}
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

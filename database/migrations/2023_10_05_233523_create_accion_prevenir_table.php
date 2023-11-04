@@ -15,8 +15,8 @@ return new class extends Migration
         $table->id();
         $table->string('accion');
         $table->enum('tipo', ['General', 'Especifica']);
-        $table->string('dependencias_responsables');
-        $table->string('dependencias_coordinadoras');
+        $table->string('dependencias_responsables', 500);
+        $table->string('dependencias_coordinadoras',500);
         $table->timestamps();
     });
 }
