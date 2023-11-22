@@ -8,6 +8,7 @@ use App\Http\Controllers\AccionPrevenirController;
 use App\Http\Controllers\EvidenciaPrevenirController;
 use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\IndicadoresPrevenirController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +79,16 @@ Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}
 Route::get('/{estrategia}/accionprevenir/{accion}', [AccionPrevenirController::class, 'show'])
     ->name('estrategiasprevenir.accionprevenir.show');
 
-
+//Rutas para los indicadores de prevencion
+Route::prefix('indicadoresprevenir')->group(function () {
+    Route::get('/', [IndicadoresPrevenirController::class, 'index'])->name('indicadoresprevenir.index');
+    Route::get('/create', [IndicadoresPrevenirController::class, 'create'])->name('indicadoresprevenir.create');
+    Route::post('/', [IndicadoresPrevenirController::class, 'store'])->name('indicadoresprevenir.store');
+    Route::get('/{indicadorprevenir}', [IndicadoresPrevenirController::class, 'show'])->name('indicadoresprevenir.show');
+    Route::get('/{id}/edit', [IndicadoresPrevenirController::class, 'edit'])->name('indicadoresprevenir.edit');
+    Route::put('/{indicadorprevenir}', [IndicadoresPrevenirController::class, 'update'])->name('indicadoresprevenir.update');
+    Route::delete('/{id}', [IndicadoresPrevenirController::class, 'destroy'])->name('indicadoresprevenir.destroy');
+});
 
 
 
