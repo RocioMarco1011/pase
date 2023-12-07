@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => ' ',
+    'title' => 'SEMUJER',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => 'SEMUJER',
+    'logo' => '<b>SEMUJER </b> ',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -107,7 +107,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'AdminLTE Preloader Image',
@@ -153,7 +153,7 @@ return [
     'layout_fixed_sidebar' => null,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
-    'layout_dark_mode' => null,
+    'layout_dark_mode' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -211,7 +211,7 @@ return [
     */
 
     'sidebar_mini' => 'lg',
-    'sidebar_collapse' => false,
+    'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
@@ -235,8 +235,8 @@ return [
     'right_sidebar' => false,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
+    'right_sidebar_slide' => false,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -253,7 +253,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -294,96 +294,149 @@ return [
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
 
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Buscar',
         ],
+
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+
+        ['header' => 'Configuracion de la cuenta'],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
+            'text' => 'Perfil',
+            'url'  => 'user/profile',
             'icon' => 'fas fa-fw fa-user',
         ],
+        
+        ['header' => 'Administracion de usuarios'],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text' => 'Usuarios',
+            'url'  => '/users',
+            'icon' => 'fas fa-fw fa-users',
         ],
+        ['header' => 'Programa PASE'],
+        //PREVENIR
         [
-            'text'    => 'multilevel',
+            'text'    => 'Prevenir',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Estrategias Prevenir',
+                    'url'  => '/estrategiasprevenir',
+                    'icon' => 'fas fa-fw fa-file',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Añadir Estrategia Prevenir',
+                    'url'  => '/estrategiasprevenir/create',
+                    'icon' => 'fas fa-fw fa-file',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Indicador Prevenir',
+                    'url'  => '/indicadoresprevenir',
+                    'icon' => 'fas fa-fw fa-file',
+                ],
+                [
+                    'text' => 'Añadir Indicador Prevenir',
+                    'url'  => '/indicadoresprevenir/create',
+                    'icon' => 'fas fa-fw fa-file',
                 ],
             ],
         ],
-        ['header' => 'labels'],
+        
+        //ATENDER
         [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
+            'text'    => 'Atender',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+        [
+            'text' => 'Estrategias Atender',
+            'url'  => '/estrategiasatender',
+            'icon' => 'fas fa-fw fa-file',
         ],
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text' => 'Añadir Estrategia Atender',
+            'url'  => '/estrategiasatender/create',
+            'icon' => 'fas fa-fw fa-file',
         ],
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text' => 'Indicador Atender',
+            'url'  => '/indicadoresesatender',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Añadir Indicador Atender',
+            'url'  => '/indicadoresatender/create',
+            'icon' => 'fas fa-fw fa-file',
         ],
     ],
+],
+        //SANCIONAR
+        [
+            'text'    => 'Sancionar',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+        [
+            'text' => 'Estrategias Sancionar',
+            'url'  => '/estrategiassancionar',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Añadir Estrategia Sancionar',
+            'url'  => '/estrategiassancionar/create',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Indicador Sancionar',
+            'url'  => '/indicadoressancionar',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Añadir Indicador Sancionar',
+            'url'  => '/indicadoressancionar/create',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+    ],
+],
+        //ERRADICAR
+        [
+            'text'    => 'Erradicar',
+            'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+        [
+            'text' => 'Estrategias Erradicar',
+            'url'  => '/estrategiaserradicar',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Añadir Estrategia Erradicar',
+            'url'  => '/estrategiaserradicar/create',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Indicador Erradicar',
+            'url'  => '/indicadoreserradicar',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Añadir Indicador Erradicar',
+            'url'  => '/indicadoreserradicar/create',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+    ],
+],
+],
 
     /*
     |--------------------------------------------------------------------------

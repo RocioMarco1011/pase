@@ -1,10 +1,15 @@
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1></h1>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
             ESTRATEGIAS DE PREVENCIÓN
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -52,4 +57,16 @@
             </div>
         </div>
     </div>
+    @if(session('alert'))
+    <script>
+        swal({
+            title: "{{ session('alert.title') }}",
+            text: "{{ session('alert.text') }}",
+            icon: "{{ session('alert.icon') }}",
+            button: "Aceptar",
+        });
+    </script>
+@endif
+
 </x-app-layout>
+@endsection

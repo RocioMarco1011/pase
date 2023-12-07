@@ -1,3 +1,9 @@
+@extends('adminlte::page')
+
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1></h1>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
@@ -10,7 +16,6 @@
                 <div class="p-6 bg-white border-b border-gray-200">     
                     <form method="POST" action="{{ route('estrategiasprevenir.store') }}">
                         @csrf
-
                         <div class="mb-4">
                             <label for="nombre" class="block text-lg font-medium text-gray-700">Nombre de la Estrategia:</label>
                             <input type="text" name="nombre" id="nombre" class="mt-1 p-2 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -26,3 +31,15 @@
         </div>
     </div>
 </x-app-layout>
+@stop
+
+@section('content')
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script> console.log('Hi!'); </script>
+@stop

@@ -8,6 +8,8 @@ use App\Models\EvidenciaPrevenir;
 use App\Models\AccionPrevenir;
 use App\Models\EstrategiasPrevenir;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class EvidenciaPrevenirController extends Controller
 {
@@ -45,7 +47,7 @@ class EvidenciaPrevenirController extends Controller
             $archivo->storeAs('', $nombreArchivo, 'evidencias');
             $evidencia->archivo = $nombreArchivo;
         } catch (\Exception $e) {
-            return back()->with('error', 'Error al guardar el archivo');
+            return back()->with('error', 'Error al guardar el archivo.');
         }
         } else {
             $evidencia->archivo = null;
@@ -55,8 +57,9 @@ class EvidenciaPrevenirController extends Controller
 
         try {
             $evidencia->save();
+            Alert::success('Éxito', 'Evidencia creada exitosamente.');
             return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
-                ->with('success', 'Evidencia guardada exitosamente');
+                ->with('success', 'Evidencia guardada exitosamente.');
         } catch (\Exception $e) {
             return back()->with('error', 'Error al guardar la evidencia en la base de datos');
         }
@@ -80,17 +83,23 @@ class EvidenciaPrevenirController extends Controller
         $evidencia->mensaje = $request->input('mensaje');
     
         $evidencia->save();
+        Alert::success('Éxito', 'Evidencia editada exitosamente.');
         return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
     }
 
     public function destroy($estrategiaId, $accionPrevenirId, $evidenciaId)
-    {
+{
+    $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
 
-        $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
+    try {
         $evidencia->delete();
-
-        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
+        Alert::success('Éxito', 'Evidencia eliminada exitosamente.');
+    } catch (\Exception $e) {
+        Alert::error('Error', 'Error al eliminar la evidencia.');
     }
+
+    return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId]);
+}
 
     public function downloadFile($filename, $nombreArchivo)
 {

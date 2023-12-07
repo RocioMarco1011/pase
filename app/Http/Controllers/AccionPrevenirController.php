@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AccionPrevenirController extends Controller
 {
@@ -65,7 +65,7 @@ class AccionPrevenirController extends Controller
         $estrategiaId = $request->input('estrategia_id');
 
         $accionPrevenir->save();
-
+        Alert::success('Éxito', 'Acción creada exitosamente.');
         return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $estrategiaId]);
     }
 
@@ -111,6 +111,7 @@ class AccionPrevenirController extends Controller
 
         // Guardar los cambios en la base de datos
         $accionPrevenir->save();
+        Alert::success('Éxito', 'Acción editada exitosamente.');
 
         // Redirigir a la vista de detalle de la estrategia con la acción actualizada
         return redirect()->route('estrategiasprevenir.accionprevenir.show', ['estrategia' => $estrategiaId, 'accion' => $accionPrevenir->id])
@@ -119,18 +120,20 @@ class AccionPrevenirController extends Controller
 
 
     public function destroy($estrategiaId, $accionPrevenirId)
-    {
-        $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->findOrFail($accionPrevenirId);
-    
-        try {
-            $accionPrevenir->delete();
-            return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $accionPrevenir->estrategia_id])->with('success', 'Acción de prevenir eliminada exitosamente');
-        } catch (QueryException $e) {
-            if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
-                return back()->with('error', 'No se puede eliminar la acción de prevenir porque está relacionada con otros elementos.');
-            } else {
-                return back()->with('error', 'Error al eliminar la acción de prevenir');
-            }
+{
+    $accionPrevenir = AccionPrevenir::where('estrategia_id', $estrategiaId)->findOrFail($accionPrevenirId);
+
+    try {
+        $accionPrevenir->delete();
+        Alert::success('Éxito', 'Acción de prevenir eliminada exitosamente');
+    } catch (QueryException $e) {
+        if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
+            Alert::error('Error', 'No se puede eliminar la acción de prevenir porque tiene evidencias relacionadas.');
+        } else {
+            Alert::error('Error', 'No se puede eliminar la acción de prevenir porque tiene evidencias relacionadas.');
         }
-    }    
+    }
+
+    return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $accionPrevenir->estrategia_id]);
+}
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UsersController extends Controller
 {
@@ -54,6 +55,7 @@ class UsersController extends Controller
             // Otros permisos de administrador aquí
         }
 
+        Alert::success('Éxito', 'Usuario creado exitosamente.');
         return redirect()->route('users.index');
     }
 
@@ -71,13 +73,19 @@ class UsersController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
+        Alert::success('Éxito', 'Usuario editado exitosamente.');
         return redirect()->route('users.index');
     }
 
     public function destroy(User $user)
-    {
+{
+    try {
         $user->delete();
-
-        return redirect()->route('users.index');
+        Alert::success('Éxito', 'Usuario eliminado exitosamente')->autoClose(3500);
+    } catch (\Exception $e) {
+        Alert::error('Error', 'No se pudo eliminar el usuario')->autoClose(3500);
     }
+
+    return redirect()->route('users.index');
+}
 }

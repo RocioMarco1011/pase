@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\IndicadorPrevenir;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class IndicadoresPrevenirController extends Controller
 {
@@ -31,6 +32,7 @@ class IndicadoresPrevenirController extends Controller
         ]);
 
         IndicadorPrevenir::create($request->all());
+        Alert::success('Éxito', 'Indicador creado exitosamente.');
 
         return redirect()->route('indicadoresprevenir.index')
             ->with('success', 'Indicador creado exitosamente.');
@@ -84,7 +86,7 @@ class IndicadoresPrevenirController extends Controller
             'frecuencia_medicion' => $request->input('frecuencia_medicion'),
             // Actualiza más campos según tus necesidades
         ]);
-
+        Alert::success('Éxito', 'Indicador editado exitosamente.');
         // Redirecciona a la vista de detalles del indicador o a donde prefieras
         return redirect()->route('indicadoresprevenir.show', ['indicadorprevenir' => $indicador->id])
             ->with('success', 'Indicador actualizado exitosamente');
@@ -92,10 +94,16 @@ class IndicadoresPrevenirController extends Controller
     }
 
     public function destroy($id)
-    {
-        $indicador = IndicadorPrevenir::findOrFail($id);
-        $indicador->delete();
-        return redirect()->route('indicadoresprevenir.index');
-}
+{
+    $indicador = IndicadorPrevenir::findOrFail($id);
 
+    try {
+        $indicador->delete();
+        Alert::success('Éxito', 'Indicador eliminado exitosamente.')->autoClose(3500);
+    } catch (\Exception $e) {
+        Alert::error('Error', 'No se pudo eliminar el indicador.')->autoClose(3500);
+    }
+
+    return redirect()->route('indicadoresprevenir.index');
+}
 }

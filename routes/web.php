@@ -9,6 +9,8 @@ use App\Http\Controllers\EvidenciaPrevenirController;
 use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\IndicadoresPrevenirController;
+use App\Http\Controllers\CalcularPrevenirController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +91,24 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::put('/{indicadorprevenir}', [IndicadoresPrevenirController::class, 'update'])->name('indicadoresprevenir.update');
     Route::delete('/{id}', [IndicadoresPrevenirController::class, 'destroy'])->name('indicadoresprevenir.destroy');
 });
+
+Route::get('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])
+    ->name('indicadoresprevenir.calcularprevenir.index');
+
+    Route::post('/calcularprevenir/{indicadorPrevenirId}', [CalcularPrevenirController::class, 'store'])
+    ->name('indicadoresprevenir.calcularprevenir.store');
+
+    Route::post('/calcularprevenir/{id}/guardarVariables', [CalcularPrevenirController::class, 'guardarVariables'])
+    ->name('indicadoresprevenir.calcularprevenir.guardarVariables');
+    
+
+
+
+
+
+
+
+
 
 
 

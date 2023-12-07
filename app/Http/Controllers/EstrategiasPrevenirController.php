@@ -9,7 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Auth;
 use Illuminate\Support\Facades\DB;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class EstrategiasPrevenirController extends Controller
 {
@@ -39,6 +39,7 @@ class EstrategiasPrevenirController extends Controller
         $estrategia = new EstrategiasPrevenir();
         $estrategia->nombre = $request->input('nombre');
         $estrategia->save();
+        Alert::success('Éxito', 'Estrategia creada exitosamente.');
         return redirect()->route('estrategiasprevenir.index');
     }
 
@@ -64,23 +65,26 @@ class EstrategiasPrevenirController extends Controller
         $estrategia = EstrategiasPrevenir::find($id);
         $estrategia->nombre = $request->nombre;
         $estrategia->save();
+        Alert::success('Éxito', 'Estrategia editada exitosamente.');
 
         return redirect()->route('estrategiasprevenir.show', ['estrategia' => $estrategia->id]);
     }
 
     public function destroy($id)
-    {
-        $estrategia = EstrategiasPrevenir::findOrFail($id);
+{
+    $estrategia = EstrategiasPrevenir::findOrFail($id);
 
-        try {
-            $estrategia->delete();
-            return redirect()->route('estrategiasprevenir.index')->with('success', 'Estrategia eliminada exitosamente');
-        } catch (QueryException $e) {
-            if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
-                return back()->with('error', 'No se puede eliminar la estrategia porque tiene acciones relacionadas.');
-            } else {
-                return back()->with('error', 'Error al eliminar la estrategia');
-            }
+    try {
+        $estrategia->delete();
+        Alert::success('Éxito', 'Estrategia eliminada exitosamente.');
+    } catch (QueryException $e) {
+        if (Str::contains($e->getMessage(), 'constraint `accion_prevenir_estrategia_id_foreign`')) {
+            Alert::error('Error', 'No se puede eliminar la estrategia porque tiene acciones relacionadas.');
+        } else {
+            Alert::error('Error', 'No se puede eliminar la estrategia porque tiene acciones relacionadas.');
         }
     }
+
+    return redirect()->route('estrategiasprevenir.index');
+}
 }

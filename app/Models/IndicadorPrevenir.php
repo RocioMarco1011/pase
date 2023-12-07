@@ -24,5 +24,10 @@ class IndicadorPrevenir extends Model
         'tendencia_esperada',
         'frecuencia_medicion',
     ];
+
+    public function calcularPrevenir()
+    {
+        return $this->hasOne(CalcularPrevenir::class);
+    }
 }
 
