@@ -19,19 +19,16 @@
                         <div>
                             <label for="formula" class="block text-sm font-medium text-gray-700">Fórmula:</label>
                             <input type="text" id="formula" name="formula" class="mt-1 p-2 border rounded-md w-full mb-2">
-                            <button onclick="obtenerVariables()" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                            <button onclick="siguientePaso()" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                 Siguiente
                             </button>
                         </div>
 
-                        <!-- Sección de ingreso de variables -->
+                        <!-- Sección de ingreso de valores de variables -->
                         <div id="variablesForm" style="display:none;" class="mt-4">
-                            <label for="variable1" class="block text-sm font-medium text-gray-700">Valor de CTN:</label>
-                            <input type="text" id="variable1" name="variable1" class="mt-1 p-2 border rounded-md w-full mb-2">
+                            <!-- Aquí puedes mostrar dinámicamente los campos de entrada de las variables -->
+                            <div id="valoresVariables"></div>
 
-                            <label for="variable2" class="block text-sm font-medium text-gray-700">Valor de CTB:</label>
-                            <input type="text" id="variable2" name="variable2" class="mt-1 p-2 border rounded-md w-full mb-2">
-                    
                             <button onclick="calcularResultado()" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                 Calcular Resultado
                             </button>
@@ -52,27 +49,65 @@
             #semaforo div {
                 display: inline-block;
                 margin-right: 5px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
             }
         </style>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
         <script>
-            function obtenerVariables() {
+            function siguientePaso() {
                 var formula = document.getElementById('formula').value;
-                // Aquí puedes realizar la lógica para obtener las variables de la fórmula, por ejemplo, usando una expresión regular.
-                
-                // Mostrar el formulario de ingreso de variables
+                var variables = obtenerVariables(formula);
+
+                if (variables.length > 0) {
+                    // Mostrar el formulario de ingreso de valores de variables
+                    mostrarFormularioVariables(variables);
+                } else {
+                    alert('La fórmula no contiene variables.');
+                }
+            }
+
+            function obtenerVariables(formula) {
+                var matches = formula.match(/[a-zA-Z]+/g);
+                return matches ? [...new Set(matches)] : [];
+            }
+
+            function mostrarFormularioVariables(variables) {
+                var valoresVariables = document.getElementById('valoresVariables');
+                valoresVariables.innerHTML = '';
+
+                variables.forEach(function (variable) {
+                    var label = document.createElement('label');
+                    label.innerHTML = 'Valor de ' + variable + ':';
+
+                    var input = document.createElement('input');
+                    input.type = 'text';
+                    input.id = variable.toLowerCase(); // Usa minúsculas para los IDs
+                    input.name = variable.toLowerCase(); // Usa minúsculas para los nombres
+                    input.classList.add('mt-1', 'p-2', 'border', 'rounded-md', 'w-full', 'mb-2');
+
+                    valoresVariables.appendChild(label);
+                    valoresVariables.appendChild(input);
+                });
+
+                // Mostrar el formulario de ingreso de valores de variables
                 document.getElementById('variablesForm').style.display = 'block';
             }
 
             function calcularResultado() {
-                var variable1 = parseFloat(document.getElementById('variable1').value);
-                var variable2 = parseFloat(document.getElementById('variable2').value);
-
                 var formula = document.getElementById('formula').value;
-                // Evaluar la fórmula con las variables
+                var variables = obtenerVariables(formula);
+
+                var valores = {};
+                variables.forEach(function (variable) {
+                    var valorInput = document.getElementById(variable.toLowerCase()).value;
+                    valores[variable] = parseFloat(valorInput);
+                });
+
                 try {
-                    var resultado = math.evaluate(formula, { CTN: variable1, CTB: variable2 });
+                    var resultado = math.evaluate(formula, valores);
                     
                     // Mostrar el resultado
                     document.getElementById('resultado').style.display = 'block';
@@ -84,13 +119,13 @@
 
                     if (resultado < 0) {
                         // Semáforo rojo
-                        semaforo.innerHTML = '<div class="bg-red-500 w-6 h-6 rounded-full"></div>';
+                        semaforo.innerHTML = '<div class="bg-red-500"></div>';
                     } else if (resultado === 0) {
                         // Semáforo amarillo
-                        semaforo.innerHTML = '<div class="bg-yellow-500 w-6 h-6 rounded-full"></div>';
+                        semaforo.innerHTML = '<div class="bg-yellow-500"></div>';
                     } else {
                         // Semáforo verde
-                        semaforo.innerHTML = '<div class="bg-green-500 w-6 h-6 rounded-full"></div>';
+                        semaforo.innerHTML = '<div class="bg-green-500"></div>';
                     }
                 } catch (error) {
                     alert('Error al evaluar la fórmula: ' + error.message);
