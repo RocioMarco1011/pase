@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('calcular_prevenir', function (Blueprint $table) {
             $table->id();
             $table->string('formula');
-            $table->json('variables')->nullable();
-            $table->float('resultado')->nullable(); 
+        
+            
             $table->foreignId('indicador_prevenir_id')->constrained('indicadores_prevenir');
             $table->timestamps();
         });

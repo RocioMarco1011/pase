@@ -11,13 +11,11 @@ class CalcularPrevenir extends Model
     use HasFactory;
     protected $table = 'calcular_prevenir';
 
-    // Campos que pueden ser asignados masivamente (si estás utilizando fillable)
-    protected $fillable = ['indicador_prevenir_id', 'formula', 'variables', 'resultado'];
+    protected $fillable = ['formula', 'indicador_prevenir_id'];
 
-    // Relación con el modelo IndicadorPrevenir (si es necesario)
     public function indicadorPrevenir()
     {
-        return $this->belongsTo(IndicadorPrevenir::class, 'indicador_prevenir_id');
+        return $this->belongsTo(IndicadorPrevenir::class);
     }
 
 }

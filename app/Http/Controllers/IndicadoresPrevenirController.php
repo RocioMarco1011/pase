@@ -89,8 +89,7 @@ class IndicadoresPrevenirController extends Controller
         Alert::success('Éxito', 'Indicador editado exitosamente.');
         // Redirecciona a la vista de detalles del indicador o a donde prefieras
         return redirect()->route('indicadoresprevenir.show', ['indicadorprevenir' => $indicador->id])
-            ->with('success', 'Indicador actualizado exitosamente');
-
+            ->with('success', 'Indicador actualizado exitosamente.');
     }
 
     public function destroy($id)
@@ -101,7 +100,7 @@ class IndicadoresPrevenirController extends Controller
         $indicador->delete();
         Alert::success('Éxito', 'Indicador eliminado exitosamente.')->autoClose(3500);
     } catch (\Exception $e) {
-        Alert::error('Error', 'No se pudo eliminar el indicador.')->autoClose(3500);
+        Alert::error('Error', 'No se pudo eliminar el indicador porque contiene una fórmula relacionada.')->autoClose(3500);
     }
 
     return redirect()->route('indicadoresprevenir.index');

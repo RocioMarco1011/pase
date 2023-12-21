@@ -92,19 +92,11 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::delete('/{id}', [IndicadoresPrevenirController::class, 'destroy'])->name('indicadoresprevenir.destroy');
 });
 
-Route::get('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])
-    ->name('indicadoresprevenir.calcularprevenir.index');
-
-    Route::post('/calcularprevenir/{indicadorPrevenirId}', [CalcularPrevenirController::class, 'store'])
-    ->name('indicadoresprevenir.calcularprevenir.store');
-
-    Route::post('/calcularprevenir/{id}/guardarVariables', [CalcularPrevenirController::class, 'guardarVariables'])
-    ->name('indicadoresprevenir.calcularprevenir.guardarVariables');
-    
-
-
-
-
+Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])->name('indicadoresprevenir.calcularprevenir.index');
+    Route::get('/{indicadorprevenir}/calcularprevenir/create', [CalcularPrevenirController::class, 'create'])->name('indicadoresprevenir.calcularprevenir.create');
+    Route::post('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'store'])->name('indicadoresprevenir.calcularprevenir.store');
+    Route::get('/indicadoresprevenir/calcularprevenir/{indicadorprevenir}/{calcularprevenir}', [CalcularPrevenirController::class, 'show'])->name('indicadoresprevenir.calcularprevenir.show');
+    Route::get('indicadoresprevenir/{indicadorprevenir}/calcularprevenir/{calcularprevenir}/calcular', [CalcularPrevenirController::class, 'calcular'])->name('indicadoresprevenir.calcularprevenir.calcular');
 
 
 
