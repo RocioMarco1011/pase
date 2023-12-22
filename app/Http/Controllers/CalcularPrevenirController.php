@@ -26,7 +26,7 @@ class CalcularPrevenirController extends Controller
 
         if ($existeFormula) {
             // Mostrar alerta de SweetAlert indicando que ya existe una fórmula
-            alert()->warning('Advertencia', 'Ya existe una fórmula asociada a este indicador.');
+            alert()->error('Error', 'Ya existe una fórmula asociada a este indicador.');
 
             // Redirigir de nuevo al formulario u otra lógica según tus necesidades
             return redirect()->back();
