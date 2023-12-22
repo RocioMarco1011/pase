@@ -69,7 +69,7 @@ Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(
     Route::put('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'update'])->name('evidenciaprevenir.update');
     Route::delete('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
 });
-
+//Ruta de la descarga del archivo
 Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
 
 // Ruta para mostrar el formulario de edición
@@ -92,12 +92,11 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::delete('/{id}', [IndicadoresPrevenirController::class, 'destroy'])->name('indicadoresprevenir.destroy');
 });
 
+//Rutas para la formula de los indicadores de prevencion 
 Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])->name('indicadoresprevenir.calcularprevenir.index');
     Route::get('/{indicadorprevenir}/calcularprevenir/create', [CalcularPrevenirController::class, 'create'])->name('indicadoresprevenir.calcularprevenir.create');
     Route::post('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'store'])->name('indicadoresprevenir.calcularprevenir.store');
-    Route::get('/indicadoresprevenir/calcularprevenir/{indicadorprevenir}/{calcularprevenir}', [CalcularPrevenirController::class, 'show'])->name('indicadoresprevenir.calcularprevenir.show');
-    Route::get('indicadoresprevenir/{indicadorprevenir}/calcularprevenir/{calcularprevenir}/calcular', [CalcularPrevenirController::class, 'calcular'])->name('indicadoresprevenir.calcularprevenir.calcular');
-
+    Route::get('/indicadoresprevenir/calcularprevenir/{calcularprevenir}', [CalcularPrevenirController::class, 'show'])->name('indicadoresprevenir.calcularprevenir.show');
 
 
 
