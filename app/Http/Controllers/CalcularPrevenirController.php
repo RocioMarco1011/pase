@@ -18,48 +18,35 @@ class CalcularPrevenirController extends Controller
 
         return view('indicadoresprevenir.calcularprevenir.index', compact('indicadorprevenir', 'calculos'));
     }
-
-    public function create($indicadorprevenirId)
-{
-    $indicadorprevenir = IndicadorPrevenir::findOrFail($indicadorprevenirId);
-    $calculoExistente = $indicadorprevenir->calcularprevenir;
-
-    if ($calculoExistente) {
-        // Si ya hay una fórmula guardada, muestra un mensaje de error
-        Alert::error('Error', 'Existe ya una fórmula guardada para este indicador.');
-        return redirect()->route('indicadoresprevenir.calcularprevenir.index', ['indicadorprevenir' => $indicadorprevenir->id]);
-    }
-
-    return view('indicadoresprevenir.calcularprevenir.create', compact('indicadorprevenir'));
-}
-
-    public function store(Request $request, IndicadorPrevenir $indicadorprevenir)
+    
+    public function guardarFormula(Request $request, IndicadorPrevenir $indicadorprevenir)
     {
-        try {
-            $calculoExistente = $indicadorprevenir->calcularprevenir;
+        // Verificar si ya existe una fórmula para el indicador actual
+        $existeFormula = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->exists();
 
-            if ($calculoExistente) {
-                $calculoExistente->update([
-                    'formula' => $request->input('formula'),
-                    // Otros campos según tus necesidades
-                ]);
-            } else {
-                $indicadorprevenir->calcularprevenir()->create([
-                    'formula' => $request->input('formula'),
-                    // Otros campos según tus necesidades
-                ]);
-            }
+        if ($existeFormula) {
+            // Mostrar alerta de SweetAlert indicando que ya existe una fórmula
+            alert()->warning('Advertencia', 'Ya existe una fórmula asociada a este indicador.');
 
-            Alert::success('Éxito', 'Fórmula guardada exitosamente.');
-        } catch (\Exception $e) {
-            Alert::error('Error', 'Error al guardar la fórmula: ' . $e->getMessage());
+            // Redirigir de nuevo al formulario u otra lógica según tus necesidades
+            return redirect()->back();
         }
 
-        return redirect()->route('indicadoresprevenir.calcularprevenir.index', ['indicadorprevenir' => $indicadorprevenir->id]);
-    }
+        // Validación de la solicitud
+        $request->validate([
+            'formula' => 'required|string',
+        ]);
 
-    public function show(IndicadorPrevenir $indicadorprevenir, CalcularPrevenir $calculo)
-    {
-        return view('indicadoresprevenir.calcularprevenir.show', compact('indicadorprevenir', 'calculo'));
+        // Crear un nuevo cálculo y asignar la relación con el indicador actual
+        $calculo = new CalcularPrevenir;
+        $calculo->formula = $request->input('formula');
+        $calculo->indicador_prevenir_id = $indicadorprevenir->id; // Asignar el id del indicador
+        $calculo->save();
+
+        // Mostrar alerta de SweetAlert directamente desde el controlador
+        alert()->success('Éxito', 'La fórmula se guardó correctamente.');
+
+        // Resto de la lógica o redirección
+        return redirect()->route('indicadoresprevenir.calcularprevenir.index', ['indicadorprevenir' => $indicadorprevenir->id]);
     }
 }
