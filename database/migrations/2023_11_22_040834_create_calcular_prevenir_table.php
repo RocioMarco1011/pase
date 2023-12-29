@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('calcular_prevenir', function (Blueprint $table) {
             $table->id();
             $table->string('formula');
-        
+            $table->decimal('resultado', 10, 2)->nullable();
             
             $table->foreignId('indicador_prevenir_id')->constrained('indicadores_prevenir');
             $table->timestamps();
