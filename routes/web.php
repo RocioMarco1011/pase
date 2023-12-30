@@ -100,7 +100,8 @@ Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController:
 
 
     Route::post('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir/guardarformula', [CalcularPrevenirController::class, 'guardarFormula'])->name('indicadoresprevenir.calcularprevenir.guardarFormula');
-
+    Route::get('/indicadoresprevenir/calcularprevenir/calculos/{indicadorprevenir}', [CalcularPrevenirController::class, 'mostrarCalculo'])
+    ->name('indicadoresprevenir.calcularprevenir.calculos');
 
 
 

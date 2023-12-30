@@ -58,10 +58,13 @@ class CalcularPrevenirController extends Controller
             $calculo->save();
 
             // Mostrar alerta de SweetAlert
-            alert()->success('Éxito', 'La fórmula se guardó correctamente.');
+            Alert::success('Éxito', 'La fórmula se guardó correctamente.');
 
-            // Resto de la lógica o redirección
-            return redirect()->route('indicadoresprevenir.calcularprevenir.index', ['indicadorprevenir' => $indicadorprevenir->id]);
+            // Redirigir a la vista 'calculos.blade.php' con la fórmula y el resultado
+            return view('indicadoresprevenir.calcularprevenir.calculos', [
+                'indicadorprevenir' => $indicadorprevenir,
+                'calculo' => $calculo,
+            ]);
 
         } catch (Exception $e) {
             // Mostrar alerta de SweetAlert en caso de error
