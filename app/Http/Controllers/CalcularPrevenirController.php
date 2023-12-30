@@ -14,9 +14,15 @@ class CalcularPrevenirController extends Controller
 {
     public function index(IndicadorPrevenir $indicadorprevenir)
     {
-        $calculos = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
 
-        return view('indicadoresprevenir.calcularprevenir.index', compact('indicadorprevenir', 'calculos'));
+        if ($calculo) {
+            // Si ya existe un cálculo, redirigir a la vista 'calculos.blade.php'
+            return $this->mostrarCalculo($indicadorprevenir);
+        }
+
+        // Si no existe un cálculo, mostrar el formulario en la vista 'index.blade.php'
+        return view('indicadoresprevenir.calcularprevenir.index', compact('indicadorprevenir'));
     }
     
     public function guardarFormula(Request $request, IndicadorPrevenir $indicadorprevenir)
@@ -28,8 +34,8 @@ class CalcularPrevenirController extends Controller
             // Mostrar alerta de SweetAlert indicando que ya existe una fórmula
             alert()->error('Error', 'Ya existe una fórmula asociada a este indicador.');
 
-            // Redirigir de nuevo al formulario u otra lógica según tus necesidades
-            return redirect()->back();
+            // Redirigir a la vista 'calculos.blade.php' si ya existe una fórmula
+            return $this->mostrarCalculo($indicadorprevenir);
         }
 
         // Validación de la solicitud
@@ -61,10 +67,7 @@ class CalcularPrevenirController extends Controller
             Alert::success('Éxito', 'La fórmula se guardó correctamente.');
 
             // Redirigir a la vista 'calculos.blade.php' con la fórmula y el resultado
-            return view('indicadoresprevenir.calcularprevenir.calculos', [
-                'indicadorprevenir' => $indicadorprevenir,
-                'calculo' => $calculo,
-            ]);
+            return $this->mostrarCalculo($indicadorprevenir);
 
         } catch (Exception $e) {
             // Mostrar alerta de SweetAlert en caso de error
@@ -84,18 +87,18 @@ class CalcularPrevenirController extends Controller
 
     // Función para evaluar la fórmula con la biblioteca Math.js en el lado del servidor (PHP)
     private function evaluarFormula($formula, $valores)
-{
-    try {
-        // Utilizar una instancia de ExpressionLanguage para evaluar la fórmula en PHP
-        $language = new ExpressionLanguage();
-        $resultado = $language->evaluate($formula, $valores);
+    {
+        try {
+            // Utilizar una instancia de ExpressionLanguage para evaluar la fórmula en PHP
+            $language = new ExpressionLanguage();
+            $resultado = $language->evaluate($formula, $valores);
 
-        return $resultado;
-    } catch (Exception $e) {
-        // Manejar cualquier error que ocurra durante la evaluación
-        throw new Exception('Error al evaluar la fórmula: ' . $e->getMessage());
+            return $resultado;
+        } catch (Exception $e) {
+            // Manejar cualquier error que ocurra durante la evaluación
+            throw new Exception('Error al evaluar la fórmula: ' . $e->getMessage());
+        }
     }
-}
 
     // Función para evaluar la fórmula con Math.js en el lado del cliente (JavaScript)
     private function evaluarFormulaEnJavaScript($formula, $valores)
@@ -103,8 +106,19 @@ class CalcularPrevenirController extends Controller
         // Aquí puedes utilizar JavaScript para evaluar la fórmula en el lado del cliente (JavaScript).
         // Puedes comunicarte con JavaScript desde PHP utilizando variables ocultas en el formulario o mediante solicitudes AJAX.
         // En este ejemplo, se utiliza JavaScript solo para evaluar la fórmula en el navegador.
-        
+
         return null; // Modifica según tus necesidades
+    }
+
+    // Método para mostrar la vista 'calculos.blade.php'
+    public function mostrarCalculo(IndicadorPrevenir $indicadorprevenir)
+    {
+        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+
+        return view('indicadoresprevenir.calcularprevenir.calculos', [
+            'indicadorprevenir' => $indicadorprevenir,
+            'calculo' => $calculo,
+        ]);
     }
 
     // Resto de los métodos del controlador...
