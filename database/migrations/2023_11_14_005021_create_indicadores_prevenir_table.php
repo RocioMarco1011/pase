@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('objetivo');
             $table->text('definicion');
+            $table->text('variables'); 
             $table->text('observaciones')->nullable();
             $table->text('medios_verificacion')->nullable();
             $table->enum('parametro_meta', ['Parametro', 'Meta']);

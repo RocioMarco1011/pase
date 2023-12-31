@@ -15,6 +15,7 @@ class IndicadorPrevenir extends Model
         'nombre',
         'objetivo',
         'definicion',
+        'variables',
         'observaciones',
         'medios_verificacion',
         'parametro_meta',

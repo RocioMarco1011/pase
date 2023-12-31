@@ -33,23 +33,39 @@ class CalcularPrevenirController extends Controller
     ]);
 
     try {
+        // Obtener la fórmula y verificar si está en minúsculas
+        $formula = $request->input('formula');
+
+        if ($formula !== strtolower($formula)) {
+            // Mostrar alerta de SweetAlert si la fórmula no está en minúsculas
+            Alert::error('Error', 'Favor de poner la fórmula en minúsculas.');
+            return redirect()->back();
+        }
+
         // Obtener las variables y realizar la primera evaluación de la fórmula
         $valores = [];
-        $variables = self::obtenerVariables($request->input('formula'));
+        $variables = self::obtenerVariables($formula);
         foreach ($variables as $variable) {
             $valorInput = $request->input(strtolower($variable));
             $valores[$variable] = floatval($valorInput);
         }
 
-        $formula = $request->input('formula');
         // Evaluar la fórmula en el lado del servidor (PHP)
         $resultado = $this->evaluarFormula($formula, $valores);
 
-        // Almacenar la fórmula y el resultado en la base de datos
+        // Verificar si el resultado es NaN
+        if (is_nan($resultado)) {
+            // Mostrar alerta de SweetAlert si el resultado es NaN
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            return redirect()->back();
+        }
+
+        // Almacenar la fórmula y el resultado en la base de datos con el user_id
         $calculo = new CalcularPrevenir;
         $calculo->formula = $formula;
         $calculo->indicador_prevenir_id = $indicadorprevenir->id;
         $calculo->resultado = $resultado; // Almacenar el resultado
+        $calculo->user_id = auth()->id(); // Establecer el user_id
         $calculo->save();
 
         // Mostrar alerta de SweetAlert
@@ -60,12 +76,18 @@ class CalcularPrevenirController extends Controller
 
     } catch (Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error
-        alert()->error('Error', 'Error al evaluar la fórmula: ' . $e->getMessage());
+        Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+
+        // Redirigir de nuevo al formulario u otra lógica según tus necesidades
+        return redirect()->back();
+    } catch (\Throwable $t) {
+        // Mostrar alerta de SweetAlert en caso de cualquier otra excepción
+        Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
 
         // Redirigir de nuevo al formulario u otra lógica según tus necesidades
         return redirect()->back();
     }
-} 
+}
 
     // Función para obtener las variables de una fórmula
     private static function obtenerVariables($formula)
@@ -146,11 +168,19 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
         // Evaluar la fórmula en el lado del servidor (PHP)
         $resultado = $this->evaluarFormula($calculo->formula, $valores);
 
+        // Verificar si el resultado es un número válido (no es NaN y no es una división por cero)
+        if (!is_numeric($resultado) || is_nan($resultado) || is_infinite($resultado)) {
+            // Mostrar alerta de SweetAlert si el resultado no es válido
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            return redirect()->back();
+        }
+
         // Almacenar el nuevo cálculo en la base de datos
         CalcularPrevenir::create([
             'formula' => $calculo->formula,
             'indicador_prevenir_id' => $indicadorprevenir->id,
             'resultado' => $resultado,
+            'user_id' => auth()->id(),
         ]);
 
         // Mostrar alerta de SweetAlert
@@ -161,10 +191,64 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
 
     } catch (\Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error
-        alert()->error('Error', 'Error al evaluar la fórmula: ' . $e->getMessage());
+        alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
 
         // Redirigir de nuevo al formulario u otra lógica según tus necesidades
         return redirect()->back();
+    } catch (\Throwable $t) {
+        // Mostrar alerta de SweetAlert en caso de cualquier otra excepción
+        alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+
+        // Redirigir de nuevo al formulario u otra lógica según tus necesidades
+        return redirect()->back();
+    }
+}
+
+
+public function show($id)
+{
+    // Obtener la fórmula por su ID
+    $calculo = CalcularPrevenir::find($id);
+
+    // Verificar si la fórmula existe
+    if (!$calculo) {
+        // Si no existe, redirigir o mostrar un mensaje de error según tus necesidades
+        return redirect()->back()->with('alert', [
+            'title' => 'Error',
+            'text' => 'La fórmula no existe.',
+            'icon' => 'error',
+        ]);
+    }
+
+    // Retornar la vista con los detalles de la fórmula
+    return view('indicadoresprevenir.calcularprevenir.show', compact('calculo'));
+}
+
+public function edit(CalcularPrevenir $calculo)
+    {
+        return view('indicadoresprevenir.calcularprevenir.edit', compact('calculo'));
+    }
+
+    public function destroy(CalcularPrevenir $calculo)
+{
+    $indicadorprevenirId = $calculo->indicador_prevenir_id;
+
+    $calculo->delete();
+
+    return redirect()->route('indicadoresprevenir.index', ['indicadorprevenir' => $indicadorprevenirId]);
+}
+
+public function update(Request $request, CalcularPrevenir $calculo)
+{
+    try {
+        $calculo->update($request->all());
+
+        // Optionally, you can add a success message
+        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $calculo->indicador_prevenir_id])
+            ->with('success', 'Fórmula actualizada correctamente.');
+    } catch (\Exception $e) {
+        // Handle the exception, and optionally redirect with an error message
+        return redirect()->back()->with('error', 'Error al actualizar la fórmula: ' . $e->getMessage());
     }
 }
 }

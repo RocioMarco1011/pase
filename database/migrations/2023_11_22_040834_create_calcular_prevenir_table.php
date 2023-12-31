@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('formula');
             $table->decimal('resultado', 10, 2)->nullable();
-            
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('indicador_prevenir_id')->constrained('indicadores_prevenir');
             $table->timestamps();
         });

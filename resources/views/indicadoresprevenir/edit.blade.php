@@ -35,6 +35,11 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="variables" class="block text-sm font-semibold text-gray-600">Variables:</label>
+                            <textarea name="variables" id="variables" class="form-input mt-1 block w-full" rows="4">{{ old('variables', $indicador->variables) }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
                             <label for="observaciones" class="block text-sm font-semibold text-gray-600">Observaciones:</label>
                             <textarea name="observaciones" id="observaciones" class="form-input mt-1 block w-full" rows="4">{{ old('observaciones', $indicador->observaciones) }}</textarea>
                         </div>

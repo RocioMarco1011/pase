@@ -104,6 +104,14 @@ Route::prefix('indicadoresprevenir')->group(function () {
     ->name('indicadoresprevenir.calcularprevenir.calcular');
     Route::post('/indicadoresprevenir/{indicadorprevenir}/guardar-nuevo-calculo', [CalcularPrevenirController::class, 'guardarNuevoCalculo'])
     ->name('indicadoresprevenir.calcularprevenir.guardarNuevoCalculo');
+    Route::get('indicadoresprevenir/calcularprevenir/show/{id}', [CalcularPrevenirController::class, 'show'])
+    ->name('indicadoresprevenir.calcularprevenir.show');
+    Route::get('/indicadoresprevenir/calcularprevenir/{calculo}/edit', [CalcularPrevenirController::class, 'edit'])
+    ->name('indicadoresprevenir.calcularprevenir.edit');
+    Route::put('/indicadoresprevenir/calcularprevenir/{calculo}', [CalcularPrevenirController::class, 'update'])
+    ->name('indicadoresprevenir.calcularprevenir.update');
+    Route::delete('/indicadoresprevenir/calcularprevenir/{calculo}', [CalcularPrevenirController::class, 'destroy'])
+    ->name('indicadoresprevenir.calcularprevenir.destroy');
 
 
 

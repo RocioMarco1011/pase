@@ -37,6 +37,10 @@
                                 <td class="py-2 px-4 text-lg">{{ $indicador->definicion }}</td>
                             </tr>
                             <tr>
+                                <th class="w-1/4 py-2 px-4 text-lg font-semibold">Variables:</th>
+                                <td class="py-2 px-4 text-lg">{{ $indicador->variables }}</td>
+                            </tr>
+                            <tr>
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Observaciones:</th>
                                 <td class="py-2 px-4 text-lg">{{ $indicador->observaciones }}</td>
                             </tr>

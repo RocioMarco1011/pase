@@ -34,6 +34,11 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="variables" class="block text-sm font-medium text-gray-700">Variables</label>
+                            <textarea name="variables" id="variables" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                        </div>
+
+                        <div class="mb-4">
                             <label for="observaciones" class="block text-sm font-medium text-gray-700">Observaciones</label>
                             <textarea name="observaciones" id="observaciones" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
                         </div>
