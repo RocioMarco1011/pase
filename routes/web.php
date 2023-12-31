@@ -94,13 +94,10 @@ Route::prefix('indicadoresprevenir')->group(function () {
 });
 
 //Rutas para la formula de los indicadores de prevencion 
-Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])->name('indicadoresprevenir.calcularprevenir.index');
-    Route::get('/{indicadorprevenir}/calcularprevenir/create', [CalcularPrevenirController::class, 'create'])->name('indicadoresprevenir.calcularprevenir.create');
-    Route::post('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'store'])->name('indicadoresprevenir.calcularprevenir.store');
-    Route::get('/indicadoresprevenir/calcularprevenir/{calcularprevenir}', [CalcularPrevenirController::class, 'show'])->name('indicadoresprevenir.calcularprevenir.show');
-
-
-    Route::post('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir/guardarformula', [CalcularPrevenirController::class, 'guardarFormula'])->name('indicadoresprevenir.calcularprevenir.guardarFormula');
+    Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])
+    ->name('indicadoresprevenir.calcularprevenir.index');
+    Route::post('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir/guardarformula', [CalcularPrevenirController::class, 'guardarFormula'])
+    ->name('indicadoresprevenir.calcularprevenir.guardarFormula');
     Route::get('/indicadoresprevenir/calcularprevenir/calculos/{indicadorprevenir}', [CalcularPrevenirController::class, 'mostrarCalculo'])
     ->name('indicadoresprevenir.calcularprevenir.calculos');
     Route::get('/indicadoresprevenir/{indicadorprevenir}/calcular', [CalcularPrevenirController::class, 'calcularNuevo'])

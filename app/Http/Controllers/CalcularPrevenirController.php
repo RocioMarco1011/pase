@@ -26,46 +26,46 @@ class CalcularPrevenirController extends Controller
     }
     
     public function guardarFormula(Request $request, IndicadorPrevenir $indicadorprevenir)
-    {
-        // Validación de la solicitud
-        $request->validate([
-            'formula' => 'required|string',
-        ]);
-    
-        try {
-            // Obtener las variables y realizar la primera evaluación de la fórmula
-            $valores = [];
-            $variables = self::obtenerVariables($request->input('formula'));
-            foreach ($variables as $variable) {
-                $valorInput = $request->input(strtolower($variable));
-                $valores[$variable] = floatval($valorInput);
-            }
-    
-            $formula = $request->input('formula');
-            // Evaluar la fórmula en el lado del servidor (PHP)
-            $resultado = $this->evaluarFormula($formula, $valores);
-    
-            // Almacenar la fórmula y el resultado en la base de datos
-            $calculo = new CalcularPrevenir;
-            $calculo->formula = $formula;
-            $calculo->indicador_prevenir_id = $indicadorprevenir->id;
-            $calculo->resultado = $resultado; // Almacenar el resultado
-            $calculo->save();
-    
-            // Mostrar alerta de SweetAlert
-            Alert::success('Éxito', 'La fórmula se guardó correctamente.');
-    
-            // Redirigir a la vista 'calculos.blade.php' con la fórmula y el resultado
-            return $this->mostrarCalculo($indicadorprevenir);
-    
-        } catch (Exception $e) {
-            // Mostrar alerta de SweetAlert en caso de error
-            alert()->error('Error', 'Error al evaluar la fórmula: ' . $e->getMessage());
-    
-            // Redirigir de nuevo al formulario u otra lógica según tus necesidades
-            return redirect()->back();
+{
+    // Validación de la solicitud
+    $request->validate([
+        'formula' => 'required|string',
+    ]);
+
+    try {
+        // Obtener las variables y realizar la primera evaluación de la fórmula
+        $valores = [];
+        $variables = self::obtenerVariables($request->input('formula'));
+        foreach ($variables as $variable) {
+            $valorInput = $request->input(strtolower($variable));
+            $valores[$variable] = floatval($valorInput);
         }
-    }    
+
+        $formula = $request->input('formula');
+        // Evaluar la fórmula en el lado del servidor (PHP)
+        $resultado = $this->evaluarFormula($formula, $valores);
+
+        // Almacenar la fórmula y el resultado en la base de datos
+        $calculo = new CalcularPrevenir;
+        $calculo->formula = $formula;
+        $calculo->indicador_prevenir_id = $indicadorprevenir->id;
+        $calculo->resultado = $resultado; // Almacenar el resultado
+        $calculo->save();
+
+        // Mostrar alerta de SweetAlert
+        Alert::success('Éxito', 'La fórmula se guardó correctamente.');
+
+        // Redirigir a la vista 'calculos.blade.php' con la fórmula y el resultado
+        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id]);
+
+    } catch (Exception $e) {
+        // Mostrar alerta de SweetAlert en caso de error
+        alert()->error('Error', 'Error al evaluar la fórmula: ' . $e->getMessage());
+
+        // Redirigir de nuevo al formulario u otra lógica según tus necesidades
+        return redirect()->back();
+    }
+} 
 
     // Función para obtener las variables de una fórmula
     private static function obtenerVariables($formula)
@@ -101,7 +101,7 @@ class CalcularPrevenirController extends Controller
     // Método para mostrar la vista 'calculos.blade.php'
     public function mostrarCalculo(IndicadorPrevenir $indicadorprevenir)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
 
         return view('indicadoresprevenir.calcularprevenir.calculos', [
             'indicadorprevenir' => $indicadorprevenir,
@@ -156,8 +156,8 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
         // Mostrar alerta de SweetAlert
         Alert::success('Éxito', 'Nuevo cálculo realizado correctamente.');
 
-        // Redirigir a la vista 'calculos.blade.php' con el nuevo cálculo
-        return $this->mostrarCalculo($indicadorprevenir);
+        // Redirigir a la ruta 'indicadoresprevenir.calcularprevenir.calculos'
+        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id]);
 
     } catch (\Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error

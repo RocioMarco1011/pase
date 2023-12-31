@@ -19,14 +19,19 @@
                             @csrf
                             <div class="mb-4">
                                 @foreach($variables as $variable)
-                                    <label for="{{ $variable }}">{{ ucfirst($variable) }}:</label>
-                                    <input type="text" id="{{ $variable }}" name="{{ strtolower($variable) }}" required>
+                                    <div class="mb-2">
+                                        <label for="{{ $variable }}">{{ ucfirst($variable) }}:</label>
+                                        <input type="text" id="{{ $variable }}" name="{{ strtolower($variable) }}" required>
+                                    </div>
                                 @endforeach
                             </div>
-                            <button type="button" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150" id="calcularResultado">
-                                Calcular Resultado</button>
-                            <div id="resultado" style="display:none; margin-top:10px;"></div>
-                            <button type="submit" class="btn btn-primary" id="guardarCalculo" style="display:none;">Guardar Cálculo</button>
+                            <button type="button" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150" id="calcularResultado" style="margin-bottom: 10px;">
+                                Calcular Resultado
+                            </button>
+                            <div id="resultado" style="display:none; margin-bottom: 10px;"></div>
+                            <button type="submit" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150" id="guardarCalculo" style="display:none;">
+                                Guardar Cálculo
+                            </button>
                         </form>
                     </div>
                 </div>
