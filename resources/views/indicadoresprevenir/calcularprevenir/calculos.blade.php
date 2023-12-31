@@ -21,6 +21,11 @@
                             <p><strong>Resultado:</strong> {{ $calculo->resultado }}</p>
                         </div>
                     </div>
+                    <div class="mt-4">
+                        <a href="{{ route('indicadoresprevenir.calcularprevenir.calcular', ['indicadorprevenir' => $indicadorprevenir->id]) }}" class="btn btn-primary">
+                            Nuevo Cálculo
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

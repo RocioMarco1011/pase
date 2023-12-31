@@ -10,6 +10,7 @@ use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\IndicadoresPrevenirController;
 use App\Http\Controllers\CalcularPrevenirController;
+use App\Models\IndicadorPrevenir;
 
 
 /*
@@ -102,6 +103,11 @@ Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController:
     Route::post('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir/guardarformula', [CalcularPrevenirController::class, 'guardarFormula'])->name('indicadoresprevenir.calcularprevenir.guardarFormula');
     Route::get('/indicadoresprevenir/calcularprevenir/calculos/{indicadorprevenir}', [CalcularPrevenirController::class, 'mostrarCalculo'])
     ->name('indicadoresprevenir.calcularprevenir.calculos');
+    Route::get('/indicadoresprevenir/{indicadorprevenir}/calcular', [CalcularPrevenirController::class, 'calcularNuevo'])
+    ->name('indicadoresprevenir.calcularprevenir.calcular');
+    Route::post('/indicadoresprevenir/{indicadorprevenir}/guardar-nuevo-calculo', [CalcularPrevenirController::class, 'guardarNuevoCalculo'])
+    ->name('indicadoresprevenir.calcularprevenir.guardarNuevoCalculo');
+
 
 
 

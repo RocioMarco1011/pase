@@ -48,7 +48,7 @@
                                 <p id="resultadoValor" class="mt-2 text-gray-600"></p>
                                 <div id="semaforo" class="mt-2"></div>
                                 <button type="submit" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                                    Guardar Formula
+                                    Guardar Calculo
                                 </button>
                             </div>
                         </form>
