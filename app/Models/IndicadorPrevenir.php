@@ -24,6 +24,7 @@ class IndicadorPrevenir extends Model
         'acumulado_periodico',
         'tendencia_esperada',
         'frecuencia_medicion',
+        'semaforo',
     ];
 
     public function calcularPrevenir()

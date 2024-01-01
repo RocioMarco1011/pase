@@ -72,6 +72,10 @@
                                 <th class="w-1/4 py-2 px-4 text-lg font-semibold">Frecuencia de Medición:</th>
                                 <td class="py-2 px-4 text-lg">{{ $indicador->frecuencia_medicion }}</td>
                             </tr>
+                            <tr>
+                                <th class="w-1/4 py-2 px-4 text-lg font-semibold">Semáforo:</th>
+                                <td class="py-2 px-4 text-lg">{{ $indicador->semaforo }}</td>
+                            </tr>
                         </tbody>
                     </table>
                     

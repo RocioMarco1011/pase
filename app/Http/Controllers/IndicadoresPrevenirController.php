@@ -66,6 +66,7 @@ class IndicadoresPrevenirController extends Controller
             'acumulado_periodico' => 'required|string',
             'tendencia_esperada' => 'required|string',
             'frecuencia_medicion' => 'required|string',
+            'semaforo' => 'required|string',
             // Agrega más reglas de validación según tus necesidades
         ]);
 
@@ -86,6 +87,7 @@ class IndicadoresPrevenirController extends Controller
             'acumulado_periodico' => $request->input('acumulado_periodico'),
             'tendencia_esperada' => $request->input('tendencia_esperada'),
             'frecuencia_medicion' => $request->input('frecuencia_medicion'),
+            'semaforo' => $request->input('semaforo'),
             // Actualiza más campos según tus necesidades
         ]);
         Alert::success('Éxito', 'Indicador editado exitosamente.');

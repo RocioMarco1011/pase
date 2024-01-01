@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('acumulado_periodico', ['Acumulado', 'Periodico']);
             $table->enum('tendencia_esperada', ['Ascendente', 'Descendente']);
             $table->enum('frecuencia_medicion', ['Anual', 'Mensual', 'Semestral']);
+            $table->enum('semaforo', ['Verde > 0 - Amarillo = 0 - Rojo < 0', 'Verde < 0 - Amarillo = 0 - Rojo > 0']);
             $table->timestamps();
     });
 }

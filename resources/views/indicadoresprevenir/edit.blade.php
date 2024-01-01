@@ -100,6 +100,13 @@
                             </select>
                         </div>
                         
+                        <div class="mb-4">
+                            <label for="semaforo" class="block text-sm font-semibold text-gray-600">Semáforo:</label>
+                            <select name="semaforo" id="semaforo" class="form-select mt-1 block w-full" required>
+                                <option value="Verde > 0 - Amarillo = 0 - Rojo < 0" {{ old('semaforo', $indicador->semaforo) == 'Verde > 0 - Amarillo = 0 - Rojo < 0' ? 'selected' : '' }}>Verde > 0 - Amarillo = 0 - Rojo < 0</option>
+                                <option value="Verde < 0 - Amarillo = 0 - Rojo > 0" {{ old('semaforo', $indicador->semaforo) == 'Verde < 0 - Amarillo = 0 - Rojo > 0' ? 'selected' : '' }}>Verde < 0 - Amarillo = 0 - Rojo > 0</option>
+                            </select>
+                        </div>
 
                         <div class="flex items-center justify-end">
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
