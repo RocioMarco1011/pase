@@ -35,13 +35,23 @@ class EstrategiasPrevenirController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $estrategia = new EstrategiasPrevenir();
-        $estrategia->nombre = $request->input('nombre');
-        $estrategia->save();
-        Alert::success('Éxito', 'Estrategia creada exitosamente.');
-        return redirect()->route('estrategiasprevenir.index');
+{
+    // Validar que no exista una estrategia con el mismo nombre
+    $estrategiaExistente = EstrategiasPrevenir::where('nombre', $request->input('nombre'))->first();
+
+    if ($estrategiaExistente) {
+        Alert::error('Error', 'La estrategia ya existe.');
+        return redirect()->back();
     }
+
+    // Si no hay una estrategia con el mismo nombre, crea y guarda la nueva estrategia
+    $estrategia = new EstrategiasPrevenir();
+    $estrategia->nombre = $request->input('nombre');
+    $estrategia->save();
+
+    Alert::success('Éxito', 'Estrategia creada exitosamente.');
+    return redirect()->route('estrategiasprevenir.index');
+}
 
     public function show($id)
     {
@@ -57,18 +67,37 @@ class EstrategiasPrevenirController extends Controller
     }
     
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nombre' => 'required|max:255', 
-        ]);
+{
+    $request->validate([
+        'nombre' => 'required|max:255', 
+    ]);
 
-        $estrategia = EstrategiasPrevenir::find($id);
-        $estrategia->nombre = $request->nombre;
-        $estrategia->save();
-        Alert::success('Éxito', 'Estrategia editada exitosamente.');
+    // Verificar si ya existe una estrategia con el mismo nombre (excluyendo la estrategia actual)
+    $estrategiaExistente = EstrategiasPrevenir::where('nombre', $request->nombre)
+        ->where('id', '<>', $id)
+        ->first();
 
-        return redirect()->route('estrategiasprevenir.show', ['estrategia' => $estrategia->id]);
+    if ($estrategiaExistente) {
+        Alert::error('Error', 'Ya existe una estrategia con ese nombre.');
+        return redirect()->back();
     }
+
+    // Si no hay una estrategia con el mismo nombre, actualizar la estrategia
+    $estrategia = EstrategiasPrevenir::find($id);
+    
+    if (!$estrategia) {
+        // Manejar el caso en el que no se encuentra la estrategia
+        Alert::error('Error', 'Estrategia no encontrada.');
+        return redirect()->route('estrategiasprevenir.index');
+    }
+
+    $estrategia->nombre = $request->nombre;
+    $estrategia->save();
+
+    Alert::success('Éxito', 'Estrategia editada exitosamente.');
+    return redirect()->route('estrategiasprevenir.show', ['estrategia' => $estrategia->id]);
+}
+
 
     public function destroy($id)
 {

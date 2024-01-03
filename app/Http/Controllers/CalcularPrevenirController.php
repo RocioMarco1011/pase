@@ -56,7 +56,7 @@ class CalcularPrevenirController extends Controller
         // Verificar si el resultado es NaN
         if (is_nan($resultado)) {
             // Mostrar alerta de SweetAlert si el resultado es NaN
-            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
             return redirect()->back();
         }
 
@@ -76,13 +76,13 @@ class CalcularPrevenirController extends Controller
 
     } catch (Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error
-        Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+        Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
 
         // Redirigir de nuevo al formulario u otra lógica según tus necesidades
         return redirect()->back();
     } catch (\Throwable $t) {
         // Mostrar alerta de SweetAlert en caso de cualquier otra excepción
-        Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+        Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
 
         // Redirigir de nuevo al formulario u otra lógica según tus necesidades
         return redirect()->back();
@@ -235,6 +235,9 @@ public function edit(CalcularPrevenir $calculo)
 
     $calculo->delete();
 
+    // Mostrar SweetAlert después de eliminar la fórmula
+    Alert::success('Éxito', 'Fórmula eliminada correctamente.')->showConfirmButton('Aceptar');
+
     return redirect()->route('indicadoresprevenir.index', ['indicadorprevenir' => $indicadorprevenirId]);
 }
 
@@ -243,12 +246,18 @@ public function update(Request $request, CalcularPrevenir $calculo)
     try {
         $calculo->update($request->all());
 
-        // Optionally, you can add a success message
-        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $calculo->indicador_prevenir_id])
-            ->with('success', 'Fórmula actualizada correctamente.');
+        // Mostrar SweetAlert después de editar la fórmula
+        Alert::success('Éxito', 'Fórmula editada correctamente.')->showConfirmButton('Aceptar');
+
+        // Redirigir según tus necesidades
+        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $calculo->indicador_prevenir_id]);
+
     } catch (\Exception $e) {
-        // Handle the exception, and optionally redirect with an error message
-        return redirect()->back()->with('error', 'Error al actualizar la fórmula: ' . $e->getMessage());
+        // Manejar el error y mostrar un SweetAlert en caso de error
+        Alert::error('Error', 'Error al editar la fórmula: ' . $e->getMessage())->showConfirmButton('Aceptar');
+
+        // Redirigir según tus necesidades
+        return redirect()->back();
     }
 }
 }

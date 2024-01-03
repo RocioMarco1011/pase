@@ -33,15 +33,15 @@ class EvidenciaPrevenirController extends Controller
 
 
     public function store(Request $request, $estrategiaId, $accionPrevenirId)
-    {
-        $evidencia = new EvidenciaPrevenir();
-        $nombreArchivo = str_replace(' ', '_', $request->input('nombre'));
-        $evidencia->nombre = $nombreArchivo;
-        $evidencia->mensaje = $request->input('mensaje');
+{
+    $evidencia = new EvidenciaPrevenir();
+    $nombreArchivo = $request->input('nombre');
+    $evidencia->nombre = $nombreArchivo;
+    $evidencia->mensaje = $request->input('mensaje');
 
-        if ($request->hasFile('archivo')) {
-            $archivo = $request->file('archivo');
-            $nombreArchivo = $nombreArchivo . '.' . $archivo->getClientOriginalExtension();
+    if ($request->hasFile('archivo')) {
+        $archivo = $request->file('archivo');
+        $nombreArchivo = $nombreArchivo . '.' . $archivo->getClientOriginalExtension();
 
         try {
             $archivo->storeAs('', $nombreArchivo, 'evidencias');
@@ -49,23 +49,22 @@ class EvidenciaPrevenirController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Error al guardar el archivo.');
         }
-        } else {
-            $evidencia->archivo = null;
-        }
-
-        $evidencia->accion_prevenir_id = $accionPrevenirId;
-
-        try {
-            $evidencia->save();
-            Alert::success('Éxito', 'Evidencia creada exitosamente.');
-            return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
-                ->with('success', 'Evidencia guardada exitosamente.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error al guardar la evidencia en la base de datos');
-        }
+    } else {
+        $evidencia->archivo = null;
     }
 
-    
+    $evidencia->accion_prevenir_id = $accionPrevenirId;
+
+    try {
+        $evidencia->save();
+        Alert::success('Éxito', 'Evidencia creada exitosamente.');
+        return redirect()->route('evidenciaprevenir.index', ['estrategiaId' => $estrategiaId, 'accionPrevenirId' => $accionPrevenirId])
+            ->with('success', 'Evidencia guardada exitosamente.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error al guardar la evidencia en la base de datos');
+    }
+}
+
     public function edit($estrategiaId, $accionPrevenirId, $evidenciaId)
     {
         $estrategia = EstrategiasPrevenir::find($estrategiaId);

@@ -21,11 +21,6 @@ class AccionPrevenir extends Model
         'estrategia_id',
     ];
 
-    // Define el tipo de datos para el campo 'tipo' como un enum
-    protected $casts = [
-        'tipo' => EnumCast::class.':'.TipoAccionEnum::class,
-    ];
-
     public function estrategiasPrevenir()
     {
         return $this->belongsTo(EstrategiasPrevenir::class, 'estrategia_id');

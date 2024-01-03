@@ -10,7 +10,6 @@ class EvidenciaPrevenir extends Model
     use HasFactory;
 
     protected $table = 'evidencias_prevenir';
-    protected $primaryKey = 'id';
 
     protected $fillable = ['nombre', 'mensaje', 'archivo', 'accion_prevenir_id'];
 
