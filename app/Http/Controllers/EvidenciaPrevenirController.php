@@ -38,6 +38,7 @@ class EvidenciaPrevenirController extends Controller
     $nombreArchivo = $request->input('nombre');
     $evidencia->nombre = $nombreArchivo;
     $evidencia->mensaje = $request->input('mensaje');
+    $evidencia->user_id = auth()->id();
 
     if ($request->hasFile('archivo')) {
         $archivo = $request->file('archivo');
@@ -80,6 +81,7 @@ class EvidenciaPrevenirController extends Controller
         $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
         $evidencia->nombre = $request->input('nombre');
         $evidencia->mensaje = $request->input('mensaje');
+        $evidencia->user_id = auth()->id();
     
         $evidencia->save();
         Alert::success('Éxito', 'Evidencia editada exitosamente.');

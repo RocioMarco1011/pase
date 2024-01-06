@@ -17,5 +17,10 @@ class EvidenciaPrevenir extends Model
     {
         return $this->belongsTo(AccionPrevenir::class, 'accion_prevenir_id');
     }
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }
 
