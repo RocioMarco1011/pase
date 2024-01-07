@@ -39,18 +39,19 @@
                                 <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
                                 <select name="dependencias_responsables[]" id="dependencias_responsables" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_responsables) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_responsables ?? []) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
-                                </select> 
+                                </select>
                             </div>
+                            
                             
                             <div class="mb-4">
                                 <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
                                 <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_coordinadoras) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_coordinadoras ?? []) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
-                                </select> 
+                                </select>
                             </div>
                             
                             <div class="flex items-center justify-end mt-4">
