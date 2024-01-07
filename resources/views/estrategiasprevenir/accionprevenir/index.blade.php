@@ -9,6 +9,11 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
             ACCIONES DE PREVENCIÓN
         </h2>
+        @if(isset($estrategia))
+        <p class="font-semibold text-sm text-gray-800 leading-tight text-center">
+            Estrategia: {{ $estrategia->nombre }}
+        </p>        
+        @endif
     </x-slot>
     
     <div class="py-12">

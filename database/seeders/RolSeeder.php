@@ -66,6 +66,14 @@ class RolSeeder extends Seeder
 
         $permission5 = Permission::where('name', 'AñadirAccionesPrevenir')->first();
 
+        //PERMISO 6
+        if (!Permission::where('name', 'EliminarEvidenciaPrevenir')->exists()) {
+            Permission::create(['name' => 'EliminarEvidenciaPrevenir']);
+        }
+
+        $permission6 = Permission::where('name', 'EliminarEvidenciaPrevenir')->first();
+
+
         //DAR PERMISO 1
         if ($role1 && !$role1->hasPermissionTo($permission1)) {
             $role1->givePermissionTo($permission1);
@@ -89,6 +97,11 @@ class RolSeeder extends Seeder
         //DAR PERMISO 5
         if ($role1 && !$role1->hasPermissionTo($permission5)) {
             $role1->givePermissionTo($permission5);
+        }
+
+        //DAR PERMISO 6
+        if ($role1 && !$role1->hasPermissionTo($permission6)) {
+            $role1->givePermissionTo($permission6);
         }
     }
 }
