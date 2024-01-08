@@ -313,6 +313,13 @@ return [
             'can'  => 'manage-blog',
         ],
 
+        ['header' => 'Inicio'],
+        [
+            'text' => 'Inicio',
+            'url'  => '/dashboard',
+            'icon' => 'fas fa-fw fa-home',
+        ],
+
         ['header' => 'Configuracion de la cuenta'],
         [
             'text' => 'Perfil',
