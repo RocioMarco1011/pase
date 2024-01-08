@@ -12,6 +12,7 @@ use App\Http\Controllers\IndicadoresPrevenirController;
 use App\Http\Controllers\CalcularPrevenirController;
 use App\Models\IndicadorPrevenir;
 use App\Http\Controllers\EstrategiasAtenderController;
+use App\Http\Controllers\AccionAtenderController;
 
 
 /*
@@ -126,6 +127,18 @@ Route::prefix('estrategiasatender')->group(function () {
     Route::put('/{estrategia}', [EstrategiasAtenderController::class, 'update'])->name('estrategiasatender.update');
     Route::delete('/{id}', [EstrategiasAtenderController::class, 'destroy'])->name('estrategiasatender.destroy');
 });
+
+// Rutas para acciones de atención bajo una estrategia específica
+Route::prefix('{estrategia}/accionatender')->group(function () {
+    Route::get('/', [AccionAtenderController::class, 'index'])->name('estrategiasatender.accionatender.index');
+    Route::get('/create', [AccionAtenderController::class, 'create'])->name('estrategiasatender.accionatender.create');
+    Route::post('/', [AccionAtenderController::class, 'store'])->name('estrategiasatender.accionatender.store');
+    Route::get('/{accion}', [AccionAtenderController::class, 'show'])->name('estrategiasatender.accionatender.show');
+    Route::get('/{id}/edit', [AccionAtenderController::class, 'edit'])->name('estrategiasatender.accionatender.edit');
+    Route::put('/{accion}', [AccionAtenderController::class, 'update'])->name('estrategiasatender.accionatender.update');
+    Route::delete('/{id}', [AccionAtenderController::class, 'destroy'])->name('estrategiasatender.accionatender.destroy');
+});
+
 
 
 
