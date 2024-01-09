@@ -14,11 +14,23 @@ class IndicadoresPrevenirController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index(Request $request)
+{
+    $user = auth()->user();
+    $user_name = $user->name;
+
+    if ($user->hasRole('Administrador')) {
         $indicadores = IndicadorPrevenir::all();
-        return view('indicadoresprevenir.index', compact('indicadores'));
+    } else {
+        $indicadores = IndicadorPrevenir::where(function ($query) use ($user_name) {
+                $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(medios_verificacion, ', ', ',')) > 0");
+            })
+            ->get();
     }
+
+    return view('indicadoresprevenir.index', compact('indicadores'));
+}
+
 
     public function create()
     {
