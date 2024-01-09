@@ -58,12 +58,18 @@ Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::get('/create', [AccionPrevenirController::class, 'create'])->name('estrategiasprevenir.accionprevenir.create');
     Route::post('/', [AccionPrevenirController::class, 'store'])->name('estrategiasprevenir.accionprevenir.store');
     Route::get('/{accion}', [AccionPrevenirController::class, 'show'])->name('estrategiasprevenir.accionprevenir.show');
-    Route::get('/{id}/edit', [AccionPrevenirController::class, 'edit'])->name('estrategiasprevenir.accionprevenir.edit');
-    Route::put('/{accion}', [AccionPrevenirController::class, 'update'])->name('estrategiasprevenir.accionprevenir.update');
     Route::delete('/{id}', [AccionPrevenirController::class, 'destroy'])->name('estrategiasprevenir.accionprevenir.destroy');
 });
 
-//Rutas para evidencias de prevencion bajo una accion especifica dentro de una estrategia especifica
+// Ruta para mostrar el formulario de edición
+Route::get('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}/edit', [AccionPrevenirController::class, 'edit'])
+    ->name('estrategiasprevenir.accionprevenir.edit');
+
+// Ruta para procesar la actualización
+Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}', [AccionPrevenirController::class, 'update'])
+    ->name('estrategiasprevenir.accionprevenir.update');
+
+    //Rutas para evidencias de prevencion bajo una accion especifica dentro de una estrategia especifica
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(function () {
     Route::get('/evidencias', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
     Route::get('/evidencias/create', [EvidenciaPrevenirController::class, 'create'])->name('evidenciaprevenir.create');
@@ -72,17 +78,9 @@ Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(
     Route::put('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'update'])->name('evidenciaprevenir.update');
     Route::delete('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
 });
+
 //Ruta de la descarga del archivo
 Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
-
-// Ruta para mostrar el formulario de edición
-Route::get('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}/edit', [AccionPrevenirController::class, 'edit'])->name('estrategiasprevenir.accionprevenir.edit');
-
-// Ruta para procesar la actualización
-Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}', [AccionPrevenirController::class, 'update'])->name('estrategiasprevenir.accionprevenir.update');
-
-Route::get('/{estrategia}/accionprevenir/{accion}', [AccionPrevenirController::class, 'show'])
-    ->name('estrategiasprevenir.accionprevenir.show');
 
 //Rutas para los indicadores de prevencion
 Route::prefix('indicadoresprevenir')->group(function () {
@@ -134,13 +132,16 @@ Route::prefix('{estrategia}/accionatender')->group(function () {
     Route::get('/create', [AccionAtenderController::class, 'create'])->name('estrategiasatender.accionatender.create');
     Route::post('/', [AccionAtenderController::class, 'store'])->name('estrategiasatender.accionatender.store');
     Route::get('/{accion}', [AccionAtenderController::class, 'show'])->name('estrategiasatender.accionatender.show');
-    Route::get('/{id}/edit', [AccionAtenderController::class, 'edit'])->name('estrategiasatender.accionatender.edit');
-    Route::put('/{accion}', [AccionAtenderController::class, 'update'])->name('estrategiasatender.accionatender.update');
     Route::delete('/{id}', [AccionAtenderController::class, 'destroy'])->name('estrategiasatender.accionatender.destroy');
 });
 
+// Ruta para mostrar el formulario de edición
+Route::get('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}/edit', [AccionAtenderController::class, 'edit'])
+    ->name('estrategiasatender.accionatender.edit');
 
-
+// Ruta para procesar la actualización
+Route::put('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}', [AccionAtenderController::class, 'update'])
+    ->name('estrategiasatender.accionatender.update');
 
 
 
