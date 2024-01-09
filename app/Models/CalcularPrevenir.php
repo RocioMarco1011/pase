@@ -11,8 +11,12 @@ class CalcularPrevenir extends Model
     use HasFactory;
     protected $table = 'calcular_prevenir';
 
-    protected $fillable = ['formula', 'indicador_prevenir_id', 'resultado', 'user_id'];
+    protected $fillable = ['formula', 'variables', 'indicador_prevenir_id', 'resultado', 'user_id'];
 
+    protected $casts = [
+        'variables' => 'json',
+    ];
+    
     public function indicadorPrevenir()
     {
         return $this->belongsTo(IndicadorPrevenir::class);

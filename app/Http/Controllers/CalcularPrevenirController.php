@@ -43,12 +43,7 @@ class CalcularPrevenirController extends Controller
         }
 
         // Obtener las variables y realizar la primera evaluación de la fórmula
-        $valores = [];
-        $variables = self::obtenerVariables($formula);
-        foreach ($variables as $variable) {
-            $valorInput = $request->input(strtolower($variable));
-            $valores[$variable] = floatval($valorInput);
-        }
+        $valores = $this->obtenerValoresVariables($request, $formula);
 
         // Evaluar la fórmula en el lado del servidor (PHP)
         $resultado = $this->evaluarFormula($formula, $valores);
@@ -63,6 +58,7 @@ class CalcularPrevenirController extends Controller
         // Almacenar la fórmula y el resultado en la base de datos con el user_id
         $calculo = new CalcularPrevenir;
         $calculo->formula = $formula;
+        $calculo->variables = $valores; // Asignar el array directamente
         $calculo->indicador_prevenir_id = $indicadorprevenir->id;
         $calculo->resultado = $resultado; // Almacenar el resultado
         $calculo->user_id = auth()->id(); // Establecer el user_id
@@ -77,17 +73,29 @@ class CalcularPrevenirController extends Controller
     } catch (Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error
         Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
-
-        // Redirigir de nuevo al formulario u otra lógica según tus necesidades
-        return redirect()->back();
     } catch (\Throwable $t) {
         // Mostrar alerta de SweetAlert en caso de cualquier otra excepción
         Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
-
-        // Redirigir de nuevo al formulario u otra lógica según tus necesidades
-        return redirect()->back();
     }
+
+    // Redirigir de nuevo al formulario u otra lógica según tus necesidades
+    return redirect()->back();
 }
+
+    
+    // Nueva función para obtener valores de variables
+    private function obtenerValoresVariables(Request $request, $formula)
+    {
+        $valores = [];
+        $variables = self::obtenerVariables($formula);
+        foreach ($variables as $variable) {
+            $valorInput = $request->input(strtolower($variable));
+            $valores[$variable] = floatval($valorInput);
+        }
+    
+        return $valores;
+    }
+    
 
     // Función para obtener las variables de una fórmula
     private static function obtenerVariables($formula)
@@ -160,10 +168,11 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
         }
 
         // Obtener las variables y realizar la evaluación de la fórmula
-        $valores = [];
-        foreach ($request->except('_token') as $key => $value) {
-            $valores[$key] = floatval($value);
-        }
+        $valores = $request->except('_token');
+        unset($valores['user_id']); // Excluir user_id de la lista de variables
+
+        // Convertir los valores a float
+        $valores = array_map('floatval', $valores);
 
         // Evaluar la fórmula en el lado del servidor (PHP)
         $resultado = $this->evaluarFormula($calculo->formula, $valores);
@@ -176,18 +185,19 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
         }
 
         // Almacenar el nuevo cálculo en la base de datos
-        CalcularPrevenir::create([
+        $nuevoCalculo = CalcularPrevenir::create([
             'formula' => $calculo->formula,
             'indicador_prevenir_id' => $indicadorprevenir->id,
             'resultado' => $resultado,
             'user_id' => auth()->id(),
+            'variables' => $valores, // Almacena las variables en la base de datos
         ]);
 
         // Mostrar alerta de SweetAlert
         Alert::success('Éxito', 'Nuevo cálculo realizado correctamente.');
 
-        // Redirigir a la ruta 'indicadoresprevenir.calcularprevenir.calculos'
-        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id]);
+        // Redirigir a la ruta 'indicadoresprevenir.calcularprevenir.calculos' con el ID del nuevo cálculo
+        return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id, 'calculo' => $nuevoCalculo->id]);
 
     } catch (\Exception $e) {
         // Mostrar alerta de SweetAlert en caso de error
@@ -203,7 +213,6 @@ public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicad
         return redirect()->back();
     }
 }
-
 
 public function show($id)
 {

@@ -29,25 +29,33 @@
                         </div>
 
                         @if($calculo->count() > 0)
-                        @foreach($calculo->reverse() as $calculo)
-                        <div class="card">
-                            <div class="card-body" style="background-color: {{ $indicadorprevenir->semaforo === 'Verde > 0 - Amarillo = 0 - Rojo < 0' ? ($calculo->resultado > 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) : ($calculo->resultado < 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) }}">
-                                <p><strong>Fórmula:</strong> {{ $calculo->formula }}</p>
-                                <p><strong>Resultado:</strong> {{ $calculo->resultado }}</p>
-                                <p><strong>Fecha de Creación:</strong> {{ $calculo->created_at->format('d-m-Y H:i:s') }}</p>
-                                <p><strong>Usuario:</strong> {{ $calculo->user->name }}</p>
-                    
-                                <!-- Delete Formula Form -->
-                                <form method="POST" action="{{ route('indicadoresprevenir.calcularprevenir.destroy', ['calculo' => $calculo->id]) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                                        Eliminar Fórmula
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endforeach
+                            @foreach($calculo->reverse() as $calculo)
+                                <div class="card">
+                                    <div class="card-body" style="background-color: {{ $indicadorprevenir->semaforo === 'Verde > 0 - Amarillo = 0 - Rojo < 0' ? ($calculo->resultado > 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) : ($calculo->resultado < 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) }}">
+                                        <p><strong>Fórmula:</strong> {{ $calculo->formula }}</p>
+                                        <p><strong>Resultado:</strong> {{ $calculo->resultado }}</p>
+
+                                        @if(is_array($calculo->variables))
+                                        <p><strong>Valor de las Variables:</strong></p>
+                                        @foreach($calculo->variables as $variable => $valor)
+                                        <p>{{ $variable }}: {{ $valor }}</p>
+                                        @endforeach
+                                        @endif
+
+                                        <p><strong>Fecha de Creación:</strong> {{ $calculo->created_at->format('d-m-Y H:i:s') }}</p>
+                                        <p><strong>Usuario:</strong> {{ $calculo->user->name }}</p>
+
+                                        <!-- Delete Formula Form -->
+                                        <form method="POST" action="{{ route('indicadoresprevenir.calcularprevenir.destroy', ['calculo' => $calculo->id]) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                                Eliminar Fórmula
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
                         @else
                             <p>No hay resultados de cálculos disponibles.</p>
                         @endif
