@@ -7,8 +7,13 @@
     <x-app-layout>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
-                RESULTADOS DE CALCULO
+                RESULTADOS
             </h2>
+            @if(isset($indicadorprevenir))
+                <p class="font-semibold text-sm text-gray-800 leading-tight text-center">
+                    Indicador: {{ $indicadorprevenir->nombre }}
+                </p>        
+            @endif       
         </x-slot>
 
         <div class="py-12">
@@ -20,19 +25,18 @@
                                class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 mr-2">
                                 NUEVO CÁLCULO
                             </a>
-
+                            @can('VerFormulaPrevenir')
                             @if($calculo->count() > 0)
-    <a href="{{ route('indicadoresprevenir.calcularprevenir.show', ['id' => $calculo[0]->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-        Ver Fórmula
-    </a>
-@endif
-
-@if($calculo->count() > 0)
-    <a href="{{ route('descargar.pdf', ['indicadorprevenir' => $indicadorprevenir->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150" style="margin-left: 10px;">
-        Descargar PDF
-    </a>
-@endif
-
+                                <a href="{{ route('indicadoresprevenir.calcularprevenir.show', ['id' => $calculo[0]->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                    Ver Fórmula
+                                </a>
+                            @endif
+                            @endcan
+                            @if($calculo->count() > 0)
+                                <a href="{{ route('descargar.pdf', ['indicadorprevenir' => $indicadorprevenir->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150" style="margin-left: 10px;">
+                                    Descargar PDF
+                                </a>
+                            @endif
                         </div>
 
                         @if($calculo->count() > 0)
@@ -51,15 +55,16 @@
 
                                         <p><strong>Fecha de Creación:</strong> {{ $calculo->created_at->format('d-m-Y H:i:s') }}</p>
                                         <p><strong>Usuario:</strong> {{ $calculo->user->name }}</p>
-
+                                        @can('EliminarCalculoPrevenir')
                                         <!-- Delete Formula Form -->
                                         <form method="POST" action="{{ route('indicadoresprevenir.calcularprevenir.destroy', ['calculo' => $calculo->id]) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                                                Eliminar Fórmula
+                                                Eliminar Cálculo
                                             </button>
                                         </form>
+                                        @endcan
                                     </div>
                                 </div>
                             @endforeach

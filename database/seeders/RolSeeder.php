@@ -173,10 +173,38 @@ class RolSeeder extends Seeder
 
         // PERMISO 21
         if (!Permission::where('name', 'EliminarEvidenciaErradicar')->exists()) {
-        Permission::create(['name' => 'EliminarEvidenciaErradicar']);
+            Permission::create(['name' => 'EliminarEvidenciaErradicar']);
         }
 
         $permission21 = Permission::where('name', 'EliminarEvidenciaErradicar')->first();
+
+        // PERMISO 22
+        if (!Permission::where('name', 'AñadirIndicadorPrevenir')->exists()) {
+            Permission::create(['name' => 'AñadirIndicadorPrevenir']);
+        }
+    
+        $permission22 = Permission::where('name', 'AñadirIndicadorPrevenir')->first();
+
+        // PERMISO 23
+        if (!Permission::where('name', 'VerIndicadorPrevenir')->exists()) {
+            Permission::create(['name' => 'VerIndicadorPrevenir']);
+        }
+    
+        $permission23 = Permission::where('name', 'VerIndicadorPrevenir')->first();
+
+        // PERMISO 24
+        if (!Permission::where('name', 'VerFormulaPrevenir')->exists()) {
+            Permission::create(['name' => 'VerFormulaPrevenir']);
+        }
+    
+        $permission24 = Permission::where('name', 'VerFormulaPrevenir')->first();
+
+        // PERMISO 25
+        if (!Permission::where('name', 'EliminarCalculoPrevenir')->exists()) {
+            Permission::create(['name' => 'EliminarCalculoPrevenir']);
+        }
+    
+        $permission25 = Permission::where('name', 'EliminarCalculoPrevenir')->first();
 
 
 
@@ -284,6 +312,26 @@ class RolSeeder extends Seeder
         // DAR PERMISO 21
         if ($role1 && !$role1->hasPermissionTo($permission21)) {
             $role1->givePermissionTo($permission21);
+        }
+
+        // DAR PERMISO 22
+        if ($role1 && !$role1->hasPermissionTo($permission22)) {
+            $role1->givePermissionTo($permission22);
+        }
+
+        // DAR PERMISO 23
+        if ($role1 && !$role1->hasPermissionTo($permission23)) {
+            $role1->givePermissionTo($permission23);
+        }
+
+        // DAR PERMISO 24
+        if ($role1 && !$role1->hasPermissionTo($permission24)) {
+            $role1->givePermissionTo($permission24);
+        }
+
+        // DAR PERMISO 25
+        if ($role1 && !$role1->hasPermissionTo($permission25)) {
+            $role1->givePermissionTo($permission25);
         }
     }
 }
