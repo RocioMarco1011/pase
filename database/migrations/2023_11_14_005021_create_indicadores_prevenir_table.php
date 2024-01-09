@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('definicion');
             $table->text('variables'); 
             $table->text('observaciones')->nullable();
-            $table->text('medios_verificacion')->nullable();
+            $table->string('medios_verificacion', 500);
             $table->enum('parametro_meta', ['Parametro', 'Meta']);
             $table->enum('unidad_medida', ['Porcentaje', 'Promedio', 'Proporcion']);
             $table->enum('nivel_desagregacion', ['Estatal', 'Otra']);

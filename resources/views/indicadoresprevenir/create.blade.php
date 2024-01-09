@@ -44,8 +44,12 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="medios_verificacion" class="block text-sm font-medium text-gray-700">Medios de Verificación</label>
-                            <textarea name="medios_verificacion" id="medios_verificacion" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+                            <label for="medios_verificacion" class="block text-lg font-medium text-gray-700">Medios de Verificación:</label>
+                            <select name="medios_verificacion[]" id="medios_verificacion" class="js-example-basic-multiple" multiple="multiple">
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
@@ -118,14 +122,15 @@
     </div>
 </x-app-layout>
 @stop
-
-@section('content')
-@stop
-
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({theme: "classic"});
+        });
+    </script>
 @stop

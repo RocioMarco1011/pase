@@ -43,10 +43,14 @@
                             <label for="observaciones" class="block text-sm font-semibold text-gray-600">Observaciones:</label>
                             <textarea name="observaciones" id="observaciones" class="form-input mt-1 block w-full" rows="4">{{ old('observaciones', $indicador->observaciones) }}</textarea>
                         </div>
-
+                        
                         <div class="mb-4">
-                            <label for="medios_verificacion" class="block text-sm font-semibold text-gray-600">Medios de Verificación:</label>
-                            <textarea name="medios_verificacion" id="medios_verificacion" class="form-input mt-1 block w-full" rows="4">{{ old('medios_verificacion', $indicador->medios_verificacion) }}</textarea>
+                            <label for="medios_verificacion" class="block text-lg font-medium text-gray-700">Medios de Verificación:</label>
+                            <select name="medios_verificacion[]" id="medios_verificacion" class="js-example-basic-multiple" multiple>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ in_array($user->id, $medios_verificacion ?? []) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
@@ -121,13 +125,15 @@
 </x-app-layout>
 @stop
 
-@section('content')
-@stop
-
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({theme: "classic"});
+        });
+    </script>
 @stop
