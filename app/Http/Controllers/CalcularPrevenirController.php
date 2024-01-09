@@ -283,6 +283,7 @@ public function descargarPDF(IndicadorPrevenir $indicadorprevenir)
 
     $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorprevenir'));
 
-    return $pdf->download('resultados_calculo.pdf');
+    return $pdf->download('resultados_de_indicador_' . $indicadorprevenir->id . '.pdf');
+
 }
 }

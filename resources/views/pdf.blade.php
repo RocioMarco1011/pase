@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reporte PDF</title>
+    <title>REPORTE DE RESULTADOS</title>
     <!-- Estilos CSS aquí si es necesario -->
 </head>
 <body>
-    <h1>INFORMACIÓN DEL INDICADOR</h1>
+    <img src="{{ public_path('images/logo.jpg') }}" alt="Logo" width="150">
+    <span style="margin-left: 10px; font-size: 16px; font-weight: bold;">
+        SECRETARIA DE LAS MUJERES DEL ESTADO DE ZACATECAS
+    </span>
+
+
+    <h3>INFORMACIÓN DEL INDICADOR</h3>
 
     <p><strong>Nombre:</strong> {{ $indicadorprevenir->nombre }}</p>
     <p><strong>Objetivo:</strong> {{ $indicadorprevenir->objetivo }}</p>
@@ -21,12 +27,12 @@
     <p><strong>Frecuencia de Medición:</strong> {{ $indicadorprevenir->frecuencia_medicion }}</p>
     <p><strong>Semaforo:</strong> {{ $indicadorprevenir->semaforo }}</p>
 
-    <h1>RESULTADOS DE CALCULO</h1>
+    <h3>RESULTADOS DEL INDICADOR</h3>
 
     @if($calculo->count() > 0)
         @foreach($calculo as $calculo)
         <div class="card-body" style="background-color: {{ $indicadorprevenir->semaforo === 'Verde > 0 - Amarillo = 0 - Rojo < 0' ? ($calculo->resultado > 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) : ($calculo->resultado < 0 ? 'green' : ($calculo->resultado == 0 ? 'yellow' : 'red')) }}">
-                <h2>Fórmula: {{ $calculo->formula }}</h2>
+                <p>Fórmula: {{ $calculo->formula }}</p>
                 <p>Resultado: {{ $calculo->resultado }}</p>
 
                 <p>Valor de las Variables:</p>
