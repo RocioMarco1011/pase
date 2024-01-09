@@ -117,6 +117,9 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::delete('/indicadoresprevenir/calcularprevenir/{calculo}', [CalcularPrevenirController::class, 'destroy'])
     ->name('indicadoresprevenir.calcularprevenir.destroy');
 
+    //Descargar PDF
+    Route::get('/descargar-pdf/{indicadorprevenir}', [CalcularPrevenirController::class, 'descargarPDF'])->name('descargar.pdf');
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rutas para las estrategias de atención

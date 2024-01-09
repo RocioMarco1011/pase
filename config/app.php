@@ -173,6 +173,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Spatie\Enum\Laravel\EnumServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -190,6 +191,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'Enum' => Spatie\Enum\Laravel\EnumFacade::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
 ];

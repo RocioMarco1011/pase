@@ -9,6 +9,8 @@ use App\Models\IndicadorPrevenir;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Exception;
+use PDF;
+
 
 class CalcularPrevenirController extends Controller
 {
@@ -268,5 +270,19 @@ public function update(Request $request, CalcularPrevenir $calculo)
         // Redirigir según tus necesidades
         return redirect()->back();
     }
+}
+
+public function descargarPDF(IndicadorPrevenir $indicadorprevenir)
+{
+    $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+
+    if ($calculo->count() === 0) {
+        // No hay cálculos para este indicador, puedes manejar esto como prefieras
+        return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
+    }
+
+    $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorprevenir'));
+
+    return $pdf->download('resultados_calculo.pdf');
 }
 }
