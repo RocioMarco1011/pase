@@ -83,7 +83,7 @@
                             <h2 class="text-3xl font-semibold">SANCIONAR</h2>
                             <p>Procurar que la impartición de justicia asegure la sanción y reparación del daño, con verdadera perspectiva de género.</p>
                             <div class="mt-4 flex justify-center"> 
-                                <a href="{{ route('estrategiasprevenir.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                <a href="{{ route('estrategiassancionar.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                     Estrategias
                                 </a>
                                 <a href="{{ route('estrategiasprevenir.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 ml-4">
@@ -101,7 +101,7 @@
                             <h2 class="text-3xl font-semibold">ERRADICAR</h2>
                             <p>Promover acciones interinstitucionales para una real erradicación de la violencia contra las mujeres.</p>
                             <div class="mt-4 flex justify-center"> 
-                                <a href="{{ route('estrategiasprevenir.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                                <a href="{{ route('estrategiaserradicar.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                                     Estrategias
                                 </a>
                                 <a href="{{ route('estrategiasprevenir.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 ml-4">

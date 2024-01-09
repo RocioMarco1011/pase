@@ -13,6 +13,10 @@ use App\Http\Controllers\CalcularPrevenirController;
 use App\Models\IndicadorPrevenir;
 use App\Http\Controllers\EstrategiasAtenderController;
 use App\Http\Controllers\AccionAtenderController;
+use App\Http\Controllers\EstrategiasSancionarController;
+use App\Http\Controllers\AccionSancionarController;
+use App\Http\Controllers\EstrategiasErradicarController;
+use App\Http\Controllers\AccionErradicarController;
 
 
 /*
@@ -146,9 +150,64 @@ Route::put('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}', 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Rutas para las estrategias de sanción
+Route::prefix('estrategiassancionar')->group(function () {
+    Route::get('/', [EstrategiasSancionarController::class, 'index'])->name('estrategiassancionar.index');
+    Route::get('/create', [EstrategiasSancionarController::class, 'create'])->name('estrategiassancionar.create');
+    Route::post('/', [EstrategiasSancionarController::class, 'store'])->name('estrategiassancionar.store');
+    Route::get('/{estrategia}', [EstrategiasSancionarController::class, 'show'])->name('estrategiassancionar.show');
+    Route::get('/{id}/edit', [EstrategiasSancionarController::class, 'edit'])->name('estrategiassancionar.edit');
+    Route::put('/{estrategia}', [EstrategiasSancionarController::class, 'update'])->name('estrategiassancionar.update');
+    Route::delete('/{id}', [EstrategiasSancionarController::class, 'destroy'])->name('estrategiassancionar.destroy');
+});
+
+// Rutas para acciones de sanción bajo una estrategia específica
+Route::prefix('{estrategia}/accionsancionar')->group(function () {
+    Route::get('/', [AccionSancionarController::class, 'index'])->name('estrategiassancionar.accionsancionar.index');
+    Route::get('/create', [AccionSancionarController::class, 'create'])->name('estrategiassancionar.accionsancionar.create');
+    Route::post('/', [AccionSancionarController::class, 'store'])->name('estrategiassancionar.accionsancionar.store');
+    Route::get('/{accion}', [AccionSancionarController::class, 'show'])->name('estrategiassancionar.accionsancionar.show');
+    Route::delete('/{id}', [AccionSancionarController::class, 'destroy'])->name('estrategiassancionar.accionsancionar.destroy');
+});
+
+// Ruta para mostrar el formulario de edición
+Route::get('estrategiassancionar/{estrategiaId}/accionsancionar/{accionSancionarId}/edit', [AccionSancionarController::class, 'edit'])
+    ->name('estrategiassancionar.accionsancionar.edit');
+
+// Ruta para procesar la actualización
+Route::put('estrategiassancionar/{estrategiaId}/accionsancionar/{accionSancionarId}', [AccionSancionarController::class, 'update'])
+    ->name('estrategiassancionar.accionsancionar.update');
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Rutas para las estrategias de erradicación
+Route::prefix('estrategiaserradicar')->group(function () {
+    Route::get('/', [EstrategiasErradicarController::class, 'index'])->name('estrategiaserradicar.index');
+    Route::get('/create', [EstrategiasErradicarController::class, 'create'])->name('estrategiaserradicar.create');
+    Route::post('/', [EstrategiasErradicarController::class, 'store'])->name('estrategiaserradicar.store');
+    Route::get('/{estrategia}', [EstrategiasErradicarController::class, 'show'])->name('estrategiaserradicar.show');
+    Route::get('/{id}/edit', [EstrategiasErradicarController::class, 'edit'])->name('estrategiaserradicar.edit');
+    Route::put('/{estrategia}', [EstrategiasErradicarController::class, 'update'])->name('estrategiaserradicar.update');
+    Route::delete('/{id}', [EstrategiasErradicarController::class, 'destroy'])->name('estrategiaserradicar.destroy');
+});
+
+// Rutas para acciones de erradicación bajo una estrategia específica
+Route::prefix('{estrategia}/accionerradicar')->group(function () {
+    Route::get('/', [AccionErradicarController::class, 'index'])->name('estrategiaserradicar.accionerradicar.index');
+    Route::get('/create', [AccionErradicarController::class, 'create'])->name('estrategiaserradicar.accionerradicar.create');
+    Route::post('/', [AccionErradicarController::class, 'store'])->name('estrategiaserradicar.accionerradicar.store');
+    Route::get('/{accion}', [AccionErradicarController::class, 'show'])->name('estrategiaserradicar.accionerradicar.show');
+    Route::delete('/{id}', [AccionErradicarController::class, 'destroy'])->name('estrategiaserradicar.accionerradicar.destroy');
+});
+
+// Ruta para mostrar el formulario de edición
+Route::get('estrategiaserradicar/{estrategiaId}/accionerradicar/{accionErradicarId}/edit', [AccionErradicarController::class, 'edit'])
+    ->name('estrategiaserradicar.accionerradicar.edit');
+
+// Ruta para procesar la actualización
+Route::put('estrategiaserradicar/{estrategiaId}/accionerradicar/{accionErradicarId}', [AccionErradicarController::class, 'update'])
+    ->name('estrategiaserradicar.accionerradicar.update');
 
 
 

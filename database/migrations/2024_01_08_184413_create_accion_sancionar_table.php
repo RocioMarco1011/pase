@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accion_atender', function (Blueprint $table) {
+        Schema::create('accion_sancionar', function (Blueprint $table) {
             $table->id();
             $table->string('accion');
             $table->enum('tipo', ['General', 'Especifica']);
@@ -20,12 +20,12 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('accion_atender');
+        Schema::dropIfExists('accion_sancionar');
     }
 };
