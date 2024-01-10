@@ -149,8 +149,7 @@ class IndicadoresErradicarController extends Controller
 
         Alert::success('Éxito', 'Indicador editado exitosamente.');
 
-        return redirect()->route('indicadoreserradicar.show', ['indicadoreserradicar' => $indicador->id])
-            ->with('success', 'Indicador actualizado exitosamente.');
+        return redirect()->route('indicadoreserradicar.show', ['indicadorerradicar' => $indicador->id]);
     }
 
     /**
