@@ -379,7 +379,7 @@ return [
         ],
         [
             'text' => 'Indicador Atender',
-            'url'  => '/indicadoresesatender',
+            'url'  => '/indicadoresatender',
             'icon' => 'fas fa-fw fa-file',
         ],
         [

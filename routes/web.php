@@ -10,14 +10,21 @@ use App\Http\Controllers\ArchivoController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\IndicadoresPrevenirController;
 use App\Http\Controllers\CalcularPrevenirController;
-use App\Models\IndicadorPrevenir;
 use App\Http\Controllers\EstrategiasAtenderController;
 use App\Http\Controllers\AccionAtenderController;
+use App\Http\Controllers\EvidenciaAtenderController;
+use App\Http\Controllers\IndicadoresAtenderController;
+use App\Http\Controllers\CalcularAtenderController;
 use App\Http\Controllers\EstrategiasSancionarController;
 use App\Http\Controllers\AccionSancionarController;
+use App\Http\Controllers\EvidenciaSancionarController;
+use App\Http\Controllers\IndicadoresSancionarController;
+use App\Http\Controllers\CalcularSancionarController;
 use App\Http\Controllers\EstrategiasErradicarController;
 use App\Http\Controllers\AccionErradicarController;
-
+use App\Http\Controllers\EvidenciaErradicarController;
+use App\Http\Controllers\IndicadoresErradicarController;
+use App\Http\Controllers\CalcularErradicarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +52,7 @@ Route::resource('users', \App\Http\Controllers\UsersController::class);
 });
 
 
-// Rutas para las estrategias de prevención
+// ESTRATEGIAS DE PREVENIR
 Route::prefix('estrategiasprevenir')->group(function () {
     Route::get('/', [EstrategiasPrevenirController::class, 'index'])->name('estrategiasprevenir.index');
     Route::get('/create', [EstrategiasPrevenirController::class, 'create'])->name('estrategiasprevenir.create');
@@ -56,7 +63,7 @@ Route::prefix('estrategiasprevenir')->group(function () {
     Route::delete('/{id}', [EstrategiasPrevenirController::class, 'destroy'])->name('estrategiasprevenir.destroy');
 });
 
-// Rutas para acciones de prevención bajo una estrategia específica
+// ACCIONES DE PREVENIR
 Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::get('/', [AccionPrevenirController::class, 'index'])->name('estrategiasprevenir.accionprevenir.index');
     Route::get('/create', [AccionPrevenirController::class, 'create'])->name('estrategiasprevenir.accionprevenir.create');
@@ -65,15 +72,15 @@ Route::prefix('{estrategia}/accionprevenir')->group(function () {
     Route::delete('/{id}', [AccionPrevenirController::class, 'destroy'])->name('estrategiasprevenir.accionprevenir.destroy');
 });
 
-// Ruta para mostrar el formulario de edición
+// ACCION PREVENIR EDIT
 Route::get('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}/edit', [AccionPrevenirController::class, 'edit'])
     ->name('estrategiasprevenir.accionprevenir.edit');
 
-// Ruta para procesar la actualización
+// ACCION PREVENIR UPDATE
 Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}', [AccionPrevenirController::class, 'update'])
     ->name('estrategiasprevenir.accionprevenir.update');
 
-    //Rutas para evidencias de prevencion bajo una accion especifica dentro de una estrategia especifica
+// EVIDENCIAS PREVENIR
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(function () {
     Route::get('/evidencias', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
     Route::get('/evidencias/create', [EvidenciaPrevenirController::class, 'create'])->name('evidenciaprevenir.create');
@@ -83,10 +90,10 @@ Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(
     Route::delete('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
 });
 
-//Ruta de la descarga del archivo
+// EVIDENCIAS FILE
 Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
 
-//Rutas para los indicadores de prevencion
+// INDICADORES PREVENIR
 Route::prefix('indicadoresprevenir')->group(function () {
     Route::get('/', [IndicadoresPrevenirController::class, 'index'])->name('indicadoresprevenir.index');
     Route::get('/create', [IndicadoresPrevenirController::class, 'create'])->name('indicadoresprevenir.create');
@@ -97,7 +104,7 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::delete('/{id}', [IndicadoresPrevenirController::class, 'destroy'])->name('indicadoresprevenir.destroy');
 });
 
-//Rutas para la formula de los indicadores de prevencion 
+// CALCULAR PREVENIR
     Route::get('/{indicadorprevenir}/calcularprevenir', [CalcularPrevenirController::class, 'index'])
     ->name('indicadoresprevenir.calcularprevenir.index');
     Route::post('/indicadoresprevenir/{indicadorprevenir}/calcularprevenir/guardarformula', [CalcularPrevenirController::class, 'guardarFormula'])
@@ -117,12 +124,12 @@ Route::prefix('indicadoresprevenir')->group(function () {
     Route::delete('/indicadoresprevenir/calcularprevenir/{calculo}', [CalcularPrevenirController::class, 'destroy'])
     ->name('indicadoresprevenir.calcularprevenir.destroy');
 
-    //Descargar PDF
+// CALCULAR PREVENIR PDF
     Route::get('/descargar-pdf/{indicadorprevenir}', [CalcularPrevenirController::class, 'descargarPDF'])->name('descargar.pdf');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Rutas para las estrategias de atención
+// ESTRATEGIAS DE ATENDER
 Route::prefix('estrategiasatender')->group(function () {
     Route::get('/', [EstrategiasAtenderController::class, 'index'])->name('estrategiasatender.index');
     Route::get('/create', [EstrategiasAtenderController::class, 'create'])->name('estrategiasatender.create');
@@ -133,7 +140,7 @@ Route::prefix('estrategiasatender')->group(function () {
     Route::delete('/{id}', [EstrategiasAtenderController::class, 'destroy'])->name('estrategiasatender.destroy');
 });
 
-// Rutas para acciones de atención bajo una estrategia específica
+// ACCIONES DE ATENDER
 Route::prefix('{estrategia}/accionatender')->group(function () {
     Route::get('/', [AccionAtenderController::class, 'index'])->name('estrategiasatender.accionatender.index');
     Route::get('/create', [AccionAtenderController::class, 'create'])->name('estrategiasatender.accionatender.create');
@@ -142,18 +149,64 @@ Route::prefix('{estrategia}/accionatender')->group(function () {
     Route::delete('/{id}', [AccionAtenderController::class, 'destroy'])->name('estrategiasatender.accionatender.destroy');
 });
 
-// Ruta para mostrar el formulario de edición
+// ACCION ATENDER EDIT
 Route::get('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}/edit', [AccionAtenderController::class, 'edit'])
     ->name('estrategiasatender.accionatender.edit');
 
-// Ruta para procesar la actualización
+// ACCION ATENDER UPDATE
 Route::put('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}', [AccionAtenderController::class, 'update'])
     ->name('estrategiasatender.accionatender.update');
 
+// EVIDENCIAS ATENDER
+Route::prefix('/estrategias/{estrategiaId}/acciones/{accionAtenderId}')->group(function () {
+    Route::get('/evidencias', [EvidenciaAtenderController::class, 'index'])->name('evidenciaatender.index');
+    Route::get('/evidencias/create', [EvidenciaAtenderController::class, 'create'])->name('evidenciaatender.create');
+    Route::post('/evidencias', [EvidenciaAtenderController::class, 'store'])->name('evidenciaatender.store');
+    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaAtenderController::class, 'edit'])->name('evidenciaatender.edit');
+    Route::put('/evidencias/{evidenciaId}', [EvidenciaAtenderController::class, 'update'])->name('evidenciaatender.update');
+    Route::delete('/evidencias/{evidenciaId}', [EvidenciaAtenderController::class, 'destroy'])->name('evidenciaatender.destroy');
+});
+
+// EVIDENCIAS FILE
+Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
+
+// INDICADORES ATENDER
+Route::prefix('indicadoresatender')->group(function () {
+    Route::get('/', [IndicadoresAtenderController::class, 'index'])->name('indicadoresatender.index');
+    Route::get('/create', [IndicadoresAtenderController::class, 'create'])->name('indicadoresatender.create');
+    Route::post('/', [IndicadoresAtenderController::class, 'store'])->name('indicadoresatender.store');
+    Route::get('/{indicadoratender}', [IndicadoresAtenderController::class, 'show'])->name('indicadoresatender.show');
+    Route::get('/{id}/edit', [IndicadoresAtenderController::class, 'edit'])->name('indicadoresatender.edit');
+    Route::put('/{indicadoratender}', [IndicadoresAtenderController::class, 'update'])->name('indicadoresatender.update');
+    Route::delete('/{id}', [IndicadoresAtenderController::class, 'destroy'])->name('indicadoresatender.destroy');
+});
+
+// CALCULAR ATENDER
+Route::get('/{indicadoratender}/calcularatender', [CalcularAtenderController::class, 'index'])
+    ->name('indicadoresatender.calcularatender.index');
+Route::post('/indicadoresatender/{indicadoratender}/calcularatender/guardarformula', [CalcularAtenderController::class, 'guardarFormula'])
+    ->name('indicadoresatender.calcularatender.guardarFormula');
+Route::get('/indicadoresatender/calcularatender/calculos/{indicadoratender}', [CalcularAtenderController::class, 'mostrarCalculo'])
+    ->name('indicadoresatender.calcularatender.calculos');
+Route::get('/indicadoresatender/{indicadoratender}/calcular', [CalcularAtenderController::class, 'calcularNuevo'])
+    ->name('indicadoresatender.calcularatender.calcular');
+Route::post('/indicadoresatender/{indicadoratender}/guardar-nuevo-calculo', [CalcularAtenderController::class, 'guardarNuevoCalculo'])
+    ->name('indicadoresatender.calcularatender.guardarNuevoCalculo');
+Route::get('indicadoresatender/calcularatender/show/{id}', [CalcularAtenderController::class, 'show'])
+    ->name('indicadoresatender.calcularatender.show');
+Route::get('/indicadoresatender/calcularatender/{calculo}/edit', [CalcularAtenderController::class, 'edit'])
+    ->name('indicadoresatender.calcularatender.edit');
+Route::put('/indicadoresatender/calcularatender/{calculo}', [CalcularAtenderController::class, 'update'])
+    ->name('indicadoresatender.calcularatender.update');
+Route::delete('/indicadoresatender/calcularatender/{calculo}', [CalcularAtenderController::class, 'destroy'])
+    ->name('indicadoresatender.calcularatender.destroy');
+
+// CALCULAR ATENDER PDF
+Route::get('/descargar-pdf/{indicadoratender}', [CalcularAtenderController::class, 'descargarPDF'])->name('descargar.pdf');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Rutas para las estrategias de sanción
+// ESTRATEGIAS DE SANCIONAR
 Route::prefix('estrategiassancionar')->group(function () {
     Route::get('/', [EstrategiasSancionarController::class, 'index'])->name('estrategiassancionar.index');
     Route::get('/create', [EstrategiasSancionarController::class, 'create'])->name('estrategiassancionar.create');
@@ -164,7 +217,7 @@ Route::prefix('estrategiassancionar')->group(function () {
     Route::delete('/{id}', [EstrategiasSancionarController::class, 'destroy'])->name('estrategiassancionar.destroy');
 });
 
-// Rutas para acciones de sanción bajo una estrategia específica
+// ACCIONES DE SANCIONAR
 Route::prefix('{estrategia}/accionsancionar')->group(function () {
     Route::get('/', [AccionSancionarController::class, 'index'])->name('estrategiassancionar.accionsancionar.index');
     Route::get('/create', [AccionSancionarController::class, 'create'])->name('estrategiassancionar.accionsancionar.create');
@@ -173,18 +226,64 @@ Route::prefix('{estrategia}/accionsancionar')->group(function () {
     Route::delete('/{id}', [AccionSancionarController::class, 'destroy'])->name('estrategiassancionar.accionsancionar.destroy');
 });
 
-// Ruta para mostrar el formulario de edición
+// ACCION SANCIONAR EDIT
 Route::get('estrategiassancionar/{estrategiaId}/accionsancionar/{accionSancionarId}/edit', [AccionSancionarController::class, 'edit'])
     ->name('estrategiassancionar.accionsancionar.edit');
 
-// Ruta para procesar la actualización
+// ACCION SANCIONAR UPDATE
 Route::put('estrategiassancionar/{estrategiaId}/accionsancionar/{accionSancionarId}', [AccionSancionarController::class, 'update'])
     ->name('estrategiassancionar.accionsancionar.update');
 
+// EVIDENCIAS SANCIONAR
+Route::prefix('/estrategias/{estrategiaId}/acciones/{accionSancionarId}')->group(function () {
+    Route::get('/evidencias', [EvidenciaSancionarController::class, 'index'])->name('evidenciasancionar.index');
+    Route::get('/evidencias/create', [EvidenciaSancionarController::class, 'create'])->name('evidenciasancionar.create');
+    Route::post('/evidencias', [EvidenciaSancionarController::class, 'store'])->name('evidenciasancionar.store');
+    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaSancionarController::class, 'edit'])->name('evidenciasancionar.edit');
+    Route::put('/evidencias/{evidenciaId}', [EvidenciaSancionarController::class, 'update'])->name('evidenciasancionar.update');
+    Route::delete('/evidencias/{evidenciaId}', [EvidenciaSancionarController::class, 'destroy'])->name('evidenciasancionar.destroy');
+});
+
+// EVIDENCIAS FILE
+Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
+
+// INDICADORES SANCIONAR
+Route::prefix('indicadoressancionar')->group(function () {
+    Route::get('/', [IndicadoresSancionarController::class, 'index'])->name('indicadoressancionar.index');
+    Route::get('/create', [IndicadoresSancionarController::class, 'create'])->name('indicadoressancionar.create');
+    Route::post('/', [IndicadoresSancionarController::class, 'store'])->name('indicadoressancionar.store');
+    Route::get('/{indicadorsancionar}', [IndicadoresSancionarController::class, 'show'])->name('indicadoressancionar.show');
+    Route::get('/{id}/edit', [IndicadoresSancionarController::class, 'edit'])->name('indicadoressancionar.edit');
+    Route::put('/{indicadorsancionar}', [IndicadoresSancionarController::class, 'update'])->name('indicadoressancionar.update');
+    Route::delete('/{id}', [IndicadoresSancionarController::class, 'destroy'])->name('indicadoressancionar.destroy');
+});
+
+// CALCULAR SANCIONAR
+Route::get('/{indicadorsancionar}/calcularsancionar', [CalcularSancionarController::class, 'index'])
+    ->name('indicadoressancionar.calcularsancionar.index');
+Route::post('/indicadoressancionar/{indicadorsancionar}/calcularsancionar/guardarformula', [CalcularSancionarController::class, 'guardarFormula'])
+    ->name('indicadoressancionar.calcularsancionar.guardarFormula');
+Route::get('/indicadoressancionar/calcularsancionar/calculos/{indicadorsancionar}', [CalcularSancionarController::class, 'mostrarCalculo'])
+    ->name('indicadoressancionar.calcularsancionar.calculos');
+Route::get('/indicadoressancionar/{indicadorsancionar}/calcular', [CalcularSancionarController::class, 'calcularNuevo'])
+    ->name('indicadoressancionar.calcularsancionar.calcular');
+Route::post('/indicadoressancionar/{indicadorsancionar}/guardar-nuevo-calculo', [CalcularSancionarController::class, 'guardarNuevoCalculo'])
+    ->name('indicadoressancionar.calcularsancionar.guardarNuevoCalculo');
+Route::get('indicadoressancionar/calcularsancionar/show/{id}', [CalcularSancionarController::class, 'show'])
+    ->name('indicadoressancionar.calcularsancionar.show');
+Route::get('/indicadoressancionar/calcularsancionar/{calculo}/edit', [CalcularSancionarController::class, 'edit'])
+    ->name('indicadoressancionar.calcularsancionar.edit');
+Route::put('/indicadoressancionar/calcularsancionar/{calculo}', [CalcularSancionarController::class, 'update'])
+    ->name('indicadoressancionar.calcularsancionar.update');
+Route::delete('/indicadoressancionar/calcularsancionar/{calculo}', [CalcularSancionarController::class, 'destroy'])
+    ->name('indicadoressancionar.calcularsancionar.destroy');
+
+// CALCULAR SANCIONAR PDF
+Route::get('/descargar-pdf/{indicadorsancionar}', [CalcularSancionarController::class, 'descargarPDF'])->name('descargar.pdf');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Rutas para las estrategias de erradicación
+// ESTRATEGIAS DE ERRADICAR
 Route::prefix('estrategiaserradicar')->group(function () {
     Route::get('/', [EstrategiasErradicarController::class, 'index'])->name('estrategiaserradicar.index');
     Route::get('/create', [EstrategiasErradicarController::class, 'create'])->name('estrategiaserradicar.create');
@@ -195,7 +294,7 @@ Route::prefix('estrategiaserradicar')->group(function () {
     Route::delete('/{id}', [EstrategiasErradicarController::class, 'destroy'])->name('estrategiaserradicar.destroy');
 });
 
-// Rutas para acciones de erradicación bajo una estrategia específica
+// ACCIONES DE ERRADICAR
 Route::prefix('{estrategia}/accionerradicar')->group(function () {
     Route::get('/', [AccionErradicarController::class, 'index'])->name('estrategiaserradicar.accionerradicar.index');
     Route::get('/create', [AccionErradicarController::class, 'create'])->name('estrategiaserradicar.accionerradicar.create');
@@ -204,25 +303,60 @@ Route::prefix('{estrategia}/accionerradicar')->group(function () {
     Route::delete('/{id}', [AccionErradicarController::class, 'destroy'])->name('estrategiaserradicar.accionerradicar.destroy');
 });
 
-// Ruta para mostrar el formulario de edición
+// ACCION ERRADICAR EDIT
 Route::get('estrategiaserradicar/{estrategiaId}/accionerradicar/{accionErradicarId}/edit', [AccionErradicarController::class, 'edit'])
     ->name('estrategiaserradicar.accionerradicar.edit');
 
-// Ruta para procesar la actualización
+// ACCION ERRADICAR UPDATE
 Route::put('estrategiaserradicar/{estrategiaId}/accionerradicar/{accionErradicarId}', [AccionErradicarController::class, 'update'])
     ->name('estrategiaserradicar.accionerradicar.update');
 
+// EVIDENCIAS ERRADICAR
+Route::prefix('/estrategias/{estrategiaId}/acciones/{accionErradicarId}')->group(function () {
+    Route::get('/evidencias', [EvidenciaErradicarController::class, 'index'])->name('evidenciaerradicar.index');
+    Route::get('/evidencias/create', [EvidenciaErradicarController::class, 'create'])->name('evidenciaerradicar.create');
+    Route::post('/evidencias', [EvidenciaErradicarController::class, 'store'])->name('evidenciaerradicar.store');
+    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaErradicarController::class, 'edit'])->name('evidenciaerradicar.edit');
+    Route::put('/evidencias/{evidenciaId}', [EvidenciaErradicarController::class, 'update'])->name('evidenciaerradicar.update');
+    Route::delete('/evidencias/{evidenciaId}', [EvidenciaErradicarController::class, 'destroy'])->name('evidenciaerradicar.destroy');
+});
 
+// EVIDENCIAS FILE
+Route::get('/download/{filename}', [ArchivoController::class, 'download'])->name('file.download');
 
+// INDICADORES ERRADICAR
+Route::prefix('indicadoreserradicar')->group(function () {
+    Route::get('/', [IndicadoresErradicarController::class, 'index'])->name('indicadoreserradicar.index');
+    Route::get('/create', [IndicadoresErradicarController::class, 'create'])->name('indicadoreserradicar.create');
+    Route::post('/', [IndicadoresErradicarController::class, 'store'])->name('indicadoreserradicar.store');
+    Route::get('/{indicadorerradicar}', [IndicadoresErradicarController::class, 'show'])->name('indicadoreserradicar.show');
+    Route::get('/{id}/edit', [IndicadoresErradicarController::class, 'edit'])->name('indicadoreserradicar.edit');
+    Route::put('/{indicadorerradicar}', [IndicadoresErradicarController::class, 'update'])->name('indicadoreserradicar.update');
+    Route::delete('/{id}', [IndicadoresErradicarController::class, 'destroy'])->name('indicadoreserradicar.destroy');
+});
 
+// CALCULAR ERRADICAR
+Route::get('/{indicadorerradicar}/calcularerradicar', [CalcularErradicarController::class, 'index'])
+    ->name('indicadoreserradicar.calcularerradicar.index');
+Route::post('/indicadoreserradicar/{indicadorerradicar}/calcularerradicar/guardarformula', [CalcularErradicarController::class, 'guardarFormula'])
+    ->name('indicadoreserradicar.calcularerradicar.guardarFormula');
+Route::get('/indicadoreserradicar/calcularerradicar/calculos/{indicadorerradicar}', [CalcularErradicarController::class, 'mostrarCalculo'])
+    ->name('indicadoreserradicar.calcularerradicar.calculos');
+Route::get('/indicadoreserradicar/{indicadorerradicar}/calcular', [CalcularErradicarController::class, 'calcularNuevo'])
+    ->name('indicadoreserradicar.calcularerradicar.calcular');
+Route::post('/indicadoreserradicar/{indicadorerradicar}/guardar-nuevo-calculo', [CalcularErradicarController::class, 'guardarNuevoCalculo'])
+    ->name('indicadoreserradicar.calcularerradicar.guardarNuevoCalculo');
+Route::get('indicadoreserradicar/calcularerradicar/show/{id}', [CalcularErradicarController::class, 'show'])
+    ->name('indicadoreserradicar.calcularerradicar.show');
+Route::get('/indicadoreserradicar/calcularerradicar/{calculo}/edit', [CalcularErradicarController::class, 'edit'])
+    ->name('indicadoreserradicar.calcularerradicar.edit');
+Route::put('/indicadoreserradicar/calcularerradicar/{calculo}', [CalcularErradicarController::class, 'update'])
+    ->name('indicadoreserradicar.calcularerradicar.update');
+Route::delete('/indicadoreserradicar/calcularerradicar/{calculo}', [CalcularErradicarController::class, 'destroy'])
+    ->name('indicadoreserradicar.calcularerradicar.destroy');
 
-
-
-
-
-
-
-
+// CALCULAR ERRADICAR PDF
+Route::get('/descargar-pdf/{indicadorerradicar}', [CalcularErradicarController::class, 'descargarPDF'])->name('descargar.pdf');
 
 
 

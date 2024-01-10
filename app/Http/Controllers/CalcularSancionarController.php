@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CalcularPrevenir;
-use App\Models\IndicadorPrevenir;
+use App\Models\CalcularSancionar;
+use App\Models\IndicadorSancionar;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Exception;
 use PDF;
 
-class CalcularPrevenirController extends Controller
+class CalcularSancionarController extends Controller
 {
-    public function index(IndicadorPrevenir $indicadorprevenir)
+    public function index(IndicadorSancionar $indicadorsancionar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+        $calculo = CalcularSancionar::where('indicador_sancionar_id', $indicadorsancionar->id)->first();
 
         if ($calculo) {
-            return $this->mostrarCalculo($indicadorprevenir);
+            return $this->mostrarCalculo($indicadorsancionar);
         }
 
-        return view('indicadoresprevenir.calcularprevenir.index', compact('indicadorprevenir'));
+        return view('indicadoressancionar.calcularsancionar.index', compact('indicadorsancionar'));
     }
-
-    public function guardarFormula(Request $request, IndicadorPrevenir $indicadorprevenir)
+    
+    public function guardarFormula(Request $request, IndicadorSancionar $indicadorsancionar)
     {
         $request->validate([
             'formula' => 'required|string',
@@ -47,16 +47,17 @@ class CalcularPrevenirController extends Controller
                 return redirect()->back();
             }
 
-            $calculo = new CalcularPrevenir;
+            $calculo = new CalcularSancionar;
             $calculo->formula = $formula;
             $calculo->variables = $valores;
-            $calculo->indicador_prevenir_id = $indicadorprevenir->id;
+            $calculo->indicador_sancionar_id = $indicadorsancionar->id;
             $calculo->resultado = $resultado;
             $calculo->user_id = auth()->id();
             $calculo->save();
 
             Alert::success('Éxito', 'La fórmula se guardó correctamente.');
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id]);
+
+            return redirect()->route('indicadoressancionar.calcularsancionar.calculos', ['indicadorsancionar' => $indicadorsancionar->id]);
 
         } catch (Exception $e) {
             Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
@@ -90,38 +91,39 @@ class CalcularPrevenirController extends Controller
         try {
             $language = new ExpressionLanguage();
             $resultado = $language->evaluate($formula, $valores);
+
             return $resultado;
         } catch (Exception $e) {
             throw new Exception('Error al evaluar la fórmula: ' . $e->getMessage());
         }
     }
 
-    public function mostrarCalculo(IndicadorPrevenir $indicadorprevenir)
+    public function mostrarCalculo(IndicadorSancionar $indicadorsancionar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+        $calculo = CalcularSancionar::where('indicador_sancionar_id', $indicadorsancionar->id)->get();
 
-        return view('indicadoresprevenir.calcularprevenir.calculos', [
-            'indicadorprevenir' => $indicadorprevenir,
+        return view('indicadoressancionar.calcularsancionar.calculos', [
+            'indicadorsancionar' => $indicadorsancionar,
             'calculo' => $calculo,
         ]);
     }
 
-    public function calcularNuevo(IndicadorPrevenir $indicadorprevenir)
+    public function calcularNuevo(IndicadorSancionar $indicadorsancionar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+        $calculo = CalcularSancionar::where('indicador_sancionar_id', $indicadorsancionar->id)->first();
         $variables = $calculo ? self::obtenerVariables($calculo->formula) : [];
 
-        return view('indicadoresprevenir.calcularprevenir.calcular', [
-            'indicadorprevenir' => $indicadorprevenir,
+        return view('indicadoressancionar.calcularsancionar.calcular', [
+            'indicadorsancionar' => $indicadorsancionar,
             'variables' => $variables,
             'formula' => $calculo->formula,
         ]);
     }
 
-    public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicadorprevenir)
+    public function guardarNuevoCalculo(Request $request, IndicadorSancionar $indicadorsancionar)
     {
         try {
-            $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+            $calculo = CalcularSancionar::where('indicador_sancionar_id', $indicadorsancionar->id)->first();
 
             if (!$calculo) {
                 return redirect()->back()->with('alert', [
@@ -143,29 +145,30 @@ class CalcularPrevenirController extends Controller
                 return redirect()->back();
             }
 
-            $nuevoCalculo = CalcularPrevenir::create([
+            $nuevoCalculo = CalcularSancionar::create([
                 'formula' => $calculo->formula,
-                'indicador_prevenir_id' => $indicadorprevenir->id,
+                'indicador_sancionar_id' => $indicadorsancionar->id,
                 'resultado' => $resultado,
                 'user_id' => auth()->id(),
                 'variables' => $valores,
             ]);
 
             Alert::success('Éxito', 'Nuevo cálculo realizado correctamente.');
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id, 'calculo' => $nuevoCalculo->id]);
+
+            return redirect()->route('indicadoressancionar.calcularsancionar.calculos', ['indicadorsancionar' => $indicadorsancionar->id, 'calculo' => $nuevoCalculo->id]);
 
         } catch (\Exception $e) {
-            alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
             return redirect()->back();
         } catch (\Throwable $t) {
-            alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
             return redirect()->back();
         }
     }
 
     public function show($id)
     {
-        $calculo = CalcularPrevenir::find($id);
+        $calculo = CalcularSancionar::find($id);
 
         if (!$calculo) {
             return redirect()->back()->with('alert', [
@@ -175,50 +178,51 @@ class CalcularPrevenirController extends Controller
             ]);
         }
 
-        return view('indicadoresprevenir.calcularprevenir.show', compact('calculo'));
+        return view('indicadoressancionar.calcularsancionar.show', compact('calculo'));
     }
 
-    public function edit(CalcularPrevenir $calculo)
+    public function edit(CalcularSancionar $calculo)
     {
-        return view('indicadoresprevenir.calcularprevenir.edit', compact('calculo'));
+        return view('indicadoressancionar.calcularsancionar.edit', compact('calculo'));
     }
 
-    public function destroy(CalcularPrevenir $calculo)
+    public function destroy(CalcularSancionar $calculo)
     {
-        $indicadorprevenirId = $calculo->indicador_prevenir_id;
+        $indicadorsancionarId = $calculo->indicador_sancionar_id;
 
         $calculo->delete();
 
         Alert::success('Éxito', 'Fórmula eliminada correctamente.')->showConfirmButton('Aceptar');
 
-        return redirect()->route('indicadoresprevenir.index', ['indicadorprevenir' => $indicadorprevenirId]);
+        return redirect()->route('indicadoressancionar.index', ['indicadorsancionar' => $indicadorsancionarId]);
     }
 
-    public function update(Request $request, CalcularPrevenir $calculo)
+    public function update(Request $request, CalcularSancionar $calculo)
     {
         try {
             $calculo->update($request->all());
 
             Alert::success('Éxito', 'Fórmula editada correctamente.')->showConfirmButton('Aceptar');
 
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $calculo->indicador_prevenir_id]);
+            return redirect()->route('indicadoressancionar.calcularsancionar.calculos', ['indicadorsancionar' => $calculo->indicador_sancionar_id]);
 
         } catch (\Exception $e) {
             Alert::error('Error', 'Error al editar la fórmula: ' . $e->getMessage())->showConfirmButton('Aceptar');
+
             return redirect()->back();
         }
     }
 
-    public function descargarPDF(IndicadorPrevenir $indicadorprevenir)
+    public function descargarPDF(IndicadorSancionar $indicadorsancionar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+        $calculo = CalcularSancionar::where('indicador_sancionar_id', $indicadorsancionar->id)->get();
 
         if ($calculo->count() === 0) {
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorprevenir'));
+        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorsancionar'));
 
-        return $pdf->download('resultados_de_indicador_' . $indicadorprevenir->id . '.pdf');
+        return $pdf->download('resultados_de_indicador_' . $indicadorsancionar->id . '.pdf');
     }
 }

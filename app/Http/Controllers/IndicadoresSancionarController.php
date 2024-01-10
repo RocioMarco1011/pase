@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\IndicadorPrevenir;
+use App\Models\IndicadorSancionar;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class IndicadoresPrevenirController extends Controller
+class IndicadoresSancionarController extends Controller
 {
     public function index(Request $request)
     {
@@ -16,21 +16,21 @@ class IndicadoresPrevenirController extends Controller
         $user_name = $user->name;
 
         if ($user->hasRole('Administrador')) {
-            $indicadores = IndicadorPrevenir::all();
+            $indicadores = IndicadorSancionar::all();
         } else {
-            $indicadores = IndicadorPrevenir::where(function ($query) use ($user_name) {
-                    $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(medios_verificacion, ', ', ',')) > 0");
-                })
-                ->get();
+            $indicadores = IndicadorSancionar::where(function ($query) use ($user_name) {
+                $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(medios_verificacion, ', ', ',')) > 0");
+            })
+            ->get();
         }
 
-        return view('indicadoresprevenir.index', compact('indicadores'));
+        return view('indicadoressancionar.index', compact('indicadores'));
     }
 
     public function create()
     {
         $users = User::all();
-        return view('indicadoresprevenir.create', compact('users'));
+        return view('indicadoressancionar.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -54,7 +54,7 @@ class IndicadoresPrevenirController extends Controller
         $mediosVerificacionIds = $request->input('medios_verificacion', []);
         $mediosVerificacionUsers = User::whereIn('id', $mediosVerificacionIds)->pluck('name')->implode(', ');
 
-        IndicadorPrevenir::create([
+        IndicadorSancionar::create([
             'nombre' => $request->input('nombre'),
             'objetivo' => $request->input('objetivo'),
             'definicion' => $request->input('definicion'),
@@ -72,21 +72,21 @@ class IndicadoresPrevenirController extends Controller
 
         Alert::success('Éxito', 'Indicador creado exitosamente.');
 
-        return redirect()->route('indicadoresprevenir.index')
+        return redirect()->route('indicadoressancionar.index')
             ->with('success', 'Indicador creado exitosamente.');
     }
 
     public function show($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
-        return view('indicadoresprevenir.show', compact('indicador'));
+        $indicador = IndicadorSancionar::findOrFail($id);
+        return view('indicadoressancionar.show', compact('indicador'));
     }
 
     public function edit($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorSancionar::findOrFail($id);
         $users = User::all();
-        return view('indicadoresprevenir.edit', compact('indicador', 'users'));
+        return view('indicadoressancionar.edit', compact('indicador', 'users'));
     }
 
     public function update(Request $request, $id)
@@ -107,7 +107,7 @@ class IndicadoresPrevenirController extends Controller
             'semaforo' => 'required|string',
         ]);
 
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorSancionar::findOrFail($id);
 
         $mediosVerificacionIds = $request->input('medios_verificacion', []);
         $mediosVerificacionUsers = User::whereIn('id', $mediosVerificacionIds)->pluck('name')->implode(', ');
@@ -130,13 +130,13 @@ class IndicadoresPrevenirController extends Controller
 
         Alert::success('Éxito', 'Indicador editado exitosamente.');
 
-        return redirect()->route('indicadoresprevenir.show', ['indicadorprevenir' => $indicador->id])
-            ->with('success', 'Indicador actualizado exitosamente.');
+        return redirect()->route('indicadoressancionar.show', ['indicadorsancionar' => $indicador->id]);
+
     }
 
     public function destroy($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorSancionar::findOrFail($id);
 
         try {
             $indicador->delete();
@@ -145,6 +145,6 @@ class IndicadoresPrevenirController extends Controller
             Alert::error('Error', 'No se pudo eliminar el indicador porque contiene fórmula relacionada.')->autoClose(3500);
         }
 
-        return redirect()->route('indicadoresprevenir.index');
+        return redirect()->route('indicadoressancionar.index');
     }
 }

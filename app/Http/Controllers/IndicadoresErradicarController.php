@@ -5,34 +5,42 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\IndicadorPrevenir;
+use App\Models\IndicadorErradicar;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class IndicadoresPrevenirController extends Controller
+class IndicadoresErradicarController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         $user = auth()->user();
         $user_name = $user->name;
 
         if ($user->hasRole('Administrador')) {
-            $indicadores = IndicadorPrevenir::all();
+            $indicadores = IndicadorErradicar::all();
         } else {
-            $indicadores = IndicadorPrevenir::where(function ($query) use ($user_name) {
-                    $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(medios_verificacion, ', ', ',')) > 0");
-                })
-                ->get();
+            $indicadores = IndicadorErradicar::where(function ($query) use ($user_name) {
+                $query->whereRaw("FIND_IN_SET('{$user_name}', REPLACE(medios_verificacion, ', ', ',')) > 0");
+            })->get();
         }
 
-        return view('indicadoresprevenir.index', compact('indicadores'));
+        return view('indicadoreserradicar.index', compact('indicadores'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         $users = User::all();
-        return view('indicadoresprevenir.create', compact('users'));
+        return view('indicadoreserradicar.create', compact('users'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -54,7 +62,7 @@ class IndicadoresPrevenirController extends Controller
         $mediosVerificacionIds = $request->input('medios_verificacion', []);
         $mediosVerificacionUsers = User::whereIn('id', $mediosVerificacionIds)->pluck('name')->implode(', ');
 
-        IndicadorPrevenir::create([
+        IndicadorErradicar::create([
             'nombre' => $request->input('nombre'),
             'objetivo' => $request->input('objetivo'),
             'definicion' => $request->input('definicion'),
@@ -72,23 +80,32 @@ class IndicadoresPrevenirController extends Controller
 
         Alert::success('Éxito', 'Indicador creado exitosamente.');
 
-        return redirect()->route('indicadoresprevenir.index')
+        return redirect()->route('indicadoreserradicar.index')
             ->with('success', 'Indicador creado exitosamente.');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
-        return view('indicadoresprevenir.show', compact('indicador'));
+        $indicador = IndicadorErradicar::findOrFail($id);
+        return view('indicadoreserradicar.show', compact('indicador'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorErradicar::findOrFail($id);
         $users = User::all();
-        return view('indicadoresprevenir.edit', compact('indicador', 'users'));
+        return view('indicadoreserradicar.edit', compact('indicador', 'users'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -105,9 +122,11 @@ class IndicadoresPrevenirController extends Controller
             'tendencia_esperada' => 'required|string',
             'frecuencia_medicion' => 'required|string',
             'semaforo' => 'required|string',
+            // Agrega más reglas de validación según tus necesidades
         ]);
+    
 
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorErradicar::findOrFail($id);
 
         $mediosVerificacionIds = $request->input('medios_verificacion', []);
         $mediosVerificacionUsers = User::whereIn('id', $mediosVerificacionIds)->pluck('name')->implode(', ');
@@ -130,13 +149,16 @@ class IndicadoresPrevenirController extends Controller
 
         Alert::success('Éxito', 'Indicador editado exitosamente.');
 
-        return redirect()->route('indicadoresprevenir.show', ['indicadorprevenir' => $indicador->id])
+        return redirect()->route('indicadoreserradicar.show', ['indicadoreserradicar' => $indicador->id])
             ->with('success', 'Indicador actualizado exitosamente.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
-        $indicador = IndicadorPrevenir::findOrFail($id);
+        $indicador = IndicadorErradicar::findOrFail($id);
 
         try {
             $indicador->delete();
@@ -145,6 +167,6 @@ class IndicadoresPrevenirController extends Controller
             Alert::error('Error', 'No se pudo eliminar el indicador porque contiene fórmula relacionada.')->autoClose(3500);
         }
 
-        return redirect()->route('indicadoresprevenir.index');
+        return redirect()->route('indicadoreserradicar.index');
     }
 }

@@ -20,7 +20,7 @@
 
                             <!-- Botones para editar y eliminar fórmula -->
                             <div class="mt-4">
-                                <a href="{{ route('indicadoresprevenir.calcularprevenir.edit', ['calculo' => $calculo->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">Editar Fórmula</a>
+                                <a href="{{ route('indicadoressancionar.calcularsancionar.edit', ['calculo' => $calculo->id]) }}" class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">Editar Fórmula</a>
                             </div>
                         @else
                             <p>No se encontró la fórmula.</p>
@@ -29,6 +29,6 @@
                 </div>
             </div>
         </div>
-</x-app-layout>
+    </x-app-layout>
 
 @stop

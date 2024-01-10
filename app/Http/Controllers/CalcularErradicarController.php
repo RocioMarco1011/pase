@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CalcularPrevenir;
-use App\Models\IndicadorPrevenir;
+use App\Models\CalcularErradicar;
+use App\Models\IndicadorErradicar;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Exception;
 use PDF;
 
-class CalcularPrevenirController extends Controller
+class CalcularErradicarController extends Controller
 {
-    public function index(IndicadorPrevenir $indicadorprevenir)
+    public function index(IndicadorErradicar $indicadorerradicar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+        $calculo = CalcularErradicar::where('indicador_erradicar_id', $indicadorerradicar->id)->first();
 
         if ($calculo) {
-            return $this->mostrarCalculo($indicadorprevenir);
+            return $this->mostrarCalculo($indicadorerradicar);
         }
 
-        return view('indicadoresprevenir.calcularprevenir.index', compact('indicadorprevenir'));
+        return view('indicadoreserradicar.calcularerradicar.index', compact('indicadorerradicar'));
     }
-
-    public function guardarFormula(Request $request, IndicadorPrevenir $indicadorprevenir)
+    
+    public function guardarFormula(Request $request, IndicadorErradicar $indicadorerradicar)
     {
         $request->validate([
             'formula' => 'required|string',
@@ -47,16 +47,17 @@ class CalcularPrevenirController extends Controller
                 return redirect()->back();
             }
 
-            $calculo = new CalcularPrevenir;
+            $calculo = new CalcularErradicar;
             $calculo->formula = $formula;
             $calculo->variables = $valores;
-            $calculo->indicador_prevenir_id = $indicadorprevenir->id;
+            $calculo->indicador_erradicar_id = $indicadorerradicar->id;
             $calculo->resultado = $resultado;
             $calculo->user_id = auth()->id();
             $calculo->save();
 
             Alert::success('Éxito', 'La fórmula se guardó correctamente.');
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id]);
+
+            return redirect()->route('indicadoreserradicar.calcularerradicar.calculos', ['indicadorerradicar' => $indicadorerradicar->id]);
 
         } catch (Exception $e) {
             Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
@@ -90,38 +91,39 @@ class CalcularPrevenirController extends Controller
         try {
             $language = new ExpressionLanguage();
             $resultado = $language->evaluate($formula, $valores);
+
             return $resultado;
         } catch (Exception $e) {
             throw new Exception('Error al evaluar la fórmula: ' . $e->getMessage());
         }
     }
 
-    public function mostrarCalculo(IndicadorPrevenir $indicadorprevenir)
+    public function mostrarCalculo(IndicadorErradicar $indicadorerradicar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+        $calculo = CalcularErradicar::where('indicador_erradicar_id', $indicadorerradicar->id)->get();
 
-        return view('indicadoresprevenir.calcularprevenir.calculos', [
-            'indicadorprevenir' => $indicadorprevenir,
+        return view('indicadoreserradicar.calcularerradicar.calculos', [
+            'indicadorerradicar' => $indicadorerradicar,
             'calculo' => $calculo,
         ]);
     }
 
-    public function calcularNuevo(IndicadorPrevenir $indicadorprevenir)
+    public function calcularNuevo(IndicadorErradicar $indicadorerradicar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+        $calculo = CalcularErradicar::where('indicador_erradicar_id', $indicadorerradicar->id)->first();
         $variables = $calculo ? self::obtenerVariables($calculo->formula) : [];
 
-        return view('indicadoresprevenir.calcularprevenir.calcular', [
-            'indicadorprevenir' => $indicadorprevenir,
+        return view('indicadoreserradicar.calcularerradicar.calcular', [
+            'indicadorerradicar' => $indicadorerradicar,
             'variables' => $variables,
             'formula' => $calculo->formula,
         ]);
     }
 
-    public function guardarNuevoCalculo(Request $request, IndicadorPrevenir $indicadorprevenir)
+    public function guardarNuevoCalculo(Request $request, IndicadorErradicar $indicadorerradicar)
     {
         try {
-            $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->first();
+            $calculo = CalcularErradicar::where('indicador_erradicar_id', $indicadorerradicar->id)->first();
 
             if (!$calculo) {
                 return redirect()->back()->with('alert', [
@@ -143,29 +145,30 @@ class CalcularPrevenirController extends Controller
                 return redirect()->back();
             }
 
-            $nuevoCalculo = CalcularPrevenir::create([
+            $nuevoCalculo = CalcularErradicar::create([
                 'formula' => $calculo->formula,
-                'indicador_prevenir_id' => $indicadorprevenir->id,
+                'indicador_erradicar_id' => $indicadorerradicar->id,
                 'resultado' => $resultado,
                 'user_id' => auth()->id(),
                 'variables' => $valores,
             ]);
 
             Alert::success('Éxito', 'Nuevo cálculo realizado correctamente.');
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $indicadorprevenir->id, 'calculo' => $nuevoCalculo->id]);
+
+            return redirect()->route('indicadoreserradicar.calcularerradicar.calculos', ['indicadorerradicar' => $indicadorerradicar->id, 'calculo' => $nuevoCalculo->id]);
 
         } catch (\Exception $e) {
-            alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
             return redirect()->back();
         } catch (\Throwable $t) {
-            alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
+            Alert::error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
             return redirect()->back();
         }
     }
 
     public function show($id)
     {
-        $calculo = CalcularPrevenir::find($id);
+        $calculo = CalcularErradicar::find($id);
 
         if (!$calculo) {
             return redirect()->back()->with('alert', [
@@ -175,50 +178,51 @@ class CalcularPrevenirController extends Controller
             ]);
         }
 
-        return view('indicadoresprevenir.calcularprevenir.show', compact('calculo'));
+        return view('indicadoreserradicar.calcularerradicar.show', compact('calculo'));
     }
 
-    public function edit(CalcularPrevenir $calculo)
+    public function edit(CalcularErradicar $calculo)
     {
-        return view('indicadoresprevenir.calcularprevenir.edit', compact('calculo'));
+        return view('indicadoreserradicar.calcularerradicar.edit', compact('calculo'));
     }
 
-    public function destroy(CalcularPrevenir $calculo)
+    public function destroy(CalcularErradicar $calculo)
     {
-        $indicadorprevenirId = $calculo->indicador_prevenir_id;
+        $indicadorerradicarId = $calculo->indicador_erradicar_id;
 
         $calculo->delete();
 
         Alert::success('Éxito', 'Fórmula eliminada correctamente.')->showConfirmButton('Aceptar');
 
-        return redirect()->route('indicadoresprevenir.index', ['indicadorprevenir' => $indicadorprevenirId]);
+        return redirect()->route('indicadoreserradicar.index', ['indicadorerradicar' => $indicadorerradicarId]);
     }
 
-    public function update(Request $request, CalcularPrevenir $calculo)
+    public function update(Request $request, CalcularErradicar $calculo)
     {
         try {
             $calculo->update($request->all());
 
             Alert::success('Éxito', 'Fórmula editada correctamente.')->showConfirmButton('Aceptar');
 
-            return redirect()->route('indicadoresprevenir.calcularprevenir.calculos', ['indicadorprevenir' => $calculo->indicador_prevenir_id]);
+            return redirect()->route('indicadoreserradicar.calcularerradicar.calculos', ['indicadorerradicar' => $calculo->indicador_erradicar_id]);
 
         } catch (\Exception $e) {
             Alert::error('Error', 'Error al editar la fórmula: ' . $e->getMessage())->showConfirmButton('Aceptar');
+
             return redirect()->back();
         }
     }
 
-    public function descargarPDF(IndicadorPrevenir $indicadorprevenir)
+    public function descargarPDF(IndicadorErradicar $indicadorerradicar)
     {
-        $calculo = CalcularPrevenir::where('indicador_prevenir_id', $indicadorprevenir->id)->get();
+        $calculo = CalcularErradicar::where('indicador_erradicar_id', $indicadorerradicar->id)->get();
 
         if ($calculo->count() === 0) {
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorprevenir'));
+        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorerradicar'));
 
-        return $pdf->download('resultados_de_indicador_' . $indicadorprevenir->id . '.pdf');
+        return $pdf->download('resultados_de_indicador_' . $indicadorerradicar->id . '.pdf');
     }
 }

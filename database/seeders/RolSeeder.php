@@ -206,7 +206,89 @@ class RolSeeder extends Seeder
     
         $permission25 = Permission::where('name', 'EliminarCalculoPrevenir')->first();
 
+        // PERMISO 26
+        if (!Permission::where('name', 'AñadirIndicadorAtender')->exists()) {
+            Permission::create(['name' => 'AñadirIndicadorAtender']);
+        }
 
+        $permission26 = Permission::where('name', 'AñadirIndicadorAtender')->first();
+
+        // PERMISO 27
+        if (!Permission::where('name', 'VerIndicadorAtender')->exists()) {
+            Permission::create(['name' => 'VerIndicadorAtender']);
+        }
+
+        $permission27 = Permission::where('name', 'VerIndicadorAtender')->first();
+
+        // PERMISO 28
+        if (!Permission::where('name', 'VerFormulaAtender')->exists()) {
+            Permission::create(['name' => 'VerFormulaAtender']);
+        }
+
+        $permission28 = Permission::where('name', 'VerFormulaAtender')->first();
+
+        // PERMISO 29
+        if (!Permission::where('name', 'EliminarCalculoAtender')->exists()) {
+            Permission::create(['name' => 'EliminarCalculoAtender']);
+        }
+
+        $permission29 = Permission::where('name', 'EliminarCalculoAtender')->first();
+
+        // PERMISO 30
+        if (!Permission::where('name', 'AñadirIndicadorSancionar')->exists()) {
+            Permission::create(['name' => 'AñadirIndicadorSancionar']);
+        }
+
+        $permission30 = Permission::where('name', 'AñadirIndicadorSancionar')->first();
+
+        // PERMISO 31
+        if (!Permission::where('name', 'VerIndicadorSancionar')->exists()) {
+            Permission::create(['name' => 'VerIndicadorSancionar']);
+        }
+
+        $permission31 = Permission::where('name', 'VerIndicadorSancionar')->first();
+
+        // PERMISO 32
+        if (!Permission::where('name', 'VerFormulaSancionar')->exists()) {
+            Permission::create(['name' => 'VerFormulaSancionar']);
+        }
+
+        $permission32 = Permission::where('name', 'VerFormulaSancionar')->first();
+
+        // PERMISO 33
+        if (!Permission::where('name', 'EliminarCalculoSancionar')->exists()) {
+            Permission::create(['name' => 'EliminarCalculoSancionar']);
+        }
+
+        $permission33 = Permission::where('name', 'EliminarCalculoSancionar')->first();
+
+        // PERMISO 34
+        if (!Permission::where('name', 'AñadirIndicadorErradicar')->exists()) {
+            Permission::create(['name' => 'AñadirIndicadorErradicar']);
+        }
+
+        $permission34 = Permission::where('name', 'AñadirIndicadorErradicar')->first();
+
+        // PERMISO 35
+        if (!Permission::where('name', 'VerIndicadorErradicar')->exists()) {
+            Permission::create(['name' => 'VerIndicadorErradicar']);
+        }
+
+        $permission35 = Permission::where('name', 'VerIndicadorErradicar')->first();
+
+        // PERMISO 36
+        if (!Permission::where('name', 'VerFormulaErradicar')->exists()) {
+            Permission::create(['name' => 'VerFormulaErradicar']);
+        }
+
+        $permission36 = Permission::where('name', 'VerFormulaErradicar')->first();
+
+        // PERMISO 37
+        if (!Permission::where('name', 'EliminarCalculoErradicar')->exists()) {
+            Permission::create(['name' => 'EliminarCalculoErradicar']);
+        }
+
+        $permission37 = Permission::where('name', 'EliminarCalculoErradicar')->first();
 
 
         //DAR PERMISO 1
@@ -332,6 +414,66 @@ class RolSeeder extends Seeder
         // DAR PERMISO 25
         if ($role1 && !$role1->hasPermissionTo($permission25)) {
             $role1->givePermissionTo($permission25);
+        }
+
+        // DAR PERMISO 26
+        if ($role1 && !$role1->hasPermissionTo($permission26)) {
+            $role1->givePermissionTo($permission26);
+        }
+
+        // DAR PERMISO 27
+        if ($role1 && !$role1->hasPermissionTo($permission27)) {
+            $role1->givePermissionTo($permission27);
+        }
+
+        // DAR PERMISO 28
+        if ($role1 && !$role1->hasPermissionTo($permission28)) {
+            $role1->givePermissionTo($permission28);
+        }
+
+        // DAR PERMISO 29
+        if ($role1 && !$role1->hasPermissionTo($permission29)) {
+            $role1->givePermissionTo($permission29);
+        }
+
+        // DAR PERMISO 30
+        if ($role1 && !$role1->hasPermissionTo($permission30)) {
+            $role1->givePermissionTo($permission30);
+        }
+
+        // DAR PERMISO 31
+        if ($role1 && !$role1->hasPermissionTo($permission31)) {
+            $role1->givePermissionTo($permission31);
+        }
+
+        // DAR PERMISO 32
+        if ($role1 && !$role1->hasPermissionTo($permission32)) {
+            $role1->givePermissionTo($permission32);
+        }
+
+        // DAR PERMISO 33
+        if ($role1 && !$role1->hasPermissionTo($permission33)) {
+            $role1->givePermissionTo($permission33);
+        }
+
+        // DAR PERMISO 34
+        if ($role1 && !$role1->hasPermissionTo($permission34)) {
+            $role1->givePermissionTo($permission34);
+        }
+
+        // DAR PERMISO 35
+        if ($role1 && !$role1->hasPermissionTo($permission35)) {
+            $role1->givePermissionTo($permission35);
+        }
+
+        // DAR PERMISO 36
+        if ($role1 && !$role1->hasPermissionTo($permission36)) {
+            $role1->givePermissionTo($permission36);
+        }
+
+        // DAR PERMISO 37
+        if ($role1 && !$role1->hasPermissionTo($permission37)) {
+            $role1->givePermissionTo($permission37);
         }
     }
 }
