@@ -221,7 +221,7 @@ class CalcularErradicarController extends Controller
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorerradicar'));
+        $pdf = PDF::loadView('indicadoreserradicar.calcularerradicar.pdf', compact('calculo', 'indicadorerradicar'));
 
         return $pdf->download('resultados_de_indicador_' . $indicadorerradicar->id . '.pdf');
     }

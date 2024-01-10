@@ -221,7 +221,7 @@ class CalcularSancionarController extends Controller
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorsancionar'));
+        $pdf = PDF::loadView('indicadoressancionar.calcularsancionar.pdf', compact('calculo', 'indicadorsancionar'));
 
         return $pdf->download('resultados_de_indicador_' . $indicadorsancionar->id . '.pdf');
     }

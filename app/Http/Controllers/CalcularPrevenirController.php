@@ -217,7 +217,7 @@ class CalcularPrevenirController extends Controller
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadorprevenir'));
+        $pdf = PDF::loadView('indicadoresprevenir.calcularprevenir.pdf', compact('calculo', 'indicadorprevenir'));
 
         return $pdf->download('resultados_de_indicador_' . $indicadorprevenir->id . '.pdf');
     }

@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CalcularAtender; // Cambiado de CalcularPrevenir a CalcularAtender
-use App\Models\IndicadorAtender; // Cambiado de IndicadorPrevenir a IndicadorAtender
+use App\Models\CalcularAtender; 
+use App\Models\IndicadorAtender; 
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Exception;
 use PDF;
 
-class CalcularAtenderController extends Controller // Cambiado de CalcularPrevenirController a CalcularAtenderController
+class CalcularAtenderController extends Controller 
 {
-    public function index(IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function index(IndicadorAtender $indicadoratender) 
     {
-        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); // Cambiado de CalcularPrevenir a CalcularAtender
+        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); 
 
         if ($calculo) {
-            return $this->mostrarCalculo($indicadoratender); // Cambiado de $indicadorprevenir a $indicadoratender
+            return $this->mostrarCalculo($indicadoratender); 
         }
 
-        return view('indicadoresatender.calcularatender.index', compact('indicadoratender')); // Cambiado de indicadoresprevenir a indicadoresatender
+        return view('indicadoresatender.calcularatender.index', compact('indicadoratender'));
     }
 
-    public function guardarFormula(Request $request, IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function guardarFormula(Request $request, IndicadorAtender $indicadoratender) 
     {
         $request->validate([
             'formula' => 'required|string',
@@ -47,16 +47,16 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
                 return redirect()->back();
             }
 
-            $calculo = new CalcularAtender; // Cambiado de CalcularPrevenir a CalcularAtender
+            $calculo = new CalcularAtender; 
             $calculo->formula = $formula;
             $calculo->variables = $valores;
-            $calculo->indicador_atender_id = $indicadoratender->id; // Cambiado de indicador_prevenir_id a indicador_atender_id
+            $calculo->indicador_atender_id = $indicadoratender->id; 
             $calculo->resultado = $resultado;
             $calculo->user_id = auth()->id();
             $calculo->save();
 
             Alert::success('Éxito', 'La fórmula se guardó correctamente.');
-            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $indicadoratender->id]); // Cambiado de indicadoresprevenir a indicadoresatender
+            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $indicadoratender->id]); 
 
         } catch (Exception $e) {
             Alert::error('Error', 'No se puede guardar el cálculo. Revise e intente de nuevo.');
@@ -96,32 +96,32 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
         }
     }
 
-    public function mostrarCalculo(IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function mostrarCalculo(IndicadorAtender $indicadoratender) 
     {
-        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->get(); // Cambiado de CalcularPrevenir a CalcularAtender
+        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->get(); 
 
-        return view('indicadoresatender.calcularatender.calculos', [ // Cambiado de indicadoresprevenir a indicadoresatender
+        return view('indicadoresatender.calcularatender.calculos', [ 
             'indicadoratender' => $indicadoratender,
             'calculo' => $calculo,
         ]);
     }
 
-    public function calcularNuevo(IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function calcularNuevo(IndicadorAtender $indicadoratender) 
     {
-        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); // Cambiado de CalcularPrevenir a CalcularAtender
+        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); 
         $variables = $calculo ? self::obtenerVariables($calculo->formula) : [];
 
-        return view('indicadoresatender.calcularatender.calcular', [ // Cambiado de indicadoresprevenir a indicadoresatender
+        return view('indicadoresatender.calcularatender.calcular', [ 
             'indicadoratender' => $indicadoratender,
             'variables' => $variables,
             'formula' => $calculo->formula,
         ]);
     }
 
-    public function guardarNuevoCalculo(Request $request, IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function guardarNuevoCalculo(Request $request, IndicadorAtender $indicadoratender) 
     {
         try {
-            $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); // Cambiado de CalcularPrevenir a CalcularAtender
+            $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->first(); 
 
             if (!$calculo) {
                 return redirect()->back()->with('alert', [
@@ -143,16 +143,16 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
                 return redirect()->back();
             }
 
-            $nuevoCalculo = CalcularAtender::create([ // Cambiado de CalcularPrevenir a CalcularAtender
+            $nuevoCalculo = CalcularAtender::create([ 
                 'formula' => $calculo->formula,
-                'indicador_atender_id' => $indicadoratender->id, // Cambiado de indicador_prevenir_id a indicador_atender_id
+                'indicador_atender_id' => $indicadoratender->id, 
                 'resultado' => $resultado,
                 'user_id' => auth()->id(),
                 'variables' => $valores,
             ]);
 
             Alert::success('Éxito', 'Nuevo cálculo realizado correctamente.');
-            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $indicadoratender->id, 'calculo' => $nuevoCalculo->id]); // Cambiado de indicadoresprevenir a indicadoresatender
+            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $indicadoratender->id, 'calculo' => $nuevoCalculo->id]); 
 
         } catch (\Exception $e) {
             alert()->error('Error', 'No se puede calcular la fórmula. Revise e intente de nuevo.');
@@ -165,7 +165,7 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
 
     public function show($id)
     {
-        $calculo = CalcularAtender::find($id); // Cambiado de CalcularPrevenir a CalcularAtender
+        $calculo = CalcularAtender::find($id); 
 
         if (!$calculo) {
             return redirect()->back()->with('alert', [
@@ -175,33 +175,33 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
             ]);
         }
 
-        return view('indicadoresatender.calcularatender.show', compact('calculo')); // Cambiado de indicadoresprevenir a indicadoresatender
+        return view('indicadoresatender.calcularatender.show', compact('calculo')); 
     }
 
-    public function edit(CalcularAtender $calculo) // Cambiado de CalcularPrevenir a CalcularAtender
+    public function edit(CalcularAtender $calculo) 
     {
-        return view('indicadoresatender.calcularatender.edit', compact('calculo')); // Cambiado de indicadoresprevenir a indicadoresatender
+        return view('indicadoresatender.calcularatender.edit', compact('calculo')); 
     }
 
-    public function destroy(CalcularAtender $calculo) // Cambiado de CalcularPrevenir a CalcularAtender
+    public function destroy(CalcularAtender $calculo) 
     {
-        $indicadoratenderId = $calculo->indicador_atender_id; // Cambiado de indicador_prevenir_id a indicador_atender_id
+        $indicadoratenderId = $calculo->indicador_atender_id; 
 
         $calculo->delete();
 
         Alert::success('Éxito', 'Fórmula eliminada correctamente.')->showConfirmButton('Aceptar');
 
-        return redirect()->route('indicadoresatender.index', ['indicadoratender' => $indicadoratenderId]); // Cambiado de indicadoresprevenir a indicadoresatender
+        return redirect()->route('indicadoresatender.index', ['indicadoratender' => $indicadoratenderId]); 
     }
 
-    public function update(Request $request, CalcularAtender $calculo) // Cambiado de CalcularPrevenir a CalcularAtender
+    public function update(Request $request, CalcularAtender $calculo) 
     {
         try {
             $calculo->update($request->all());
 
             Alert::success('Éxito', 'Fórmula editada correctamente.')->showConfirmButton('Aceptar');
 
-            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $calculo->indicador_atender_id]); // Cambiado de indicadoresprevenir a indicadoresatender
+            return redirect()->route('indicadoresatender.calcularatender.calculos', ['indicadoratender' => $calculo->indicador_atender_id]); 
 
         } catch (\Exception $e) {
             Alert::error('Error', 'Error al editar la fórmula: ' . $e->getMessage())->showConfirmButton('Aceptar');
@@ -209,16 +209,16 @@ class CalcularAtenderController extends Controller // Cambiado de CalcularPreven
         }
     }
 
-    public function descargarPDF(IndicadorAtender $indicadoratender) // Cambiado de $indicadorprevenir a $indicadoratender
+    public function descargarPDF(IndicadorAtender $indicadoratender) 
     {
-        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->get(); // Cambiado de CalcularPrevenir a CalcularAtender
+        $calculo = CalcularAtender::where('indicador_atender_id', $indicadoratender->id)->get(); 
 
         if ($calculo->count() === 0) {
             return redirect()->back()->with('error', 'No hay cálculos disponibles para generar el PDF.');
         }
 
-        $pdf = PDF::loadView('pdf', compact('calculo', 'indicadoratender')); // Cambiado de indicadoresprevenir a indicadoresatender
+        $pdf = PDF::loadView('indicadoresatender.calcularatender.pdf', compact('calculo', 'indicadoratender')); 
 
-        return $pdf->download('resultados_de_indicador_' . $indicadoratender->id . '.pdf'); // Cambiado de indicadoresprevenir a indicadoresatender
+        return $pdf->download('resultados_de_indicador_' . $indicadoratender->id . '.pdf'); 
     }
 }

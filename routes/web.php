@@ -125,7 +125,7 @@ Route::prefix('indicadoresprevenir')->group(function () {
     ->name('indicadoresprevenir.calcularprevenir.destroy');
 
 // CALCULAR PREVENIR PDF
-    Route::get('/descargar-pdf/{indicadorprevenir}', [CalcularPrevenirController::class, 'descargarPDF'])->name('descargar.pdf');
+Route::get('/descargar-pdf/prevenir/{indicadorprevenir}', [CalcularPrevenirController::class, 'descargarPDF'])->name('descargar.pdf.prevenir');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -202,7 +202,7 @@ Route::delete('/indicadoresatender/calcularatender/{calculo}', [CalcularAtenderC
     ->name('indicadoresatender.calcularatender.destroy');
 
 // CALCULAR ATENDER PDF
-Route::get('/descargar-pdf/{indicadoratender}', [CalcularAtenderController::class, 'descargarPDF'])->name('descargar.pdf');
+Route::get('/descargar-pdf/atender/{indicadoratender}', [CalcularAtenderController::class, 'descargarPDF'])->name('descargar.pdf.atender');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -279,7 +279,7 @@ Route::delete('/indicadoressancionar/calcularsancionar/{calculo}', [CalcularSanc
     ->name('indicadoressancionar.calcularsancionar.destroy');
 
 // CALCULAR SANCIONAR PDF
-Route::get('/descargar-pdf/{indicadorsancionar}', [CalcularSancionarController::class, 'descargarPDF'])->name('descargar.pdf');
+Route::get('/descargar-pdf/sancionar/{indicadorsancionar}', [CalcularSancionarController::class, 'descargarPDF'])->name('descargar.pdf.sancionar');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -356,7 +356,8 @@ Route::delete('/indicadoreserradicar/calcularerradicar/{calculo}', [CalcularErra
     ->name('indicadoreserradicar.calcularerradicar.destroy');
 
 // CALCULAR ERRADICAR PDF
-Route::get('/descargar-pdf/{indicadorerradicar}', [CalcularErradicarController::class, 'descargarPDF'])->name('descargar.pdf');
+Route::get('/descargar-pdf/erradicar/{indicadorerradicar}', [CalcularErradicarController::class, 'descargarPDF'])->name('descargar.pdf.erradicar');
+
 
 
 
