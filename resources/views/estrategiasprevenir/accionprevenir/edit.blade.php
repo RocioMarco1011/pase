@@ -17,7 +17,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <form method="POST" action="{{ route('estrategiasprevenir.accionprevenir.update', ['estrategiaId' => $estrategia->id, 'accionPrevenirId' => $accionPrevenir->id]) }}">
+                        <form method="POST" action="{{ route('estrategiasprevenir.accionprevenir.update', ['estrategiaId' => $estrategia->id, 'accionPrevenirId' => $accionPrevenir->id]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT') 
                             <input type="hidden" name="estrategia_id" value="{{ $estrategia->id }}">
@@ -39,20 +39,20 @@
                                 <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
                                 <select name="dependencias_responsables[]" id="dependencias_responsables" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_responsables ?? []) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ collect($dependencias_responsables)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            
                             
                             <div class="mb-4">
                                 <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
                                 <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ in_array($user->id, $dependencias_coordinadoras ?? []) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ collect($dependencias_coordinadoras)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            
                             
                             <div class="flex items-center justify-end mt-4">
                                 <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
@@ -73,6 +73,18 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Asigna valores preseleccionados a las dependencias responsables y coordinadoras
+            var dependencias_responsables = @json($dependencias_responsables);
+            var dependencias_coordinadoras = @json($dependencias_coordinadoras);
+    
+            // Asigna los valores a los campos del formulario
+            $('#dependencias_responsables').val(dependencias_responsables);
+            $('#dependencias_coordinadoras').val(dependencias_coordinadoras);
+        });
+    </script>
+    
     <script>
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2({theme: "classic"});
