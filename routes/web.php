@@ -82,12 +82,12 @@ Route::put('estrategiasprevenir/{estrategiaId}/accionprevenir/{accionPrevenirId}
 
 // EVIDENCIAS PREVENIR
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionPrevenirId}')->group(function () {
-    Route::get('/evidencias', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
-    Route::get('/evidencias/create', [EvidenciaPrevenirController::class, 'create'])->name('evidenciaprevenir.create');
-    Route::post('/evidencias', [EvidenciaPrevenirController::class, 'store'])->name('evidenciaprevenir.store');
-    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaPrevenirController::class, 'edit'])->name('evidenciaprevenir.edit');
-    Route::put('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'update'])->name('evidenciaprevenir.update');
-    Route::delete('/evidencias/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
+    Route::get('/evidencias/prevenir', [EvidenciaPrevenirController::class, 'index'])->name('evidenciaprevenir.index');
+    Route::get('/evidencias/prevenir/create', [EvidenciaPrevenirController::class, 'create'])->name('evidenciaprevenir.create');
+    Route::post('/evidencias/prevenir', [EvidenciaPrevenirController::class, 'store'])->name('evidenciaprevenir.store');
+    Route::get('/evidencias/prevenir/{evidenciaId}/edit', [EvidenciaPrevenirController::class, 'edit'])->name('evidenciaprevenir.edit');
+    Route::put('/evidencias/prevenir/{evidenciaId}', [EvidenciaPrevenirController::class, 'update'])->name('evidenciaprevenir.update');
+    Route::delete('/evidencias/prevenir/{evidenciaId}', [EvidenciaPrevenirController::class, 'destroy'])->name('evidenciaprevenir.destroy');
 });
 
 // EVIDENCIAS FILE
@@ -159,12 +159,12 @@ Route::put('estrategiasatender/{estrategiaId}/accionatender/{accionAtenderId}', 
 
 // EVIDENCIAS ATENDER
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionAtenderId}')->group(function () {
-    Route::get('/evidencias', [EvidenciaAtenderController::class, 'index'])->name('evidenciaatender.index');
-    Route::get('/evidencias/create', [EvidenciaAtenderController::class, 'create'])->name('evidenciaatender.create');
-    Route::post('/evidencias', [EvidenciaAtenderController::class, 'store'])->name('evidenciaatender.store');
-    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaAtenderController::class, 'edit'])->name('evidenciaatender.edit');
-    Route::put('/evidencias/{evidenciaId}', [EvidenciaAtenderController::class, 'update'])->name('evidenciaatender.update');
-    Route::delete('/evidencias/{evidenciaId}', [EvidenciaAtenderController::class, 'destroy'])->name('evidenciaatender.destroy');
+    Route::get('/evidencias/atender', [EvidenciaAtenderController::class, 'index'])->name('evidenciaatender.index');
+    Route::get('/evidencias/atender/create', [EvidenciaAtenderController::class, 'create'])->name('evidenciaatender.create');
+    Route::post('/evidencias/atender', [EvidenciaAtenderController::class, 'store'])->name('evidenciaatender.store');
+    Route::get('/evidencias/atender/{evidenciaId}/edit', [EvidenciaAtenderController::class, 'edit'])->name('evidenciaatender.edit');
+    Route::put('/evidencias/atender/{evidenciaId}', [EvidenciaAtenderController::class, 'update'])->name('evidenciaatender.update');
+    Route::delete('/evidencias/atender/{evidenciaId}', [EvidenciaAtenderController::class, 'destroy'])->name('evidenciaatender.destroy');
 });
 
 // EVIDENCIAS FILE
@@ -236,12 +236,12 @@ Route::put('estrategiassancionar/{estrategiaId}/accionsancionar/{accionSancionar
 
 // EVIDENCIAS SANCIONAR
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionSancionarId}')->group(function () {
-    Route::get('/evidencias', [EvidenciaSancionarController::class, 'index'])->name('evidenciasancionar.index');
-    Route::get('/evidencias/create', [EvidenciaSancionarController::class, 'create'])->name('evidenciasancionar.create');
-    Route::post('/evidencias', [EvidenciaSancionarController::class, 'store'])->name('evidenciasancionar.store');
-    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaSancionarController::class, 'edit'])->name('evidenciasancionar.edit');
-    Route::put('/evidencias/{evidenciaId}', [EvidenciaSancionarController::class, 'update'])->name('evidenciasancionar.update');
-    Route::delete('/evidencias/{evidenciaId}', [EvidenciaSancionarController::class, 'destroy'])->name('evidenciasancionar.destroy');
+    Route::get('/evidencias/sancionar', [EvidenciaSancionarController::class, 'index'])->name('evidenciasancionar.index');
+    Route::get('/evidencias/sancionar/create', [EvidenciaSancionarController::class, 'create'])->name('evidenciasancionar.create');
+    Route::post('/evidencias/sancionar', [EvidenciaSancionarController::class, 'store'])->name('evidenciasancionar.store');
+    Route::get('/evidencias/sancionar/{evidenciaId}/edit', [EvidenciaSancionarController::class, 'edit'])->name('evidenciasancionar.edit');
+    Route::put('/evidencias/sancionar/{evidenciaId}', [EvidenciaSancionarController::class, 'update'])->name('evidenciasancionar.update');
+    Route::delete('/evidencias/sancionar/{evidenciaId}', [EvidenciaSancionarController::class, 'destroy'])->name('evidenciasancionar.destroy');
 });
 
 // EVIDENCIAS FILE
@@ -313,12 +313,12 @@ Route::put('estrategiaserradicar/{estrategiaId}/accionerradicar/{accionErradicar
 
 // EVIDENCIAS ERRADICAR
 Route::prefix('/estrategias/{estrategiaId}/acciones/{accionErradicarId}')->group(function () {
-    Route::get('/evidencias', [EvidenciaErradicarController::class, 'index'])->name('evidenciaerradicar.index');
-    Route::get('/evidencias/create', [EvidenciaErradicarController::class, 'create'])->name('evidenciaerradicar.create');
-    Route::post('/evidencias', [EvidenciaErradicarController::class, 'store'])->name('evidenciaerradicar.store');
-    Route::get('/evidencias/{evidenciaId}/edit', [EvidenciaErradicarController::class, 'edit'])->name('evidenciaerradicar.edit');
-    Route::put('/evidencias/{evidenciaId}', [EvidenciaErradicarController::class, 'update'])->name('evidenciaerradicar.update');
-    Route::delete('/evidencias/{evidenciaId}', [EvidenciaErradicarController::class, 'destroy'])->name('evidenciaerradicar.destroy');
+    Route::get('/evidencias/erradicar', [EvidenciaErradicarController::class, 'index'])->name('evidenciaerradicar.index');
+    Route::get('/evidencias/erradicar/create', [EvidenciaErradicarController::class, 'create'])->name('evidenciaerradicar.create');
+    Route::post('/evidencias/erradicar', [EvidenciaErradicarController::class, 'store'])->name('evidenciaerradicar.store');
+    Route::get('/evidencias/erradicar/{evidenciaId}/edit', [EvidenciaErradicarController::class, 'edit'])->name('evidenciaerradicar.edit');
+    Route::put('/evidencias/erradicar/{evidenciaId}', [EvidenciaErradicarController::class, 'update'])->name('evidenciaerradicar.update');
+    Route::delete('/evidencias/erradicar/{evidenciaId}', [EvidenciaErradicarController::class, 'destroy'])->name('evidenciaerradicar.destroy');
 });
 
 // EVIDENCIAS FILE

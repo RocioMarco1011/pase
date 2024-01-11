@@ -19,7 +19,7 @@ class EvidenciaPrevenirController extends Controller
         $evidencias = EvidenciaPrevenir::where('accion_prevenir_id', $accionPrevenirId)->get();
         $estrategia = EstrategiasPrevenir::find($estrategiaId);
 
-        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.index', compact('evidencias', 'accionPrevenir', 'estrategia'));
+        return view('evidenciaprevenir.index', compact('evidencias', 'accionPrevenir', 'estrategia'));
     }
 
     public function create($estrategiaId, $accionPrevenirId)
@@ -28,7 +28,7 @@ class EvidenciaPrevenirController extends Controller
         $evidencias = EvidenciaPrevenir::where('accion_prevenir_id', $accionPrevenirId)->get();
         $estrategia = EstrategiasPrevenir::find($estrategiaId);
 
-        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.create', compact('evidencias', 'accionPrevenir', 'estrategia'));
+        return view('evidenciaprevenir.create', compact('evidencias', 'accionPrevenir', 'estrategia'));
     }
 
 
@@ -72,7 +72,7 @@ class EvidenciaPrevenirController extends Controller
         $accionPrevenir = AccionPrevenir::find($accionPrevenirId);
         $evidencia = EvidenciaPrevenir::findOrFail($evidenciaId);
 
-        return view('estrategiasprevenir.accionprevenir.evidenciaprevenir.edit', compact('estrategia', 'accionPrevenir', 'evidencia'));
+        return view('evidenciaprevenir.edit', compact('estrategia', 'accionPrevenir', 'evidencia'));
     }
 
 
