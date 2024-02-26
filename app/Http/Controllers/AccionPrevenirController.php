@@ -76,17 +76,17 @@ class AccionPrevenirController extends Controller
     $accionPrevenir->dependencias_responsables_ids = json_encode($dependenciasResponsablesIds);
     $accionPrevenir->dependencias_coordinadoras_ids = json_encode($dependenciasCoordinadorasIds);
 
-    // Almacenar los nombres de las dependencias en un arreglo
+    // Almacenar los nombres de las dependencias directamente
     $dependenciasResponsables = User::whereIn('id', $dependenciasResponsablesIds)->pluck('name')->toArray();
     $dependenciasCoordinadoras = User::whereIn('id', $dependenciasCoordinadorasIds)->pluck('name')->toArray();
 
     // Almacenar los nombres de las dependencias
-    $accionPrevenir->dependencias_responsables = json_encode($dependenciasResponsables);
-    $accionPrevenir->dependencias_coordinadoras = json_encode($dependenciasCoordinadoras);
+    $accionPrevenir->dependencias_responsables = implode(', ', $dependenciasResponsables);
+    $accionPrevenir->dependencias_coordinadoras = implode(', ', $dependenciasCoordinadoras);
 
     $accionPrevenir->save();
     Alert::success('Éxito', 'Acción creada exitosamente.');
-
+    
     return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $request->estrategia_id]);
 }
 
