@@ -39,7 +39,7 @@
                                 <label for="dependencias_responsables" class="block text-lg font-medium text-gray-700">Dependencia Responsable:</label>
                                 <select name="dependencias_responsables[]" id="dependencias_responsables" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ collect($dependencias_responsables)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ collect($dependencias_responsables_ids)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -48,7 +48,7 @@
                                 <label for="dependencias_coordinadoras" class="block text-lg font-medium text-gray-700">Dependencia Coordinadora:</label>
                                 <select name="dependencias_coordinadoras[]" id="dependencias_coordinadoras" class="js-example-basic-multiple" multiple>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" {{ collect($dependencias_coordinadoras)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ collect($dependencias_coordinadoras_ids)->contains($user->id) ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -75,15 +75,17 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Asigna valores preseleccionados a las dependencias responsables y coordinadoras
-            var dependencias_responsables = @json($dependencias_responsables);
-            var dependencias_coordinadoras = @json($dependencias_coordinadoras);
-    
-            // Asigna los valores a los campos del formulario
-            $('#dependencias_responsables').val(dependencias_responsables);
-            $('#dependencias_coordinadoras').val(dependencias_coordinadoras);
+            var dependencias_responsables_ids = @json($dependencias_responsables_ids);
+            $('#dependencias_responsables').val(dependencias_responsables_ids);
         });
     </script>
+     <script>
+        $(document).ready(function () {
+            var dependencias_coordinadoras_ids = @json($dependencias_coordinadoras_ids);
+            $('#dependencias_coordinadoras').val(dependencias_coordinadoras_ids);
+        });
+    </script>
+    
     
     <script>
         $(document).ready(function() {

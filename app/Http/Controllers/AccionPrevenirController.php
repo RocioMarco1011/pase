@@ -72,15 +72,24 @@ class AccionPrevenirController extends Controller
     $dependenciasResponsablesIds = $request->input('dependencias_responsables', []);
     $dependenciasCoordinadorasIds = $request->input('dependencias_coordinadoras', []);
 
-    // Almacena los IDs de las dependencias en lugar de los nombres
-    $accionPrevenir->dependencias_responsables = json_encode($dependenciasResponsablesIds);
-    $accionPrevenir->dependencias_coordinadoras = json_encode($dependenciasCoordinadorasIds);
+    // Almacenar los IDs de las dependencias
+    $accionPrevenir->dependencias_responsables_ids = json_encode($dependenciasResponsablesIds);
+    $accionPrevenir->dependencias_coordinadoras_ids = json_encode($dependenciasCoordinadorasIds);
+
+    // Almacenar los nombres de las dependencias en un arreglo
+    $dependenciasResponsables = User::whereIn('id', $dependenciasResponsablesIds)->pluck('name')->toArray();
+    $dependenciasCoordinadoras = User::whereIn('id', $dependenciasCoordinadorasIds)->pluck('name')->toArray();
+
+    // Almacenar los nombres de las dependencias
+    $accionPrevenir->dependencias_responsables = json_encode($dependenciasResponsables);
+    $accionPrevenir->dependencias_coordinadoras = json_encode($dependenciasCoordinadoras);
 
     $accionPrevenir->save();
     Alert::success('Éxito', 'Acción creada exitosamente.');
 
     return redirect()->route('estrategiasprevenir.accionprevenir.index', ['estrategia' => $request->estrategia_id]);
 }
+
 
     public function show($estrategiaId, $accion)
     {
@@ -95,12 +104,14 @@ class AccionPrevenirController extends Controller
     $estrategia = EstrategiasPrevenir::findOrFail($estrategiaId); // Obtén la estrategia correspondiente
 
     $users = User::all();
-    $dependencias_responsables = json_decode($accionPrevenir->dependencias_responsables, true) ?? [];
-    $dependencias_coordinadoras = json_decode($accionPrevenir->dependencias_coordinadoras, true) ?? [];
 
-    return view('estrategiasprevenir.accionprevenir.edit', compact('accionPrevenir', 'users', 'dependencias_responsables', 'dependencias_coordinadoras', 'estrategia'));
+     // Obtener los IDs de las dependencias responsables desde la instancia de AccionPrevenir
+     $dependencias_responsables_ids = json_decode($accionPrevenir->dependencias_responsables_ids);
+     $dependencias_coordinadoras_ids = json_decode($accionPrevenir->dependencias_coordinadoras_ids);
+
+
+    return view('estrategiasprevenir.accionprevenir.edit', compact('accionPrevenir', 'users', 'dependencias_responsables_ids', 'dependencias_coordinadoras_ids', 'estrategia'));
 }
-
 
     public function update(Request $request, $estrategiaId, $accionPrevenirId)
 {
