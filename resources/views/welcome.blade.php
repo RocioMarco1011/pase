@@ -47,7 +47,8 @@
 <body>
     <div class="container">
         <div class="jumbotron jumbotron-transparent">
-            <h1>Bienvenido al programa PASE <br> (Prevenir, Atender, Sancionar Y Erradicar).</h1>
+            <h1>Programa Estatal para Prevenir, Atender, Sancionar y
+                Erradicar la Violencia contra las Mujeres del Estado de Zacatecas</h1>
             <a class="btn btn-guinda btn-lg" href="{{ url('/login') }}" role="button">Iniciar sesión</a>
         </div>
 
